@@ -6,6 +6,7 @@ import (
   "html/template"
   "log"
 	"net/http"
+  "strings"
 
 	"github.com/makhidkarun/crewgen/pkg/person"
 )
@@ -24,17 +25,22 @@ func loadPage(title string) (*Page, error) {
 }
  
 func recruitCrew(w http.ResponseWriter, r *http.Request) {
-  fmt.Fprintf(w, "<h1>Recruiting </h1>"           +
-    "<form action=\"showCrew\" method=\"POST\">"   +
-    "<input type=\"text\" name=\"shipName\"</br>" +
-    "<input type=\"submit\" value=\"Recruit!\">"  +
+  fmt.Fprintf(w, "<h1>Recruiting </h1>"               +
+    "<form action=\"showCrew\" method=\"POST\">"      +
+    "Ship Name: "                                     +
+    "<input type=\"text\" name=\"shipName\"</br>"     +
+    "Ship Hull Size:  "                               +
+    "<input type=\"text\" name=\"shipHullSize\"</br>" +
+    "<input type=\"submit\" value=\"Recruit!\">"      +
     "</form>")
 }
     
 func showCrew(w http.ResponseWriter, r *http.Request) {
-  title   := "The Crew"
-  page, _ := loadPage(title)
-  t, _    := template.ParseFiles( templateDir + "crew.html")
+  r.ParseForm()
+  shipName    := r.Form["shipName"]
+  title       := strings.Join(shipName, "")
+  page, _     := loadPage(title)
+  t, _        := template.ParseFiles( templateDir + "crewPerson.html")
   t.Execute(w, page)
 }
 
