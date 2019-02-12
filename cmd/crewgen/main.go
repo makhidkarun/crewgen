@@ -2,13 +2,13 @@ package main
 
 import (
   "fmt"
-	//"io/ioutil"
+  //"io/ioutil"
   "html/template"
   "log"
-	"net/http"
+  "net/http"
   "strings"
 
-	"github.com/makhidkarun/crewgen/pkg/person"
+  "github.com/makhidkarun/crewgen/pkg/person"
 )
 
 type Page struct {
@@ -19,7 +19,7 @@ type Page struct {
 var templateDir string = "../../web/"
 
 func loadPage(title string) (*Page, error) {
-	p := person.Person{Name: "Al Lefron"}
+  p := person.Person{Name: "Al Lefron"}
   body := p.Name
   return &Page{Title: title, Body: []byte(body)}, nil
 }
