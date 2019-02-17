@@ -1,0 +1,6 @@
+    
+<h3>Crew for {{ .ShipName }} </h3>
+{{ range .Crew }}
+    {{ template "personTemplate.html" . }}
+{{ end }}
+

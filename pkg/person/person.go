@@ -17,6 +17,7 @@ import (
 type Person struct {
 	Name   string
 	UPP    [6]int
+  UPPs   string
 	Gender string
 	PSR    int
 	Age    int
@@ -25,9 +26,9 @@ type Person struct {
 }
 
 func MakePerson(options map[string]string) Person {
-	terms, _ := strconv.Atoi(options["terms"])
-	gender := options["gender"]
-	db_name := options["db_name"]
+	terms, _  := strconv.Atoi(options["terms"])
+	gender    := options["gender"]
+	db_name   := options["db_name"]
 
 	var character Person
 
@@ -46,9 +47,10 @@ func MakePerson(options map[string]string) Person {
 		character.Gender = input_gender
 	}
 
-	character.Name = tools.GetName(character.Gender, db_name)
-	character.UPP = tools.RollUPP()
-	character.Age = tools.Age(character.Terms)
+	character.Name  = tools.GetName(character.Gender, db_name)
+	character.UPP   = tools.RollUPP()
+  character.UPPs  = tools.FormatUPP(character.UPP)
+	character.Age   = tools.Age(character.Terms)
 
 	return character
 }
