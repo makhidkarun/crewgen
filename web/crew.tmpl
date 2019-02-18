@@ -1,0 +1,11 @@
+{{ define "crew" }}
+
+{{ if .Crew }} 
+  <h3>Crew for {{ .ShipName }} </h3>
+  {{ range .Crew }}
+      {{ template "person" . }}
+  {{ end }}
+
+ {{ end }}
+
+{{ end }}
