@@ -28,16 +28,16 @@ type Ship struct {
 }
 
 func buildCrew() Crew {
-	var crew Crew
-	var options = make(map[string]string)
-	options["terms"] = "0"
-	options["gender"] = ""
-	options["db_name"] = "data/names.db"
-	captain := person.MakePerson(options)
-	pilot := person.MakePerson(options)
-	crew = append(crew, captain)
-	crew = append(crew, pilot)
-	return crew
+  var crew Crew
+  var options = make(map[string]string)
+  options["terms"] = "0"
+  options["gender"] = ""
+  options["db_name"] = "data/names.db"
+  captain := person.MakePerson(options)
+  pilot := person.MakePerson(options)
+  crew = append(crew, captain)
+  crew = append(crew, pilot)
+  return crew
 }
 
 func showCrew(w http.ResponseWriter, r *http.Request) {
