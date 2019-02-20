@@ -17,5 +17,24 @@
       {{ template "person" . }}
   {{ end }}
 
-      
+  {{ if .Medic.Name   }}
+    <h3>Medical Section</h3>
+    {{ with .Medic }}
+      {{ template "person" . }}
+    {{ end }}
+  {{ end }}
+
+  {{ if .Steward.Name   }}
+    <h3>Steward Section</h3>
+    {{ with .Steward }}
+      {{ template "person" . }}
+    {{ end }}
+  {{ end }}
+
+  {{ if gt (len .Gunners) 0 }}
+    <h3>Gunnery Section</h3>
+    {{ range .Gunners }}
+        {{ template "person" . }}
+    {{ end }}
+  {{ end }}
 {{ end }}

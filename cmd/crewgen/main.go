@@ -44,10 +44,21 @@ func buildCrew(ship Ship) Crew {
   options["db_name"] = "data/names.db"
   crew.Pilot = person.MakePerson(options)
   crew.Navigator = person.MakePerson(options)
-  crew.Engineers = append(crew.Engineers, person.MakePerson(options))
-  crew.Engineers = append(crew.Engineers, person.MakePerson(options))
-  crew.Engineers = append(crew.Engineers, person.MakePerson(options))
-  crew.Engineers = append(crew.Engineers, person.MakePerson(options))
+  for dT := ship.DriveSize; dT > 0; dT -= 35 {
+    crew.Engineers = append(crew.Engineers, person.MakePerson(options))
+  }
+  if ship.HullSize >= 200 {
+    crew.Medic    = person.MakePerson(options)
+  }
+  if ship.Passengers > 0 {
+    crew.Steward    = person.MakePerson(options)
+  }
+  if ship.Weapons > 0 {
+    for g := 0; g < ship.Weapons; g++ {
+      crew.Gunners   = append(crew.Gunners, person.MakePerson(options))
+    }
+  }
+
   return crew
 }
 
