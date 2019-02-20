@@ -1,11 +1,21 @@
 {{ define "crew" }}
 
-{{ if .Crew }} 
-  <h3>Crew for {{ .ShipName }} </h3>
-  {{ range .Crew }}
+  <h2>Crew for {{ .ShipName }} </h2>
+
+  <h3>Pilot</h3>
+  {{ with .Pilot }}
+      {{ template "person" . }}
+  {{ end }}
+  
+  <h3>Navigator</h3>
+  {{ with .Navigator }}
       {{ template "person" . }}
   {{ end }}
 
- {{ end }}
+  <h3>Engineering Section</h3>
+  {{ range .Engineers }}
+      {{ template "person" . }}
+  {{ end }}
 
+      
 {{ end }}

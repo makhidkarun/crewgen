@@ -17,26 +17,37 @@ import (
 
 var templateDir string = "web"
 
-type Crew []person.Person
+type Crew struct {
+  ShipName    string
+  Pilot       person.Person
+  Navigator   person.Person
+  Medic       person.Person
+  Engineers   []person.Person
+  Gunners     []person.Person
+  Steward     person.Person
+}
+
 type Ship struct {
 	ShipName    string
-	Crew        []person.Person
   HullSize    int
   DriveSize   int
   Passengers  int
   Weapons     int
 }
 
-func buildCrew() Crew {
+func buildCrew(ship Ship) Crew {
   var crew Crew
+  crew.ShipName = ship.ShipName
   var options = make(map[string]string)
   options["terms"] = "0"
   options["gender"] = ""
   options["db_name"] = "data/names.db"
-  captain := person.MakePerson(options)
-  pilot := person.MakePerson(options)
-  crew = append(crew, captain)
-  crew = append(crew, pilot)
+  crew.Pilot = person.MakePerson(options)
+  crew.Navigator = person.MakePerson(options)
+  crew.Engineers = append(crew.Engineers, person.MakePerson(options))
+  crew.Engineers = append(crew.Engineers, person.MakePerson(options))
+  crew.Engineers = append(crew.Engineers, person.MakePerson(options))
+  crew.Engineers = append(crew.Engineers, person.MakePerson(options))
   return crew
 }
 
@@ -48,14 +59,13 @@ func showCrew(w http.ResponseWriter, r *http.Request) {
   driveSize,_  := strconv.Atoi(strings.Join(r.Form["driveSize"], "")) 
   passengers,_  := strconv.Atoi(strings.Join(r.Form["passengers"], "")) 
   weapons,_  := strconv.Atoi(strings.Join(r.Form["weapons"], "")) 
-	crew := buildCrew()
 	ship := Ship{ShipName: shipName, 
-    Crew: crew, 
     HullSize: hullSize,
     DriveSize: driveSize,
     Passengers: passengers,
     Weapons:  weapons,
   }
+	crew := buildCrew(ship)
 	layoutST := filepath.Join(templateDir, "layoutS.tmpl")
 	htmlOpenT := filepath.Join(templateDir, "htmlOpen.tmpl")
 	htmlCloseT := filepath.Join(templateDir, "htmlClose.tmpl")
@@ -68,7 +78,7 @@ func showCrew(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, http.StatusText(500), 500)
 		return
 	}
-	if err := t.ExecuteTemplate(w, "layoutS", ship); err != nil {
+	if err := t.ExecuteTemplate(w, "layoutS", crew); err != nil {
 		log.Println(err.Error())
 		http.Error(w, http.StatusText(500), 500)
 	}
