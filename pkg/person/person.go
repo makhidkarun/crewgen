@@ -29,7 +29,7 @@ func MakePerson(options map[string]string) Person {
 	terms, _  := strconv.Atoi(options["terms"])
 	gender    := options["gender"]
 	db_name   := options["db_name"]
-  career    := options["career"]
+  career    := options["role"]
 
 	var character Person
 

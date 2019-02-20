@@ -33,6 +33,7 @@ type Ship struct {
   DriveSize   int
   Passengers  int
   Weapons     int
+  Role        string
 }
 
 func buildCrew(ship Ship) Crew {
@@ -42,6 +43,7 @@ func buildCrew(ship Ship) Crew {
   options["terms"] = "0"
   options["gender"] = ""
   options["db_name"] = "data/names.db"
+  options["role"] = ship.Role
   crew.Pilot = person.MakePerson(options)
   crew.Navigator = person.MakePerson(options)
   for dT := ship.DriveSize; dT > 0; dT -= 35 {
@@ -58,23 +60,24 @@ func buildCrew(ship Ship) Crew {
       crew.Gunners   = append(crew.Gunners, person.MakePerson(options))
     }
   }
-
   return crew
 }
 
 func showCrew(w http.ResponseWriter, r *http.Request) {
 	r.ParseForm()
   // Needs more input sanitization.
-	shipName := strings.Join(r.Form["shipName"], "")
-  hullSize,_  := strconv.Atoi(strings.Join(r.Form["hullSize"], ""))
-  driveSize,_  := strconv.Atoi(strings.Join(r.Form["driveSize"], "")) 
+	shipName      := strings.Join(r.Form["shipName"], "")
+  hullSize,_    := strconv.Atoi(strings.Join(r.Form["hullSize"], ""))
+  driveSize,_   := strconv.Atoi(strings.Join(r.Form["driveSize"], "")) 
   passengers,_  := strconv.Atoi(strings.Join(r.Form["passengers"], "")) 
-  weapons,_  := strconv.Atoi(strings.Join(r.Form["weapons"], "")) 
+  weapons,_     := strconv.Atoi(strings.Join(r.Form["weapons"], "")) 
+	role          := strings.Join(r.Form["role"], "")
 	ship := Ship{ShipName: shipName, 
     HullSize: hullSize,
     DriveSize: driveSize,
     Passengers: passengers,
     Weapons:  weapons,
+    Role:     role,
   }
 	crew := buildCrew(ship)
 	layoutST := filepath.Join(templateDir, "layoutS.tmpl")
