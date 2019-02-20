@@ -47,6 +47,17 @@ func TwoD6() int {
 	return OneD6() + OneD6()
 }
 
+func Career( career ...string) string {
+  var c string
+  if len(career[0]) > 0 {
+    c = career[0]
+  } else if RNG(1, 6)%2 == 0 {
+		c = "Navy"
+	} else {
+		c = "Merchant"
+	}
+  return c
+}
 func FormatUPP(upp [6]int) string {
 	var newUPP string
 	for _, val := range upp {
