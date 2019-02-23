@@ -89,6 +89,7 @@ func GetName(gender string, db_name string) string {
 	if err != nil {
 		fmt.Println(err)
 	}
+	defer db.Close()
 
 	// First Name
 	if gender == "M" {
@@ -118,7 +119,6 @@ func GetName(gender string, db_name string) string {
 		}
 	}
 
-	db.Close()
 	name := fname + " " + lname
 	return name
 }
