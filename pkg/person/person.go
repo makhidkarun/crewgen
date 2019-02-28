@@ -8,21 +8,21 @@
 package person
 
 import (
-	"strconv"
-	"strings"
+  "strconv"
+  "strings"
 
-	"github.com/makhidkarun/crewgen/pkg/tools"
+  "github.com/makhidkarun/crewgen/pkg/tools"
 )
 
 type Person struct {
-	Name   string
-	UPP    [6]int
+  Name   string
+  UPP    [6]int
   UPPs   string
-	Gender string
-	PSR    int
-	Age    int
-	Terms  int
-	Career string
+  Gender string
+  PSR    int
+  Age    int
+  Terms  int
+  Career string
   Skills  map[string]int
   S     string
 }
@@ -44,32 +44,32 @@ func (p *Person) IncSkill(s string) {
 }
 
 func MakePerson(options map[string]string) Person {
-	terms, _  := strconv.Atoi(options["terms"])
-	gender    := options["gender"]
-	db_name   := options["db_name"]
+  terms, _  := strconv.Atoi(options["terms"])
+  gender    := options["gender"]
+  db_name   := options["db_name"]
   career    := options["role"]
   job       := options["job"]
 
-	var character Person
+  var character Person
   character.Skills  = make(map[string]int)
 
-	// Need to figure out pre-adult characters
-	if terms <= 0 {
-		character.Terms = tools.NumTerms()
-	} else {
-		character.Terms = terms
-	}
+  // Need to figure out pre-adult characters
+  if terms <= 0 {
+    character.Terms = tools.NumTerms()
+  } else {
+    character.Terms = terms
+  }
 
-	var genders []string = []string{"F", "M"}
-	input_gender := strings.ToUpper(gender)
-	if !tools.StringInArray(input_gender, genders) {
-		character.Gender = tools.Gender()
-	} else {
-		character.Gender = input_gender
-	}
+  var genders []string = []string{"F", "M"}
+  input_gender := strings.ToUpper(gender)
+  if !tools.StringInArray(input_gender, genders) {
+    character.Gender = tools.Gender()
+  } else {
+    character.Gender = input_gender
+  }
 
-	character.Name    = tools.GetName(character.Gender, db_name)
-	character.UPP     = tools.RollUPP()
+  character.Name    = tools.GetName(character.Gender, db_name)
+  character.UPP     = tools.RollUPP()
   character.UPPs    = tools.FormatUPP(character.UPP)
   character.Age     = tools.Age(character.Terms)
   character.Career  = tools.Career(career)
@@ -91,5 +91,5 @@ func MakePerson(options map[string]string) Person {
   }
   character.IncSkill(primarySkill)
   character.S = character.SkillsToStr()
-	return character
+  return character
 }
