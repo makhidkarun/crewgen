@@ -8,9 +8,12 @@
 package person
 
 import (
+	"database/sql"
+	"fmt"
 	"strconv"
 	"strings"
 
+	_ "github.com/mattn/go-sqlite3"
 	"github.com/makhidkarun/crewgen/pkg/tools"
 )
 
@@ -43,6 +46,53 @@ func (p *Person) IncSkill(s string) {
 	p.Skills[s] += 1
 }
 
+
+func GetName(gender string, db_name string) string {
+	// Note that the names.db file must be where the command is run
+	// from.
+
+	var lname string
+	var fname string
+	var fresult *sql.Rows
+
+	db, err := sql.Open("sqlite3", db_name)
+	if err != nil {
+		fmt.Println(err)
+	}
+	defer db.Close()
+
+	// First Name
+	if gender == "M" {
+		fresult, err = db.Query("SELECT name FROM humaniti_male_first ORDER BY RANDOM() LIMIT 1")
+	} else {
+		fresult, err = db.Query("SELECT name FROM humaniti_female_first ORDER BY RANDOM() LIMIT 1")
+	}
+	if err != nil {
+		fmt.Println(err)
+	}
+	for fresult.Next() {
+		err = fresult.Scan(&fname)
+		if err != nil {
+			fmt.Println(err)
+		}
+	}
+
+	// Last Name
+	result, err := db.Query("SELECT name FROM humaniti_last ORDER BY RANDOM() LIMIT 1")
+	if err != nil {
+		fmt.Println(err)
+	}
+	for result.Next() {
+		err = result.Scan(&lname)
+		if err != nil {
+			fmt.Println(err)
+		}
+	}
+
+	name := fname + " " + lname
+	return name
+}
+
 func MakePerson(options map[string]string) Person {
 	terms, _ := strconv.Atoi(options["terms"])
 	gender := options["gender"]
@@ -68,7 +118,7 @@ func MakePerson(options map[string]string) Person {
 		character.Gender = input_gender
 	}
 
-	character.Name = tools.GetName(character.Gender, db_name)
+	character.Name = GetName(character.Gender, db_name)
 	character.UPP = tools.RollUPP()
 	character.UPPs = tools.FormatUPP(character.UPP)
 	character.Age = tools.Age(character.Terms)
