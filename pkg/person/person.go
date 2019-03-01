@@ -1,9 +1,9 @@
-// To create a basic 2d6 OGL character
-
-// With acknowledgement of Marc Miller of FFE,
+// Person provides the data structure and methods to create a basic 
+// 2d6 OGL character
+//
+// With acknowledgement of Marc Miller of FFE, 
 // Jason "Flynn" Kemp of Cepheus Engine,
-// Rob Pike and the Google Go team,
-// and Freenode#go-nuts.
+// Rob Pike the Google Go team, Freenode#go-nuts, and Slack/Gopher.
 
 package person
 
@@ -17,6 +17,7 @@ import (
 	"github.com/makhidkarun/crewgen/pkg/tools"
 )
 
+// Person holds data. Most fields are exported.
 type Person struct {
 	Name   string
 	UPP    [6]int
@@ -30,6 +31,8 @@ type Person struct {
 	S      string
 }
 
+// SkillsToString returns a comma separate single string.
+//   Skill-1,Skill-3
 func (p *Person) SkillsToStr() (s string) {
 	i := 1
 	for k, v := range p.Skills {
@@ -42,11 +45,14 @@ func (p *Person) SkillsToStr() (s string) {
 	return
 }
 
+// IncSkill takes a string of skill as map key and increments the value by 1.
 func (p *Person) IncSkill(s string) {
 	p.Skills[s] += 1
 }
 
-
+// GetName takes a string of "F" or "M" and a string of a database location.
+// Returns a string of "FirstName LastName".
+// Uses a SQLite3 database, "database/sql", and "github.com/mattn/go-sqlite3".
 func GetName(gender string, db_name string) string {
 	// Note that the names.db file must be where the command is run
 	// from.
@@ -93,6 +99,8 @@ func GetName(gender string, db_name string) string {
 	return name
 }
 
+// MakePerson takes a map of options and returns a Person.
+// It is a basic factory.
 func MakePerson(options map[string]string) Person {
 	terms, _ := strconv.Atoi(options["terms"])
 	gender := options["gender"]
