@@ -1,6 +1,7 @@
 package person_test
 
 import (
+	"strings"
 	"testing"
 
 	"github.com/makhidkarun/crewgen/pkg/person"
@@ -16,7 +17,6 @@ func TestMakePerson(t *testing.T) {
   }	
 }
  
-
 func TestMakePersonAge(t *testing.T) {
 	options := make(map[string]string)
 	options["terms"] = "1"
@@ -27,3 +27,21 @@ func TestMakePersonAge(t *testing.T) {
 	}
 }
 
+func TestMakePersonName(t *testing.T) {
+	options := make(map[string]string)
+	options["db_name"] = "data/names.db"
+	testP := person.MakePerson(options)
+	if len(testP.Name) < 5 {
+		t.Error(`MakePerson failed name`)
+	}
+}
+
+func TestMakePersonNameTwoWordString(t *testing.T) {
+	options := make(map[string]string)
+	options["db_name"] = "data/names.db"
+	testP := person.MakePerson(options)
+	nameS := strings.Split(testP.Name, " ")
+  if len(nameS) != 2 {
+		t.Error(`MakePerson failed two word name`)
+	}
+}
