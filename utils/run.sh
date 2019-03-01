@@ -12,4 +12,6 @@ then
 	time go build -o bin/crewgen cmd/crewgen/main.go 
 	#run
 	bin/crewgen
+else
+  echo "go vet failed."
 fi
