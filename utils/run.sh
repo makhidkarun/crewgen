@@ -6,7 +6,7 @@
 go vet cmd/crewgen/main.go
 
 # Check return
-if ( $? == 0 )
+if [ $? == 0 ]
 then
 	# Build
 	time go build -o bin/crewgen cmd/crewgen/main.go 
