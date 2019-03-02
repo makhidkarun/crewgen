@@ -138,9 +138,9 @@ func modifyUpp(upp [6]int, stat int, mod int) [6]int {
 	return upp
 }
 
-func NumTerms() int {
-	return RNG(1, 7)
-}
+//func NumTerms() int {
+//	return RNG(1, 7)
+//}
 
 func RollUPP() [6]int {
 	var upp [6]int

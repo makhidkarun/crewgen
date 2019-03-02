@@ -48,6 +48,9 @@ func buildCrew(ship Ship) Crew {
   crew.Pilot = person.MakePerson(options)
   options["job"]  = "navigator"
   crew.Navigator = person.MakePerson(options)
+	if ship.DriveSize > 200 {
+		ship.DriveSize = 200
+	}
   for dT := ship.DriveSize; dT > 0; dT -= 35 {
     options["job"]  = "engineer"
     crew.Engineers = append(crew.Engineers, person.MakePerson(options))
@@ -61,6 +64,9 @@ func buildCrew(ship Ship) Crew {
     crew.Steward    = person.MakePerson(options)
   }
   if ship.Weapons > 0 {
+		if ship.Weapons > 10 {
+			ship.Weapons = 10
+		}
     for g := 0; g < ship.Weapons; g++ {
       options["job"]  = "gunner"
       crew.Gunners   = append(crew.Gunners, person.MakePerson(options))

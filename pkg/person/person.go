@@ -10,6 +10,8 @@ package person
 import (
 	"database/sql"
 	"fmt"
+	crand "crypto/rand"
+	mbig "math/big"
 	"strconv"
 	"strings"
 
@@ -29,6 +31,47 @@ type Person struct {
 	Career string
 	Skills map[string]int
 	S      string
+}
+
+// newSkill takes a string and returns a string from a slice.
+func newSkill( job string ) (skill string) {
+	switch job {
+		case "engineer":
+			skills := []string{ "Engineering", "Engineering", "Engineering", "Mechanical", "Electronics", }
+			n := RNG(1, len(skills) - 1 )
+			skill = skills[n]
+		case "pilot":
+			skills := []string{ "Pilot", "Pilot", "Navigation", "Comms", "Sensors", "FleetTactics" }
+			n := RNG(1, len(skills) - 1 )
+			skill = skills[n]
+		case "navigator":
+			skills := []string{ "Navigation", "Navigation", "ShipsBoat", "Comms", "Sensors" }
+			n := RNG(1, len(skills) - 1 )
+			skill = skills[n]
+		case "medic":
+			skills := []string{ "Medical", "Medical", "Medical", "Diplomacy", "Science(Any)", }
+			n := RNG(1, len(skills) - 1 )
+			skill = skills[n]
+		case "gunner":
+			skills := []string{ "Gunnery", "Gunnery", "Brawling", "Mechanical", "Electronics", }
+			n := RNG(1, len(skills) - 1 )
+			skill = skills[n]
+		case "steward":
+			skills := []string{ "Steward", "Steward", "Diplomacy", "Carouse", "Medic"}
+			n := RNG(1, len(skills) - 1 )
+			skill = skills[n]
+	}
+	return
+}
+
+// RNG takes min and max ints and returns an int in the 
+// range min to max, inclusive.
+func RNG(min int, max int) int {
+	spread := max - min + 1
+	spread64 := int64(spread)
+	num, _ := crand.Int(crand.Reader, mbig.NewInt(spread64))
+	roll := int(num.Int64()) + min
+	return roll
 }
 
 // SkillsToString returns a comma separate single string.
@@ -99,6 +142,11 @@ func GetName(gender string, db_name string) string {
 	return name
 }
 
+func numTerms() (t int) {
+	t = RNG(1,4)
+	return
+}
+
 // MakePerson takes a map of options and returns a Person.
 // It is a basic factory.
 func MakePerson(options map[string]string) Person {
@@ -111,9 +159,8 @@ func MakePerson(options map[string]string) Person {
 	var character Person
 	character.Skills = make(map[string]int)
 
-	// Need to figure out pre-adult characters
-	if terms <= 0 {
-		character.Terms = tools.NumTerms()
+	if ( terms <= 0 || terms >=5 ) {
+		character.Terms = numTerms()
 	} else {
 		character.Terms = terms
 	}
@@ -133,6 +180,8 @@ func MakePerson(options map[string]string) Person {
 	character.Career = tools.Career(career)
 
 	var primarySkill string
+	var nS string
+	
 	switch job {
 	case "pilot":
 		primarySkill = "Pilot"
@@ -148,6 +197,10 @@ func MakePerson(options map[string]string) Person {
 		primarySkill = "Steward"
 	}
 	character.IncSkill(primarySkill)
+	nS = newSkill(job)
+	for i := 0; i < character.Terms; i++ {
+		character.IncSkill(nS)
+	}
 	character.S = character.SkillsToStr()
 	return character
 }
