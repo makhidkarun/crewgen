@@ -54,7 +54,8 @@ func newSkill( job string ) (skill string) {
 			skill = skills[n]
 		case "gunner":
 			skills := []string{ "Gunnery", "Gunnery", "Brawling", "Mechanical", "Electronics", }
-			n := RNG(1, len(skills) - 1 )
+			//n := RNG(1, len(skills) - 1 )
+			n := RNG(0,4)
 			skill = skills[n]
 		case "steward":
 			skills := []string{ "Steward", "Steward", "Diplomacy", "Carouse", "Medic"}
@@ -197,8 +198,8 @@ func MakePerson(options map[string]string) Person {
 		primarySkill = "Steward"
 	}
 	character.IncSkill(primarySkill)
-	nS = newSkill(job)
 	for i := 0; i < character.Terms; i++ {
+		nS = newSkill(job)
 		character.IncSkill(nS)
 	}
 	character.S = character.SkillsToStr()
