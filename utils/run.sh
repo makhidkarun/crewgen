@@ -3,13 +3,13 @@
 # Run the same build commands
 
 # Starting go vet
-go vet cmd/crewgen/main.go
+go vet cmd/crewgen/crewgen.go
 
 # Check return
 if [ $? == 0 ]
 then
 	# Build
-	time go build -o bin/crewgen cmd/crewgen/main.go 
+	time go build -o bin/crewgen cmd/crewgen/crewgen.go 
 	#run
 	bin/crewgen
 else

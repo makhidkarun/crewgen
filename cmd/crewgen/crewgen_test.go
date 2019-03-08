@@ -12,7 +12,7 @@ func TestHandleRecruit(t *testing.T) {
 	mux := http.NewServeMux()
 	mux.HandleFunc("/recruit", recruitCrew)
 
-	writer = httptest.NewRecorder()
+	writer := httptest.NewRecorder()
 	request, _ := http.NewRequest("GET", "/recruit", nil)
 	mux.ServeHTTP(writer, request)
 	if writer.Code != 200 {
