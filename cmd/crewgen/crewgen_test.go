@@ -8,7 +8,9 @@ import (
 	"testing"
 )
 
+
 func TestHandleRecruit(t *testing.T) {
+	templateDir = "../../web"
 	mux := http.NewServeMux()
 	mux.HandleFunc("/recruit", recruitCrew)
 
