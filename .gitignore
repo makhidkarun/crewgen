@@ -15,4 +15,4 @@
 *.swp
 
 # Binaries
-bin/
+#bin/
