@@ -16,3 +16,6 @@
 
 # Binaries
 bin/
+
+# Temporary storage
+tmp/

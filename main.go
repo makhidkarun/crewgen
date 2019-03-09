@@ -5,9 +5,11 @@
 package main
 
 import (
+	"fmt"
 	"html/template"
 	"log"
 	"net/http"
+	"os"
 	"path/filepath"
 	"strconv"
 	"strings"
@@ -128,13 +130,18 @@ func recruitCrew(w http.ResponseWriter, r *http.Request) {
 }
 
 func main() {
-	server := http.Server{
-		Addr: "127.0.0.1:8080",
-	}
+	//server := http.Server{
+	//	Addr: "127.0.0.1:8080",
+	//}
 
+	port := os.Getenv("PORT")
+	if port == "" {
+		port = "8080"
+		log.Printf("Default to use port %s", port)
+	}
 	http.HandleFunc("/recruit", recruitCrew)
 	http.HandleFunc("/show", showCrew)
-	log.Println("Starting server.")
-	log.Fatal(server.ListenAndServe())
+	log.Printf("Starting server on port %s", port)
+	log.Fatal(http.ListenAndServe(fmt.Sprintf(":%s", port), nil))
 }
 

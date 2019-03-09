@@ -19,7 +19,7 @@ func TestMain(m *testing.M) {
 }
 
 func setUp() {
-	templateDir = "../../web"
+	templateDir = "web"
 }
 
 func TestHandleRecruit(t *testing.T) {
