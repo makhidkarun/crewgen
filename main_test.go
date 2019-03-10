@@ -1,4 +1,4 @@
-// crewgen_test.go
+// crewgen/main_test.go
 
 package main
 
@@ -22,27 +22,15 @@ func setUp() {
 	templateDir = "web"
 }
 
-func TestHandleRecruit(t *testing.T) {
-	//templateDir = "../../web"
+func TestHandleDocroot(t *testing.T) {
 	mux = http.NewServeMux()
-	mux.HandleFunc("/recruit", recruitCrew)
+	mux.HandleFunc("/", crewGen)
 
 	writer = httptest.NewRecorder()
-	request, _ := http.NewRequest("GET", "/recruit", nil)
+	request, _ := http.NewRequest("GET", "/", nil)
 	mux.ServeHTTP(writer, request)
 	if writer.Code != 200 {
 		t.Errorf("Response code is %v", writer.Code)
 	}
 }
 
-func TestHandleShow(t *testing.T) {
-	mux = http.NewServeMux()
-	mux.HandleFunc("/show", recruitCrew)
-
-	writer = httptest.NewRecorder()
-	request, _ := http.NewRequest("GET", "/show", nil)
-	mux.ServeHTTP(writer, request)
-	if writer.Code != 200 {
-		t.Errorf("Response code is %v", writer.Code)
-	}
-}

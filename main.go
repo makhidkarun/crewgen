@@ -77,7 +77,7 @@ func buildCrew(ship Ship) Crew {
 	return crew
 }
 
-func showCrew(w http.ResponseWriter, r *http.Request) {
+func crewGen(w http.ResponseWriter, r *http.Request) {
 	r.ParseForm()
 	// Needs more input sanitization.
 	shipName      := strings.Join(r.Form["shipName"], "")
@@ -94,36 +94,19 @@ func showCrew(w http.ResponseWriter, r *http.Request) {
 		Role:     role,
 	}
 	crew := buildCrew(ship)
-	layoutST := filepath.Join(templateDir, "layoutS.tmpl")
+	layoutT := filepath.Join(templateDir, "layout.tmpl")
 	htmlOpenT := filepath.Join(templateDir, "htmlOpen.tmpl")
 	htmlCloseT := filepath.Join(templateDir, "htmlClose.tmpl")
 	formT := filepath.Join(templateDir, "form.tmpl")
 	crewT := filepath.Join(templateDir, "crew.tmpl")
 	personT := filepath.Join(templateDir, "person.tmpl")
-	t, err := template.ParseFiles(layoutST, htmlOpenT, htmlCloseT, formT, crewT, personT)
+	t, err := template.ParseFiles(layoutT, htmlOpenT, htmlCloseT, formT, crewT, personT)
 	if err != nil {
 		log.Println(err.Error())
 		http.Error(w, http.StatusText(500), 500)
 		return
 	}
-	if err := t.ExecuteTemplate(w, "layoutS", crew); err != nil {
-		log.Println(err.Error())
-		http.Error(w, http.StatusText(500), 500)
-	}
-}
-
-func recruitCrew(w http.ResponseWriter, r *http.Request) {
-	formTitle := "Recruiting Your Crew"
-	layoutT := filepath.Join(templateDir, "layout.tmpl")
-	htmlOpenT := filepath.Join(templateDir, "htmlOpen.tmpl")
-	htmlCloseT := filepath.Join(templateDir, "htmlClose.tmpl")
-	formT := filepath.Join(templateDir, "form.tmpl")
-	t, err := template.ParseFiles(layoutT, htmlOpenT, formT, htmlCloseT)
-	if err != nil {
-		log.Println(err.Error())
-		http.Error(w, http.StatusText(500), 500)
-	}
-	if err := t.ExecuteTemplate(w, "layout", formTitle); err != nil {
+	if err := t.ExecuteTemplate(w, "layout", crew); err != nil {
 		log.Println(err.Error())
 		http.Error(w, http.StatusText(500), 500)
 	}
@@ -139,8 +122,7 @@ func main() {
 		port = "8080"
 		log.Printf("Default to use port %s", port)
 	}
-	http.HandleFunc("/recruit", recruitCrew)
-	http.HandleFunc("/show", showCrew)
+	http.HandleFunc("/", crewGen)
 	log.Printf("Starting server on port %s", port)
 	log.Fatal(http.ListenAndServe(fmt.Sprintf(":%s", port), nil))
 }
