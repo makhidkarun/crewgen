@@ -5,14 +5,11 @@ package tools
 
 import (
 	"bufio"
-	"database/sql"
 	"fmt"
 	"os"
 
 	crand "crypto/rand"
 	mbig "math/big"
-
-	_ "github.com/mattn/go-sqlite3"
 )
 
 func Age(terms int) int {
@@ -47,20 +44,6 @@ func TwoD6() int {
 	return OneD6() + OneD6()
 }
 
-func Career( career ...string) string {
-  var c string
-  if career[0] == "Navy" {
-		c = "Navy"
-  } else if career[0] == "MerchantMarine" {
-    c = "Merchant"
-  } else if RNG(1, 6)%2 == 0 {
-		c = "Navy"
-	} else {
-		c = "Merchant"
-	}
-  return c
-}
-
 func FormatUPP(upp [6]int) string {
 	var newUPP string
 	for _, val := range upp {
@@ -77,52 +60,6 @@ func Gender() string {
 	}
 }
 
-func GetName(gender string, db_name string) string {
-	// Note that the names.db file must be where the command is run
-	// from.
-
-	var lname string
-	var fname string
-	var fresult *sql.Rows
-
-	db, err := sql.Open("sqlite3", db_name)
-	if err != nil {
-		fmt.Println(err)
-	}
-	defer db.Close()
-
-	// First Name
-	if gender == "M" {
-		fresult, err = db.Query("SELECT name FROM humaniti_male_first ORDER BY RANDOM() LIMIT 1")
-	} else {
-		fresult, err = db.Query("SELECT name FROM humaniti_female_first ORDER BY RANDOM() LIMIT 1")
-	}
-	if err != nil {
-		fmt.Println(err)
-	}
-	for fresult.Next() {
-		err = fresult.Scan(&fname)
-		if err != nil {
-			fmt.Println(err)
-		}
-	}
-
-	// Last Name
-	result, err := db.Query("SELECT name FROM humaniti_last ORDER BY RANDOM() LIMIT 1")
-	if err != nil {
-		fmt.Println(err)
-	}
-	for result.Next() {
-		err = result.Scan(&lname)
-		if err != nil {
-			fmt.Println(err)
-		}
-	}
-
-	name := fname + " " + lname
-	return name
-}
-
 func modifyUpp(upp [6]int, stat int, mod int) [6]int {
 	// Requires the UPP [6]int, stat index [0-5], and modifier
 	if stat < 0 || stat > 5 {
@@ -137,10 +74,6 @@ func modifyUpp(upp [6]int, stat int, mod int) [6]int {
 	}
 	return upp
 }
-
-//func NumTerms() int {
-//	return RNG(1, 7)
-//}
 
 func RollUPP() [6]int {
 	var upp [6]int

@@ -30,13 +30,6 @@ func TestAge(t *testing.T) {
 	}
 }
 
-func TestCareerNavy(t *testing.T) {
-  c := tools.Career("Navy")
-  if c != "Navy" {
-    t.Error(`TestCareerNavy failed.`)
-  }
-}
-
 func TestFormatUPP(t *testing.T) {
 	upp := [6]int{7, 7, 15, 9, 12, 12}
 	newUPP := tools.FormatUPP(upp)

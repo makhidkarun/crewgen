@@ -94,9 +94,23 @@ func (p *Person) IncSkill(s string) {
 	p.Skills[s] += 1
 }
 
+func setCareer(career ...string) (c string) {
+	if career[0] == "Navy" {
+		c = "Navy"
+	} else if career[0] == "MerchantMarine" {
+		c = "Merchant"
+	} else {
+		cOptions := []string{ "Navy", "Merchant"}
+		c = tools.RandomStringFromArray(cOptions)
+	}
+	return 
+} 
+
+		
 // GetName takes a string of "F" or "M" and a string of a database location.
 // Returns a string of "FirstName LastName".
 // Uses a SQLite3 database, "database/sql", and "github.com/mattn/go-sqlite3".
+
 func GetName(gender string, db_name string) string {
 	// Note that the names.db file must be where the command is run
 	// from.
@@ -143,6 +157,7 @@ func GetName(gender string, db_name string) string {
 	return name
 }
 
+// numTerms sets the number of terms the character served.
 func numTerms() (t int) {
 	t = RNG(1,4)
 	return
@@ -178,7 +193,7 @@ func MakePerson(options map[string]string) Person {
 	character.UPP = tools.RollUPP()
 	character.UPPs = tools.FormatUPP(character.UPP)
 	character.Age = tools.Age(character.Terms)
-	character.Career = tools.Career(career)
+	character.Career = setCareer(career)
 
 	var primarySkill string
 	var nS string

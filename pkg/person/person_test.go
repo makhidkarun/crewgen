@@ -45,3 +45,24 @@ func TestMakePersonNameTwoWordString(t *testing.T) {
 		t.Error(`MakePerson failed two word name`)
 	}
 }
+
+func TestCareerNavy(t *testing.T) {
+	options := make(map[string]string)
+	options["role"] = "Navy"
+	options["db_name"] = "data/names.db"
+	testP := person.MakePerson(options)
+	if testP.Career != "Navy" {
+		t.Error(`MakePerson failed to specify Navy career`)
+	}
+}
+
+func TestCareerMerchant(t *testing.T) {
+	options := make(map[string]string)
+	options["role"] = "MerchantMarine"
+	options["db_name"] = "data/names.db"
+	testP := person.MakePerson(options)
+	if testP.Career != "Merchant" {
+		t.Error(`MakePerson failed to specify Merchant career`)
+	}
+}
+

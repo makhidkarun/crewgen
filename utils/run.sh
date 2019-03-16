@@ -2,6 +2,13 @@
 
 # Run the same build commands
 
+# Set up bin directory if not present.
+
+if [ ! -d bin ]
+then
+	mkdir bin
+fi
+
 # Starting go vet
 go vet main.go
 
