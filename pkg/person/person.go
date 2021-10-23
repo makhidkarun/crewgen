@@ -163,14 +163,22 @@ func numTerms() (t int) {
 	return
 }
 
+// setSpecies takes a list of options and assigns one randomly to the character.
+func setSpecies( l []string ) string {
+  return "human"
+}
+
 // MakePerson takes a map of options and returns a Person.
 // It is a basic factory.
 func MakePerson(options map[string]string) Person {
-	terms, _ := strconv.Atoi(options["terms"])
-	gender := options["gender"]
-	db_name := options["db_name"]
-	career := options["role"]
-	job := options["job"]
+	terms, _  := strconv.Atoi(options["terms"])
+	gender    := options["gender"]
+	db_name   := options["db_name"]
+	career    := options["role"]
+	job       := options["job"]
+  //species   := options["species"]
+
+  speciesOptions := []string{"human", "human", "andorian", "human", "vulcan",}
 
 	var character Person
 	character.Skills = make(map[string]int)
@@ -189,11 +197,13 @@ func MakePerson(options map[string]string) Person {
 		character.Gender = input_gender
 	}
 
-	character.Name = GetName(character.Gender, db_name)
-	character.UPP = tools.RollUPP()
-	character.UPPs = tools.FormatUPP(character.UPP)
-	character.Age = tools.Age(character.Terms)
-	character.Career = setCareer(career)
+	character.Name    = GetName(character.Gender, db_name)
+	character.UPP     = tools.RollUPP()
+	character.UPPs    = tools.FormatUPP(character.UPP)
+	character.Age     = tools.Age(character.Terms)
+	character.Career  = setCareer(career)
+  character.Species = setSpecies(speciesOptions)
+  //character.Species = species
 
 	var primarySkill string
 	var nS string
