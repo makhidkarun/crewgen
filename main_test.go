@@ -9,7 +9,7 @@ import (
 	"testing"
 )
 
-var	mux *http.ServeMux
+var mux *http.ServeMux
 var writer *httptest.ResponseRecorder
 
 func TestMain(m *testing.M) {
@@ -33,4 +33,3 @@ func TestHandleDocroot(t *testing.T) {
 		t.Errorf("Response code is %v", writer.Code)
 	}
 }
-

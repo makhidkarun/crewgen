@@ -20,22 +20,22 @@ import (
 var templateDir string = "web"
 
 type Crew struct {
-	ShipName    string
-	Pilot       person.Person
-	Navigator   person.Person
-	Medic       person.Person
-	Engineers   []person.Person
-	Gunners     []person.Person
-	Steward     person.Person
+	ShipName  string
+	Pilot     person.Person
+	Navigator person.Person
+	Medic     person.Person
+	Engineers []person.Person
+	Gunners   []person.Person
+	Steward   person.Person
 }
 
 type Ship struct {
-	ShipName    string
-	HullSize    int
-	DriveSize   int
-	Passengers  int
-	Weapons     int
-	Role        string
+	ShipName   string
+	HullSize   int
+	DriveSize  int
+	Passengers int
+	Weapons    int
+	Role       string
 }
 
 func buildCrew(ship Ship) Crew {
@@ -46,32 +46,32 @@ func buildCrew(ship Ship) Crew {
 	options["gender"] = ""
 	options["db_name"] = "data/names.db"
 	options["role"] = ship.Role
-	options["job"]  = "pilot"
+	options["job"] = "pilot"
 	crew.Pilot = person.MakePerson(options)
-	options["job"]  = "navigator"
+	options["job"] = "navigator"
 	crew.Navigator = person.MakePerson(options)
 	if ship.DriveSize > 200 {
 		ship.DriveSize = 200
 	}
 	for dT := ship.DriveSize; dT > 0; dT -= 35 {
-		options["job"]  = "engineer"
+		options["job"] = "engineer"
 		crew.Engineers = append(crew.Engineers, person.MakePerson(options))
 	}
 	if ship.HullSize >= 200 {
-		options["job"]  = "medic"
-		crew.Medic    = person.MakePerson(options)
+		options["job"] = "medic"
+		crew.Medic = person.MakePerson(options)
 	}
 	if ship.Passengers > 0 {
-		options["job"]  = "steward"
-		crew.Steward    = person.MakePerson(options)
+		options["job"] = "steward"
+		crew.Steward = person.MakePerson(options)
 	}
 	if ship.Weapons > 0 {
 		if ship.Weapons > 10 {
 			ship.Weapons = 10
 		}
 		for g := 0; g < ship.Weapons; g++ {
-			options["job"]  = "gunner"
-			crew.Gunners   = append(crew.Gunners, person.MakePerson(options))
+			options["job"] = "gunner"
+			crew.Gunners = append(crew.Gunners, person.MakePerson(options))
 		}
 	}
 	return crew
@@ -80,18 +80,18 @@ func buildCrew(ship Ship) Crew {
 func crewGen(w http.ResponseWriter, r *http.Request) {
 	r.ParseForm()
 	// Needs more input sanitization.
-	shipName      := strings.Join(r.Form["shipName"], "")
-	hullSize,_    := strconv.Atoi(strings.Join(r.Form["hullSize"], ""))
-	driveSize,_   := strconv.Atoi(strings.Join(r.Form["driveSize"], "")) 
-	passengers,_  := strconv.Atoi(strings.Join(r.Form["passengers"], "")) 
-	weapons,_     := strconv.Atoi(strings.Join(r.Form["weapons"], "")) 
-	role          := strings.Join(r.Form["role"], "")
-	ship := Ship{ShipName: shipName, 
-		HullSize: hullSize,
-		DriveSize: driveSize,
+	shipName := strings.Join(r.Form["shipName"], "")
+	hullSize, _ := strconv.Atoi(strings.Join(r.Form["hullSize"], ""))
+	driveSize, _ := strconv.Atoi(strings.Join(r.Form["driveSize"], ""))
+	passengers, _ := strconv.Atoi(strings.Join(r.Form["passengers"], ""))
+	weapons, _ := strconv.Atoi(strings.Join(r.Form["weapons"], ""))
+	role := strings.Join(r.Form["role"], "")
+	ship := Ship{ShipName: shipName,
+		HullSize:   hullSize,
+		DriveSize:  driveSize,
 		Passengers: passengers,
-		Weapons:  weapons,
-		Role:     role,
+		Weapons:    weapons,
+		Role:       role,
 	}
 	crew := buildCrew(ship)
 	layoutT := filepath.Join(templateDir, "layout.tmpl")
@@ -126,4 +126,3 @@ func main() {
 	log.Printf("Starting server on port %s", port)
 	log.Fatal(http.ListenAndServe(fmt.Sprintf(":%s", port), nil))
 }
-

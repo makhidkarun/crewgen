@@ -12,11 +12,11 @@ func TestMakePerson(t *testing.T) {
 	options["db_name"] = "data/names.db"
 	testP := person.MakePerson(options)
 	var tP interface{} = testP.Name
-  if _, ok := tP.(string); ! ok {
-    t.Error(`MakePerson failed by name test`)
-  }	
+	if _, ok := tP.(string); !ok {
+		t.Error(`MakePerson failed by name test`)
+	}
 }
- 
+
 func TestMakePersonAge(t *testing.T) {
 	options := make(map[string]string)
 	options["terms"] = "1"
@@ -41,7 +41,7 @@ func TestMakePersonNameTwoWordString(t *testing.T) {
 	options["db_name"] = "data/names.db"
 	testP := person.MakePerson(options)
 	nameS := strings.Split(testP.Name, " ")
-  if len(nameS) != 2 {
+	if len(nameS) != 2 {
 		t.Error(`MakePerson failed two word name`)
 	}
 }
@@ -65,4 +65,3 @@ func TestCareerMerchant(t *testing.T) {
 		t.Error(`MakePerson failed to specify Merchant career`)
 	}
 }
-

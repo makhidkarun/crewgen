@@ -1,22 +1,22 @@
-// Person provides the data structure and methods to create a basic 
+// Person provides the data structure and methods to create a basic
 // 2d6 OGL character
 //
-// With acknowledgement of Marc Miller of FFE, 
+// With acknowledgement of Marc Miller of FFE,
 // Jason "Flynn" Kemp of Cepheus Engine,
 // Rob Pike the Google Go team, Freenode#go-nuts, and Slack/Gopher.
 
 package person
 
 import (
+	crand "crypto/rand"
 	"database/sql"
 	"fmt"
-	crand "crypto/rand"
 	mbig "math/big"
 	"strconv"
 	"strings"
 
-	_ "github.com/mattn/go-sqlite3"
 	"github.com/makhidkarun/crewgen/pkg/tools"
+	_ "github.com/mattn/go-sqlite3"
 )
 
 // Person holds data. Most fields are exported.
@@ -34,38 +34,38 @@ type Person struct {
 }
 
 // newSkill takes a string and returns a string from a slice.
-func newSkill( job string ) (skill string) {
+func newSkill(job string) (skill string) {
 	switch job {
-		case "engineer":
-			skills := []string{ "Engineering", "Engineering", "Engineering", "Mechanical", "Electronics", }
-			n := RNG(1, len(skills) - 1 )
-			skill = skills[n]
-		case "pilot":
-			skills := []string{ "Pilot", "Pilot", "Navigation", "Comms", "Sensors", "FleetTactics" }
-			n := RNG(1, len(skills) - 1 )
-			skill = skills[n]
-		case "navigator":
-			skills := []string{ "Navigation", "Navigation", "ShipsBoat", "Comms", "Sensors" }
-			n := RNG(1, len(skills) - 1 )
-			skill = skills[n]
-		case "medic":
-			skills := []string{ "Medical", "Medical", "Medical", "Diplomacy", "Science(Any)", }
-			n := RNG(1, len(skills) - 1 )
-			skill = skills[n]
-		case "gunner":
-			skills := []string{ "Gunnery", "Gunnery", "Brawling", "Mechanical", "Electronics", }
-			//n := RNG(1, len(skills) - 1 )
-			n := RNG(0,4)
-			skill = skills[n]
-		case "steward":
-			skills := []string{ "Steward", "Steward", "Diplomacy", "Carouse", "Medic"}
-			n := RNG(1, len(skills) - 1 )
-			skill = skills[n]
+	case "engineer":
+		skills := []string{"Engineering", "Engineering", "Engineering", "Mechanical", "Electronics"}
+		n := RNG(1, len(skills)-1)
+		skill = skills[n]
+	case "pilot":
+		skills := []string{"Pilot", "Pilot", "Navigation", "Comms", "Sensors", "FleetTactics"}
+		n := RNG(1, len(skills)-1)
+		skill = skills[n]
+	case "navigator":
+		skills := []string{"Navigation", "Navigation", "ShipsBoat", "Comms", "Sensors"}
+		n := RNG(1, len(skills)-1)
+		skill = skills[n]
+	case "medic":
+		skills := []string{"Medical", "Medical", "Medical", "Diplomacy", "Science(Any)"}
+		n := RNG(1, len(skills)-1)
+		skill = skills[n]
+	case "gunner":
+		skills := []string{"Gunnery", "Gunnery", "Brawling", "Mechanical", "Electronics"}
+		//n := RNG(1, len(skills) - 1 )
+		n := RNG(0, 4)
+		skill = skills[n]
+	case "steward":
+		skills := []string{"Steward", "Steward", "Diplomacy", "Carouse", "Medic"}
+		n := RNG(1, len(skills)-1)
+		skill = skills[n]
 	}
 	return
 }
 
-// RNG takes min and max ints and returns an int in the 
+// RNG takes min and max ints and returns an int in the
 // range min to max, inclusive.
 func RNG(min int, max int) int {
 	spread := max - min + 1
@@ -100,13 +100,12 @@ func setCareer(career ...string) (c string) {
 	} else if career[0] == "MerchantMarine" {
 		c = "Merchant"
 	} else {
-		cOptions := []string{ "Navy", "Merchant"}
+		cOptions := []string{"Navy", "Merchant"}
 		c = tools.RandomStringFromArray(cOptions)
 	}
-	return 
-} 
+	return
+}
 
-		
 // GetName takes a string of "F" or "M" and a string of a database location.
 // Returns a string of "FirstName LastName".
 // Uses a SQLite3 database, "database/sql", and "github.com/mattn/go-sqlite3".
@@ -159,7 +158,7 @@ func GetName(gender string, db_name string) string {
 
 // numTerms sets the number of terms the character served.
 func numTerms() (t int) {
-	t = RNG(1,4)
+	t = RNG(1, 4)
 	return
 }
 
@@ -175,7 +174,7 @@ func MakePerson(options map[string]string) Person {
 	var character Person
 	character.Skills = make(map[string]int)
 
-	if ( terms <= 0 || terms >=5 ) {
+	if terms <= 0 || terms >= 5 {
 		character.Terms = numTerms()
 	} else {
 		character.Terms = terms
@@ -197,7 +196,7 @@ func MakePerson(options map[string]string) Person {
 
 	var primarySkill string
 	var nS string
-	
+
 	switch job {
 	case "pilot":
 		primarySkill = "Pilot"
