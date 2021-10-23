@@ -3,7 +3,7 @@
 //
 // With acknowledgement of Marc Miller of FFE,
 // Jason "Flynn" Kemp of Cepheus Engine,
-// Rob Pike the Google Go team, Freenode#go-nuts, and Slack/Gopher.
+// Rob Pike the Google Go team, Libera#go-nuts, and Slack/Gopher.
 
 package person
 
@@ -17,20 +17,22 @@ import (
 
 	"github.com/makhidkarun/crewgen/pkg/tools"
 	_ "github.com/mattn/go-sqlite3"
+  //_ "modernc.org/sqlite"
 )
 
 // Person holds data. Most fields are exported.
 type Person struct {
-	Name   string
-	UPP    [6]int
-	UPPs   string
-	Gender string
-	PSR    int
-	Age    int
-	Terms  int
-	Career string
-	Skills map[string]int
-	S      string
+	Name    string
+	UPP     [6]int
+	UPPs    string
+	Gender  string
+	PSR     int
+	Age     int
+	Terms   int
+	Career  string
+	Skills  map[string]int
+	S       string
+  Species string
 }
 
 // newSkill takes a string and returns a string from a slice.
@@ -109,7 +111,6 @@ func setCareer(career ...string) (c string) {
 // GetName takes a string of "F" or "M" and a string of a database location.
 // Returns a string of "FirstName LastName".
 // Uses a SQLite3 database, "database/sql", and "github.com/mattn/go-sqlite3".
-
 func GetName(gender string, db_name string) string {
 	// Note that the names.db file must be where the command is run
 	// from.

@@ -7,9 +7,14 @@ import (
 	"github.com/makhidkarun/crewgen/pkg/person"
 )
 
-func TestMakePerson(t *testing.T) {
-	options := make(map[string]string)
+var options map[string]string
+
+func TestMain(m *testing.M) {
+	options = make(map[string]string)
 	options["db_name"] = "data/names.db"
+}
+
+func TestMakePerson(t *testing.T) {
 	testP := person.MakePerson(options)
 	var tP interface{} = testP.Name
 	if _, ok := tP.(string); !ok {
@@ -18,9 +23,7 @@ func TestMakePerson(t *testing.T) {
 }
 
 func TestMakePersonAge(t *testing.T) {
-	options := make(map[string]string)
 	options["terms"] = "1"
-	options["db_name"] = "data/names.db"
 	testP := person.MakePerson(options)
 	if testP.Age <= 21 || testP.Age >= 26 {
 		t.Error(`MakePerson failed age`)
@@ -28,8 +31,6 @@ func TestMakePersonAge(t *testing.T) {
 }
 
 func TestMakePersonName(t *testing.T) {
-	options := make(map[string]string)
-	options["db_name"] = "data/names.db"
 	testP := person.MakePerson(options)
 	if len(testP.Name) < 5 {
 		t.Error(`MakePerson failed name`)
@@ -37,8 +38,6 @@ func TestMakePersonName(t *testing.T) {
 }
 
 func TestMakePersonNameTwoWordString(t *testing.T) {
-	options := make(map[string]string)
-	options["db_name"] = "data/names.db"
 	testP := person.MakePerson(options)
 	nameS := strings.Split(testP.Name, " ")
 	if len(nameS) != 2 {
@@ -47,9 +46,7 @@ func TestMakePersonNameTwoWordString(t *testing.T) {
 }
 
 func TestCareerNavy(t *testing.T) {
-	options := make(map[string]string)
 	options["role"] = "Navy"
-	options["db_name"] = "data/names.db"
 	testP := person.MakePerson(options)
 	if testP.Career != "Navy" {
 		t.Error(`MakePerson failed to specify Navy career`)
@@ -57,11 +54,17 @@ func TestCareerNavy(t *testing.T) {
 }
 
 func TestCareerMerchant(t *testing.T) {
-	options := make(map[string]string)
 	options["role"] = "MerchantMarine"
-	options["db_name"] = "data/names.db"
 	testP := person.MakePerson(options)
 	if testP.Career != "Merchant" {
 		t.Error(`MakePerson failed to specify Merchant career`)
 	}
 }
+
+func TestSpecies(t *testing.T) {
+  testP := person.MakePerson(options)
+  if testP.Species != "Klingon" {
+    t.Error(`MakePerson failed to specify Klingon species`)
+  }
+}
+ 
