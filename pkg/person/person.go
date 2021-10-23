@@ -17,22 +17,23 @@ import (
 
 	"github.com/makhidkarun/crewgen/pkg/tools"
 	_ "github.com/mattn/go-sqlite3"
-  //_ "modernc.org/sqlite"
+	//_ "modernc.org/sqlite"
 )
 
 // Person holds data. Most fields are exported.
 type Person struct {
-	Name    string
-	UPP     [6]int
-	UPPs    string
-	Gender  string
-	PSR     int
-	Age     int
-	Terms   int
-	Career  string
-	Skills  map[string]int
-	S       string
-  Species string
+	Name        string
+	UPP         [6]int
+	UPPs        string
+	Gender      string
+	PSR         int
+	Age         int
+	Terms       int
+	Career      string
+	Skills      map[string]int
+	SkillString string
+	Species     string
+	Physical    string
 }
 
 // newSkill takes a string and returns a string from a slice.
@@ -40,28 +41,27 @@ func newSkill(job string) (skill string) {
 	switch job {
 	case "engineer":
 		skills := []string{"Engineering", "Engineering", "Engineering", "Mechanical", "Electronics"}
-		n := RNG(1, len(skills)-1)
+		n := RNG(0, len(skills)-1)
 		skill = skills[n]
 	case "pilot":
 		skills := []string{"Pilot", "Pilot", "Navigation", "Comms", "Sensors", "FleetTactics"}
-		n := RNG(1, len(skills)-1)
+		n := RNG(0, len(skills)-1)
 		skill = skills[n]
 	case "navigator":
 		skills := []string{"Navigation", "Navigation", "ShipsBoat", "Comms", "Sensors"}
-		n := RNG(1, len(skills)-1)
+		n := RNG(0, len(skills)-1)
 		skill = skills[n]
 	case "medic":
 		skills := []string{"Medical", "Medical", "Medical", "Diplomacy", "Science(Any)"}
-		n := RNG(1, len(skills)-1)
+		n := RNG(0, len(skills)-1)
 		skill = skills[n]
 	case "gunner":
 		skills := []string{"Gunnery", "Gunnery", "Brawling", "Mechanical", "Electronics"}
-		//n := RNG(1, len(skills) - 1 )
-		n := RNG(0, 4)
+		n := RNG(0, len(skills)-1)
 		skill = skills[n]
 	case "steward":
 		skills := []string{"Steward", "Steward", "Diplomacy", "Carouse", "Medic"}
-		n := RNG(1, len(skills)-1)
+		n := RNG(0, len(skills)-1)
 		skill = skills[n]
 	}
 	return
@@ -164,21 +164,33 @@ func numTerms() (t int) {
 }
 
 // setSpecies takes a list of options and assigns one randomly to the character.
-func setSpecies( l []string ) string {
-  return "human"
+func setSpecies(l []string) (species string) {
+	species = tools.RandomStringFromArray(l)
+	return
+}
+
+// writePhysical takes a Person and returns a physical description string.
+func writePhysical(c Person) string {
+	hOptions := []string{"short", "medium height", "tall"}
+	wOptions := []string{"thin", "medium build", "heavy set"}
+	height := tools.RandomStringFromArray(hOptions)
+	weight := tools.RandomStringFromArray(wOptions)
+	gen := map[string]string{"F": "female", "M": "male"}
+	physical := fmt.Sprintf("%s is a %s, %s %s %s",
+		c.Name, height, weight, c.Species, gen[c.Gender])
+	return physical
 }
 
 // MakePerson takes a map of options and returns a Person.
 // It is a basic factory.
 func MakePerson(options map[string]string) Person {
-	terms, _  := strconv.Atoi(options["terms"])
-	gender    := options["gender"]
-	db_name   := options["db_name"]
-	career    := options["role"]
-	job       := options["job"]
-  //species   := options["species"]
+	terms, _ := strconv.Atoi(options["terms"])
+	gender := options["gender"]
+	db_name := options["db_name"]
+	career := options["role"]
+	job := options["job"]
 
-  speciesOptions := []string{"human", "human", "andorian", "human", "vulcan",}
+	speciesOptions := []string{"human", "human", "andorian", "human", "vulcan"}
 
 	var character Person
 	character.Skills = make(map[string]int)
@@ -197,13 +209,12 @@ func MakePerson(options map[string]string) Person {
 		character.Gender = input_gender
 	}
 
-	character.Name    = GetName(character.Gender, db_name)
-	character.UPP     = tools.RollUPP()
-	character.UPPs    = tools.FormatUPP(character.UPP)
-	character.Age     = tools.Age(character.Terms)
-	character.Career  = setCareer(career)
-  character.Species = setSpecies(speciesOptions)
-  //character.Species = species
+	character.Name = GetName(character.Gender, db_name)
+	character.UPP = tools.RollUPP()
+	character.UPPs = tools.FormatUPP(character.UPP)
+	character.Age = tools.Age(character.Terms)
+	character.Career = setCareer(career)
+	character.Species = setSpecies(speciesOptions)
 
 	var primarySkill string
 	var nS string
@@ -227,6 +238,8 @@ func MakePerson(options map[string]string) Person {
 		nS = newSkill(job)
 		character.IncSkill(nS)
 	}
-	character.S = character.SkillsToStr()
+	character.SkillString = character.SkillsToStr()
+	character.Physical = writePhysical(character)
+
 	return character
 }

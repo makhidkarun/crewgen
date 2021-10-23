@@ -1,7 +1,7 @@
 package person_test
 
 import (
-  "os"
+	"os"
 	"strings"
 	"testing"
 
@@ -13,13 +13,11 @@ var options map[string]string
 func TestMain(m *testing.M) {
 	options = make(map[string]string)
 	options["db_name"] = "data/names.db"
-  exitVal := m.Run()
-  os.Exit(exitVal)
+	exitVal := m.Run()
+	os.Exit(exitVal)
 }
 
 func TestMakePerson(t *testing.T) {
-	options = make(map[string]string)
-	options["db_name"] = "data/names.db"
 	testP := person.MakePerson(options)
 	var tP interface{} = testP.Name
 	if _, ok := tP.(string); !ok {
@@ -28,8 +26,6 @@ func TestMakePerson(t *testing.T) {
 }
 
 func TestMakePersonAge(t *testing.T) {
-	options = make(map[string]string)
-	options["db_name"] = "data/names.db"
 	options["terms"] = "1"
 	testP := person.MakePerson(options)
 	if testP.Age <= 21 || testP.Age >= 26 {
@@ -38,8 +34,6 @@ func TestMakePersonAge(t *testing.T) {
 }
 
 func TestMakePersonName(t *testing.T) {
-	options = make(map[string]string)
-	options["db_name"] = "data/names.db"
 	testP := person.MakePerson(options)
 	if len(testP.Name) < 5 {
 		t.Error(`MakePerson failed name`)
@@ -47,8 +41,6 @@ func TestMakePersonName(t *testing.T) {
 }
 
 func TestMakePersonNameTwoWordString(t *testing.T) {
-	options = make(map[string]string)
-	options["db_name"] = "data/names.db"
 	testP := person.MakePerson(options)
 	nameS := strings.Split(testP.Name, " ")
 	if len(nameS) != 2 {
@@ -57,8 +49,6 @@ func TestMakePersonNameTwoWordString(t *testing.T) {
 }
 
 func TestCareerNavy(t *testing.T) {
-	options = make(map[string]string)
-	options["db_name"] = "data/names.db"
 	options["role"] = "Navy"
 	testP := person.MakePerson(options)
 	if testP.Career != "Navy" {
@@ -67,8 +57,6 @@ func TestCareerNavy(t *testing.T) {
 }
 
 func TestCareerMerchant(t *testing.T) {
-	options = make(map[string]string)
-	options["db_name"] = "data/names.db"
 	options["role"] = "MerchantMarine"
 	testP := person.MakePerson(options)
 	if testP.Career != "Merchant" {
@@ -77,12 +65,16 @@ func TestCareerMerchant(t *testing.T) {
 }
 
 func TestSpecies(t *testing.T) {
-	options = make(map[string]string)
-	options["db_name"] = "data/names.db"
-  options["species"] = "Klingon"
-  testP := person.MakePerson(options)
-  if testP.Species != "human" {
-    t.Error(`MakePerson failed to specify human species`)
-  }
+	testP := person.MakePerson(options)
+	speciesOptions := map[string]bool{"human": true, "andorian": true, "vulcan": true}
+	if speciesOptions[testP.Species] != true {
+		t.Error(`MakePerson failed to specify valid species`)
+	}
 }
- 
+
+func TestPhysical(t *testing.T) {
+	testP := person.MakePerson(options)
+	if len(testP.Physical) < 10 {
+		t.Error(`MakePerson failed to specify valid physical`)
+	}
+}
