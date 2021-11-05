@@ -12,6 +12,7 @@ go build -o crewgen main.go
 ## Using crewgen with Docker
 
 Create a directory for the Docker build, and create the subdirectory "app".
+
 ### Dockerfile
 
 ```
@@ -23,7 +24,7 @@ COPY app /app
 
 EXPOSE 8080
 
-ENTRYPOINT [ "/app/crewgen" ]
+CMD [ "/app/crewgen" ]
 
 ```
 
