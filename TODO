@@ -1,0 +1,15 @@
+support:  move web stuff to own pkg, or something
+
+document: figure out how to use config file for data dir and files
+document: document data file usage and updating
+ 
+feature:  CLI app
+feature:  give users the ability to add data files
+          - look at go's 'embed' option
+          - set up to use either way
+
+
+DONE
+====
+
+support:  convert utils/run.sh to Makefile

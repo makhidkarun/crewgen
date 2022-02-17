@@ -4,6 +4,9 @@
 *.dll
 *.so
 *.dylib
+main
+crewgen
+
 
 # Test binary, build with `go test -c`
 *.test
