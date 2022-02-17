@@ -7,7 +7,8 @@ feature:  give users the ability to add data files
           - look at go's 'embed' option
           - set up to use either way
 
-refactor: go to a datamine, using flat files.
+refactor: builder to subsume "tools"
+refactor: go to a datamine, using flat files
 refactor: remove sqlite 
 
 
