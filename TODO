@@ -1,4 +1,3 @@
-support:  move web stuff to own pkg, or something
 
 document: figure out how to use config file for data dir and files
 document: document data file usage and updating
@@ -8,8 +7,12 @@ feature:  give users the ability to add data files
           - look at go's 'embed' option
           - set up to use either way
 
+refactor: go to a datamine, using flat files.
+refactor: remove sqlite 
+
 
 DONE
 ====
 
+support:  move web stuff to own pkg, or something
 support:  convert utils/run.sh to Makefile
