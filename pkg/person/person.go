@@ -274,9 +274,7 @@ func MakePerson(options map[string]string) Person {
 	job := options["job"]
 
 	speciesOptions := []string{"human"}
-
 	var character Person
-	//character.Skills = make(map[string]int)
 
 	if terms <= 0 || terms >= 5 {
 		character.Terms = numTerms()
@@ -290,31 +288,7 @@ func MakePerson(options map[string]string) Person {
 	character.Age = age(character.Terms)
 	character.Career = setCareer(career)
 	character.Species = setSpecies(speciesOptions)
-	/*
-		var primarySkill string
-		var nS string
-
-		switch job {
-		case "pilot":
-			primarySkill = "Pilot"
-		case "navigator":
-			primarySkill = "Navigator"
-		case "engineer":
-			primarySkill = "Engineering"
-		case "gunner":
-			primarySkill = "Gunnery"
-		case "medic":
-			primarySkill = "Medical"
-		case "steward":
-			primarySkill = "Steward"
-		}
-		character.incSkill(primarySkill)
-		for i := 0; i < character.Terms; i++ {
-			nS = newSkill(job)
-			character.incSkill(nS)
-		}
-	*/
-	character.Skills = addSkills(job, terms)
+	character.Skills = addSkills(job, character.Terms)
 	character.SkillString = character.skillsToStr()
 	character.Physical = writePhysical(character)
 
