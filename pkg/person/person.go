@@ -15,6 +15,7 @@ import (
 	"strconv"
 	"strings"
 
+	"github.com/makhidkarun/crewgen/pkg/dice"
 	"github.com/makhidkarun/crewgen/pkg/tools"
 	_ "github.com/mattn/go-sqlite3"
 	//_ "modernc.org/sqlite"
@@ -36,40 +37,45 @@ type Person struct {
 	Physical    string
 }
 
+// age sets the base age, assuming some time after leaving the service.
+func age(terms int) int {
+	return 18 + (terms * 4) + rng(0, 3)
+}
+
 // newSkill takes a string and returns a string from a slice.
 func newSkill(job string) (skill string) {
 	switch job {
 	case "engineer":
 		skills := []string{"Engineering", "Engineering", "Engineering", "Mechanical", "Electronics"}
-		n := RNG(0, len(skills)-1)
+		n := rng(0, len(skills)-1)
 		skill = skills[n]
 	case "pilot":
 		skills := []string{"Pilot", "Pilot", "Navigation", "Comms", "Sensors", "FleetTactics"}
-		n := RNG(0, len(skills)-1)
+		n := rng(0, len(skills)-1)
 		skill = skills[n]
 	case "navigator":
 		skills := []string{"Navigation", "Navigation", "ShipsBoat", "Comms", "Sensors"}
-		n := RNG(0, len(skills)-1)
+		n := rng(0, len(skills)-1)
 		skill = skills[n]
 	case "medic":
 		skills := []string{"Medical", "Medical", "Medical", "Diplomacy", "Science(Any)"}
-		n := RNG(0, len(skills)-1)
+		n := rng(0, len(skills)-1)
 		skill = skills[n]
 	case "gunner":
 		skills := []string{"Gunnery", "Gunnery", "Brawling", "Mechanical", "Electronics"}
-		n := RNG(0, len(skills)-1)
+		n := rng(0, len(skills)-1)
 		skill = skills[n]
 	case "steward":
 		skills := []string{"Steward", "Steward", "Diplomacy", "Carouse", "Medic"}
-		n := RNG(0, len(skills)-1)
+		n := rng(0, len(skills)-1)
 		skill = skills[n]
 	}
 	return
 }
 
-// RNG takes min and max ints and returns an int in the
+// rng takes min and max ints and returns an int in the
 // range min to max, inclusive.
-func RNG(min int, max int) int {
+func rng(min int, max int) int {
 	spread := max - min + 1
 	spread64 := int64(spread)
 	num, _ := crand.Int(crand.Reader, mbig.NewInt(spread64))
@@ -106,6 +112,37 @@ func setCareer(career ...string) (c string) {
 		c = tools.RandomStringFromArray(cOptions)
 	}
 	return
+}
+
+func formatUPP(upp [6]int) string {
+	var newUPP string
+	for _, val := range upp {
+		newUPP += fmt.Sprintf("%X", val)
+	}
+	return newUPP
+}
+
+func modifyUpp(upp [6]int, stat int, mod int) [6]int {
+	// Requires the UPP [6]int, stat index [0-5], and modifier
+	if stat < 0 || stat > 5 {
+		return upp
+	} else {
+		upp[stat] += mod
+		if upp[stat] < 0 {
+			upp[stat] = 0
+		} else if upp[stat] > 15 {
+			upp[stat] = 15
+		}
+	}
+	return upp
+}
+
+func setGender() string {
+	if dice.OneD6()%2 == 0 {
+		return "F"
+	} else {
+		return "M"
+	}
 }
 
 // GetName takes a string of "F" or "M" and a string of a database location.
@@ -159,8 +196,17 @@ func GetName(gender string, db_name string) string {
 
 // numTerms sets the number of terms the character served.
 func numTerms() (t int) {
-	t = RNG(1, 4)
+	t = rng(1, 4)
 	return
+}
+
+// rollUPP starts the basic 2d6 rolls.
+func rollUPP() [6]int {
+	var upp [6]int
+	for i := 0; i < 6; i++ {
+		upp[i] = dice.TwoD6()
+	}
+	return upp
 }
 
 // setSpecies takes a list of options and assigns one randomly to the character.
@@ -204,15 +250,15 @@ func MakePerson(options map[string]string) Person {
 	var genders []string = []string{"F", "M"}
 	input_gender := strings.ToUpper(gender)
 	if !tools.StringInArray(input_gender, genders) {
-		character.Gender = tools.Gender()
+		character.Gender = setGender()
 	} else {
 		character.Gender = input_gender
 	}
 
 	character.Name = GetName(character.Gender, db_name)
-	character.UPP = tools.RollUPP()
-	character.UPPs = tools.FormatUPP(character.UPP)
-	character.Age = tools.Age(character.Terms)
+	//character.UPP = tools.RollUPP()
+	character.UPPs = formatUPP(character.UPP)
+	character.Age = age(character.Terms)
 	character.Career = setCareer(career)
 	character.Species = setSpecies(speciesOptions)
 
