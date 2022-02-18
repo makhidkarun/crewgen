@@ -1,19 +1,27 @@
 
 document: figure out how to use config file for data dir and files
 document: document data file usage and updating
+
  
 feature:  CLI app
 feature:  give users the ability to add data files
           - look at go's 'embed' option
           - set up to use either way
 
-refactor: builder to subsume "tools"
+
 refactor: go to a datamine, using flat files
 refactor: remove sqlite 
+refactor: getName 
+
+datamine: set primary skill in job skill array.
+          - use index[0] as primary skill.
+datamine: take from "tools"
+datamine: move getSpecies to dm
 
 
 DONE
 ====
 
+refactor: builder to subsume most of "tools"
 support:  move web stuff to own pkg, or something
 support:  convert utils/run.sh to Makefile

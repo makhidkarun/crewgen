@@ -8,17 +8,14 @@
 package person
 
 import (
-	crand "crypto/rand"
 	"database/sql"
 	"fmt"
-	mbig "math/big"
 	"strconv"
 	"strings"
 
 	"github.com/makhidkarun/crewgen/pkg/dice"
 	"github.com/makhidkarun/crewgen/pkg/tools"
 	_ "github.com/mattn/go-sqlite3"
-	//_ "modernc.org/sqlite"
 )
 
 // Person holds data. Most fields are exported.
@@ -39,7 +36,7 @@ type Person struct {
 
 // age sets the base age, assuming some time after leaving the service.
 func age(terms int) int {
-	return 18 + (terms * 4) + rng(0, 3)
+	return 18 + (terms * 4) + dice.Random(0, 3)
 }
 
 // newSkill takes a string and returns a string from a slice.
@@ -47,45 +44,35 @@ func newSkill(job string) (skill string) {
 	switch job {
 	case "engineer":
 		skills := []string{"Engineering", "Engineering", "Engineering", "Mechanical", "Electronics"}
-		n := rng(0, len(skills)-1)
+		n := dice.Random(0, len(skills)-1)
 		skill = skills[n]
 	case "pilot":
 		skills := []string{"Pilot", "Pilot", "Navigation", "Comms", "Sensors", "FleetTactics"}
-		n := rng(0, len(skills)-1)
+		n := dice.Random(0, len(skills)-1)
 		skill = skills[n]
 	case "navigator":
 		skills := []string{"Navigation", "Navigation", "ShipsBoat", "Comms", "Sensors"}
-		n := rng(0, len(skills)-1)
+		n := dice.Random(0, len(skills)-1)
 		skill = skills[n]
 	case "medic":
 		skills := []string{"Medical", "Medical", "Medical", "Diplomacy", "Science(Any)"}
-		n := rng(0, len(skills)-1)
+		n := dice.Random(0, len(skills)-1)
 		skill = skills[n]
 	case "gunner":
 		skills := []string{"Gunnery", "Gunnery", "Brawling", "Mechanical", "Electronics"}
-		n := rng(0, len(skills)-1)
+		n := dice.Random(0, len(skills)-1)
 		skill = skills[n]
 	case "steward":
 		skills := []string{"Steward", "Steward", "Diplomacy", "Carouse", "Medic"}
-		n := rng(0, len(skills)-1)
+		n := dice.Random(0, len(skills)-1)
 		skill = skills[n]
 	}
 	return
 }
 
-// rng takes min and max ints and returns an int in the
-// range min to max, inclusive.
-func rng(min int, max int) int {
-	spread := max - min + 1
-	spread64 := int64(spread)
-	num, _ := crand.Int(crand.Reader, mbig.NewInt(spread64))
-	roll := int(num.Int64()) + min
-	return roll
-}
-
-// SkillsToString returns a comma separate single string.
+// skillsToString returns a comma separate single string.
 //   Skill-1,Skill-3
-func (p *Person) SkillsToStr() (s string) {
+func (p *Person) skillsToStr() (s string) {
 	i := 1
 	for k, v := range p.Skills {
 		s += k + "-" + strconv.Itoa(v)
@@ -97,9 +84,15 @@ func (p *Person) SkillsToStr() (s string) {
 	return
 }
 
-// IncSkill takes a string of skill as map key and increments the value by 1.
-func (p *Person) IncSkill(s string) {
+/*
+// incSkill takes a string of skill as map key and increments the value by 1.
+func (p *Person) incSkill(s string) {
 	p.Skills[s] += 1
+}
+*/
+func incSkill(skills map[string]int, skill string) map[string]int {
+	skills[skill] += 1
+	return skills
 }
 
 func setCareer(career ...string) (c string) {
@@ -128,8 +121,8 @@ func modifyUpp(upp [6]int, stat int, mod int) [6]int {
 		return upp
 	} else {
 		upp[stat] += mod
-		if upp[stat] < 0 {
-			upp[stat] = 0
+		if upp[stat] < 2 {
+			upp[stat] = 2
 		} else if upp[stat] > 15 {
 			upp[stat] = 15
 		}
@@ -137,7 +130,27 @@ func modifyUpp(upp [6]int, stat int, mod int) [6]int {
 	return upp
 }
 
-func setGender() string {
+// stringInArray returns true if an exact string match is in an array.
+// Returns false otherwise.
+func stringInArray(val string, array []string) bool {
+	for _, value := range array {
+		if value == val {
+			return true
+		}
+	}
+	return false
+}
+
+// setGender allows choosing a gender from M, F, or random assignment.
+// This could better be done with datamine.RandomStringFromArray()
+func setGender(input ...string) string {
+	var genders []string = []string{"F", "M"}
+	if len(input) > 0 {
+		test_gender := strings.ToUpper(input[0])
+		if stringInArray(test_gender, genders) {
+			return test_gender
+		}
+	}
 	if dice.OneD6()%2 == 0 {
 		return "F"
 	} else {
@@ -145,13 +158,9 @@ func setGender() string {
 	}
 }
 
-// GetName takes a string of "F" or "M" and a string of a database location.
+// getName takes a string of "F" or "M" and a string of a database location.
 // Returns a string of "FirstName LastName".
-// Uses a SQLite3 database, "database/sql", and "github.com/mattn/go-sqlite3".
-func GetName(gender string, db_name string) string {
-	// Note that the names.db file must be where the command is run
-	// from.
-
+func getName(gender string, db_name string) string {
 	var lname string
 	var fname string
 	var fresult *sql.Rows
@@ -196,7 +205,7 @@ func GetName(gender string, db_name string) string {
 
 // numTerms sets the number of terms the character served.
 func numTerms() (t int) {
-	t = rng(1, 4)
+	t = dice.Random(1, 4)
 	return
 }
 
@@ -227,40 +236,8 @@ func writePhysical(c Person) string {
 	return physical
 }
 
-// MakePerson takes a map of options and returns a Person.
-// It is a basic factory.
-func MakePerson(options map[string]string) Person {
-	terms, _ := strconv.Atoi(options["terms"])
-	gender := options["gender"]
-	db_name := options["db_name"]
-	career := options["role"]
-	job := options["job"]
-
-	speciesOptions := []string{"human", "human", "andorian", "human", "vulcan"}
-
-	var character Person
-	character.Skills = make(map[string]int)
-
-	if terms <= 0 || terms >= 5 {
-		character.Terms = numTerms()
-	} else {
-		character.Terms = terms
-	}
-
-	var genders []string = []string{"F", "M"}
-	input_gender := strings.ToUpper(gender)
-	if !tools.StringInArray(input_gender, genders) {
-		character.Gender = setGender()
-	} else {
-		character.Gender = input_gender
-	}
-
-	character.Name = GetName(character.Gender, db_name)
-	//character.UPP = tools.RollUPP()
-	character.UPPs = formatUPP(character.UPP)
-	character.Age = age(character.Terms)
-	character.Career = setCareer(career)
-	character.Species = setSpecies(speciesOptions)
+func addSkills(job string, terms int) map[string]int {
+	skills := make(map[string]int)
 
 	var primarySkill string
 	var nS string
@@ -279,12 +256,66 @@ func MakePerson(options map[string]string) Person {
 	case "steward":
 		primarySkill = "Steward"
 	}
-	character.IncSkill(primarySkill)
-	for i := 0; i < character.Terms; i++ {
+	skills = incSkill(skills, primarySkill)
+	for i := 0; i < terms; i++ {
 		nS = newSkill(job)
-		character.IncSkill(nS)
+		skills = incSkill(skills, nS)
 	}
-	character.SkillString = character.SkillsToStr()
+	return skills
+}
+
+// MakePerson takes a map of options and returns a Person.
+// It is a basic factory.
+func MakePerson(options map[string]string) Person {
+	terms, _ := strconv.Atoi(options["terms"])
+	input_gender := options["gender"]
+	db_name := options["db_name"]
+	career := options["role"]
+	job := options["job"]
+
+	speciesOptions := []string{"human"}
+
+	var character Person
+	//character.Skills = make(map[string]int)
+
+	if terms <= 0 || terms >= 5 {
+		character.Terms = numTerms()
+	} else {
+		character.Terms = terms
+	}
+
+	character.Gender = setGender(input_gender)
+	character.Name = getName(character.Gender, db_name)
+	character.UPPs = formatUPP(character.UPP)
+	character.Age = age(character.Terms)
+	character.Career = setCareer(career)
+	character.Species = setSpecies(speciesOptions)
+	/*
+		var primarySkill string
+		var nS string
+
+		switch job {
+		case "pilot":
+			primarySkill = "Pilot"
+		case "navigator":
+			primarySkill = "Navigator"
+		case "engineer":
+			primarySkill = "Engineering"
+		case "gunner":
+			primarySkill = "Gunnery"
+		case "medic":
+			primarySkill = "Medical"
+		case "steward":
+			primarySkill = "Steward"
+		}
+		character.incSkill(primarySkill)
+		for i := 0; i < character.Terms; i++ {
+			nS = newSkill(job)
+			character.incSkill(nS)
+		}
+	*/
+	character.Skills = addSkills(job, terms)
+	character.SkillString = character.skillsToStr()
 	character.Physical = writePhysical(character)
 
 	return character
