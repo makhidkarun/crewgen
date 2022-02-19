@@ -72,16 +72,17 @@ func newSkill(job string) (skill string) {
 
 // skillsToString returns a comma separate single string.
 //   Skill-1,Skill-3
-func (p *Person) skillsToStr() (s string) {
+func skillsToStr(skills map[string]int) string {
+	s := ""
 	i := 1
-	for k, v := range p.Skills {
+	for k, v := range skills {
 		s += k + "-" + strconv.Itoa(v)
-		if i < len(p.Skills) {
+		if i < len(skills) {
 			i++
 			s += ", "
 		}
 	}
-	return
+	return s
 }
 
 /*
@@ -276,7 +277,7 @@ func MakePerson(options map[string]string) Person {
 	speciesOptions := []string{"human"}
 	var character Person
 
-	if terms <= 0 || terms >= 5 {
+	if terms <= 0 || terms > 5 {
 		character.Terms = numTerms()
 	} else {
 		character.Terms = terms
@@ -289,7 +290,7 @@ func MakePerson(options map[string]string) Person {
 	character.Career = setCareer(career)
 	character.Species = setSpecies(speciesOptions)
 	character.Skills = addSkills(job, character.Terms)
-	character.SkillString = character.skillsToStr()
+	character.SkillString = skillsToStr(character.Skills)
 	character.Physical = writePhysical(character)
 
 	return character

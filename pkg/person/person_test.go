@@ -13,6 +13,9 @@ var options map[string]string
 func TestMain(m *testing.M) {
 	options = make(map[string]string)
 	options["db_name"] = "data/names.db"
+	options["terms"] = "1"
+	options["role"] = "Navy"
+	options["job"] = "pilot"
 	exitVal := m.Run()
 	os.Exit(exitVal)
 }
@@ -66,7 +69,7 @@ func TestCareerMerchant(t *testing.T) {
 
 func TestSpecies(t *testing.T) {
 	testP := person.MakePerson(options)
-	speciesOptions := map[string]bool{"human": true, "andorian": true, "vulcan": true}
+	speciesOptions := map[string]bool{"human": true}
 	if speciesOptions[testP.Species] != true {
 		t.Error(`MakePerson failed to specify valid species`)
 	}
@@ -76,5 +79,16 @@ func TestPhysical(t *testing.T) {
 	testP := person.MakePerson(options)
 	if len(testP.Physical) < 10 {
 		t.Error(`MakePerson failed to specify valid physical`)
+	}
+}
+
+func TestSkills(t *testing.T) {
+	options["terms"] = "4"
+	testP := person.MakePerson(options)
+	if len(testP.SkillString) < 8 {
+		t.Error(`MakePerson failed to specify a long skillstring`)
+	}
+	if strings.Index(testP.SkillString, ", ") < 4 {
+		t.Errorf("MakePerson does not have a comma and space in skillstring.")
 	}
 }
