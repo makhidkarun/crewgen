@@ -75,6 +75,9 @@ func newSkill(job string) (skill string) {
 func skillsToStr(skills map[string]int) string {
 	s := ""
 	i := 1
+	if len(skills) == 0 {
+		return s
+	}
 	for k, v := range skills {
 		s += k + "-" + strconv.Itoa(v)
 		if i < len(skills) {
@@ -85,12 +88,8 @@ func skillsToStr(skills map[string]int) string {
 	return s
 }
 
-/*
-// incSkill takes a string of skill as map key and increments the value by 1.
-func (p *Person) incSkill(s string) {
-	p.Skills[s] += 1
-}
-*/
+// incSkill increases a skill by 1
+// probably needs a variable?
 func incSkill(skills map[string]int, skill string) map[string]int {
 	skills[skill] += 1
 	return skills
@@ -256,7 +255,10 @@ func addSkills(job string, terms int) map[string]int {
 		primarySkill = "Medical"
 	case "steward":
 		primarySkill = "Steward"
+	default:
+		return skills
 	}
+
 	skills = incSkill(skills, primarySkill)
 	for i := 0; i < terms; i++ {
 		nS = newSkill(job)
@@ -285,6 +287,7 @@ func MakePerson(options map[string]string) Person {
 
 	character.Gender = setGender(input_gender)
 	character.Name = getName(character.Gender, db_name)
+	character.UPP = rollUPP()
 	character.UPPs = formatUPP(character.UPP)
 	character.Age = age(character.Terms)
 	character.Career = setCareer(career)

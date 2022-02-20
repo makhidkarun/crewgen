@@ -15,7 +15,7 @@ func TestMain(m *testing.M) {
 	options["db_name"] = "data/names.db"
 	options["terms"] = "1"
 	options["role"] = "Navy"
-	options["job"] = "pilot"
+	//options["job"] = "pilot"
 	exitVal := m.Run()
 	os.Exit(exitVal)
 }
@@ -84,11 +84,27 @@ func TestPhysical(t *testing.T) {
 
 func TestSkills(t *testing.T) {
 	options["terms"] = "4"
+	options["job"] = "pilot"
 	testP := person.MakePerson(options)
 	if len(testP.SkillString) < 8 {
 		t.Error(`MakePerson failed to specify a long skillstring`)
 	}
 	if strings.Index(testP.SkillString, ", ") < 4 {
 		t.Errorf("MakePerson does not have a comma and space in skillstring.")
+	}
+}
+
+func TestNoSkills(t *testing.T) {
+	options["terms"] = "4"
+	options["job"] = ""
+	testP := person.MakePerson(options)
+	if len(testP.SkillString) > 0 {
+		t.Errorf("MakePerson didn't do a blank skillstring %q\n", testP.SkillString)
+	}
+}
+func TestUPP(t *testing.T) {
+	testP := person.MakePerson(options)
+	if testP.UPPs == "000000" {
+		t.Error("MakePerson did not roll a UPP")
 	}
 }
