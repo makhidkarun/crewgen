@@ -7,6 +7,7 @@ feature:  CLI app
 feature:  give users the ability to add data files
           - look at go's 'embed' option
           - set up to use either way
+feature:  add command tests
 
 
 refactor: go to a datamine, using flat files
