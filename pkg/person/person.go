@@ -145,7 +145,11 @@ func stringInArray(val string, array []string) bool {
 // This could better be done with datamine.RandomStringFromArray()
 func setGender(input ...string) string {
 	var genders []string = []string{"F", "M"}
-	if len(input) > 0 {
+  // for some reason input is [] on an empty string.
+  // Need to figure this out and fix it. The len(input) > 2
+  //  is just a workaround.
+  // Hmm...it doesn't actually work...
+	if len(input) > 2 {
 		test_gender := strings.ToUpper(input[0])
 		if stringInArray(test_gender, genders) {
 			return test_gender

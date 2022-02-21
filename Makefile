@@ -13,7 +13,8 @@ vet: fmt
 .PHONY:vet
 
 build: vet
-	go build -o cmd/web/crewgen  cmd/web/main.go
+	go build -o cmd/crewgen/crewgen  cmd/crewgen/main.go
+	go build -o cmd/teamgen/teamgen  cmd/teamgen/main.go
 .PHONY:build
 
 test:	vet

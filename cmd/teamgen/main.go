@@ -4,6 +4,7 @@ package main
 
 import (
 	"bytes"
+  "flag"
 	"fmt"
 	//"os"
 	"text/template"
@@ -20,11 +21,15 @@ func main() {
 	var options = make(map[string]string)
 	var outstring bytes.Buffer
 
+  gender := flag.String("gender", "", "F or M, default random")
+  flag.Parse()
+  //fmt.Printf("gender is %s.\n", *gender)
 	//options["terms"] = "2"
-	options["gender"] = "F"
+	//options["gender"] = "F"
 	options["job"] = "pilot"
 	options["db_name"] = "data/names.db"
 
+  options["gender"] = *gender
 	p := person.MakePerson(options)
 	tmpl, err := template.New("supp4").Parse(supp4)
 	if err != nil {
