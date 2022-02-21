@@ -18,7 +18,6 @@ refactor: fix ship role vs person career
 
 datamine: set primary skill in job skill array.
           - use index[0] as primary skill.
-datamine: take from "tools"
 datamine: move getSpecies to dm
 
 
@@ -28,3 +27,4 @@ DONE
 refactor: builder to subsume most of "tools"
 support:  move web stuff to own pkg, or something
 support:  convert utils/run.sh to Makefile
+datamine: take from "tools"

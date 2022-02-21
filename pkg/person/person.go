@@ -13,8 +13,8 @@ import (
 	"strconv"
 	"strings"
 
+	"github.com/makhidkarun/crewgen/pkg/datamine"
 	"github.com/makhidkarun/crewgen/pkg/dice"
-	"github.com/makhidkarun/crewgen/pkg/tools"
 	_ "github.com/mattn/go-sqlite3"
 )
 
@@ -99,8 +99,8 @@ func incSkill(skills map[string]int, skill string) map[string]int {
 func setCareer(career string) (c string) {
 	cOptions := []string{"Navy", "Merchant", "Army", "Marines", "Scout", "Other"}
 
-	if !tools.StringInArray(career, cOptions) {
-		c = tools.RandomStringFromArray(cOptions)
+	if !datamine.StringInArray(career, cOptions) {
+		c = datamine.RandomStringFromArray(cOptions)
 	} else {
 		c = career
 	}
@@ -220,7 +220,7 @@ func rollUPP() [6]int {
 
 // setSpecies takes a list of options and assigns one randomly to the character.
 func setSpecies(l []string) (species string) {
-	species = tools.RandomStringFromArray(l)
+	species = datamine.RandomStringFromArray(l)
 	return
 }
 
@@ -228,8 +228,8 @@ func setSpecies(l []string) (species string) {
 func writePhysical(c Person) string {
 	hOptions := []string{"short", "medium height", "tall"}
 	wOptions := []string{"thin", "medium build", "heavy set"}
-	height := tools.RandomStringFromArray(hOptions)
-	weight := tools.RandomStringFromArray(wOptions)
+	height := datamine.RandomStringFromArray(hOptions)
+	weight := datamine.RandomStringFromArray(wOptions)
 	gen := map[string]string{"F": "female", "M": "male"}
 	physical := fmt.Sprintf("%s is a %s, %s %s %s",
 		c.Name, height, weight, c.Species, gen[c.Gender])
