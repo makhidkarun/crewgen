@@ -23,9 +23,11 @@ func main() {
 
 	gender := flag.String("gender", "", "F or M, default random")
 	terms := flag.String("terms", "0", "Number of terms, default 1-4")
+  career := flag.String("career", "", "Career or Branch")
 	flag.Parse()
 	options["gender"] = *gender
 	options["terms"] = *terms
+  options["career"] = *career
 	options["job"] = "pilot"
 	options["db_name"] = "data/names.db"
 

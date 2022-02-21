@@ -98,7 +98,7 @@ func incSkill(skills map[string]int, skill string) map[string]int {
 func setCareer(career ...string) (c string) {
 	if career[0] == "Navy" {
 		c = "Navy"
-	} else if career[0] == "MerchantMarine" {
+	} else if career[0] == "Merchant" {
 		c = "Merchant"
 	} else {
 		cOptions := []string{"Navy", "Merchant"}
@@ -273,7 +273,7 @@ func MakePerson(options map[string]string) Person {
 	terms, _ := strconv.Atoi(options["terms"])
 	input_gender := options["gender"]
 	db_name := options["db_name"]
-	career := options["role"]
+	career := options["career"]
 	job := options["job"]
 
 	speciesOptions := []string{"human"}

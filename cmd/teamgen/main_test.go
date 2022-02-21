@@ -164,4 +164,41 @@ func TestTeamgenCLI(t *testing.T) {
 		}
 	})
 
+	t.Run("TestCareerNavy", func(t *testing.T) {
+		cmd := exec.Command(cmdPath, "-career", "Navy")
+		out, err := cmd.CombinedOutput()
+		if err != nil {
+			t.Fatal(err)
+		}
+		output := strings.Split(string(out), "\n")
+		//fmt.Printf("First line: %s\n", output[0])
+		//fmt.Printf("Second line: %s\n", output[1])
+		matched_1, err := regexp.MatchString(`Navy`, output[1])
+		if err != nil {
+			t.Fatal(err)
+		}
+		if !matched_1 {
+			t.Error("Career not Navy")
+		}
+	})
+
+	t.Run("TestCareerMerchant", func(t *testing.T) {
+		cmd := exec.Command(cmdPath, "-career", "Merchant")
+		out, err := cmd.CombinedOutput()
+		if err != nil {
+			t.Fatal(err)
+		}
+		output := strings.Split(string(out), "\n")
+		//fmt.Printf("First line: %s\n", output[0])
+		//fmt.Printf("Second line: %s\n", output[1])
+		matched_1, err := regexp.MatchString(`Merchant`, output[1])
+		if err != nil {
+			t.Fatal(err)
+		}
+		if !matched_1 {
+			t.Error("Career not Navy")
+		}
+	})
+
+
 }

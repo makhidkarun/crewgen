@@ -14,7 +14,7 @@ func TestMain(m *testing.M) {
 	options = make(map[string]string)
 	options["db_name"] = "data/names.db"
 	options["terms"] = "1"
-	options["role"] = "Navy"
+	options["career"] = "Navy"
 	//options["job"] = "pilot"
 	exitVal := m.Run()
 	os.Exit(exitVal)
@@ -52,7 +52,7 @@ func TestMakePersonNameTwoWordString(t *testing.T) {
 }
 
 func TestCareerNavy(t *testing.T) {
-	options["role"] = "Navy"
+	options["career"] = "Navy"
 	testP := person.MakePerson(options)
 	if testP.Career != "Navy" {
 		t.Error(`MakePerson failed to specify Navy career`)
@@ -60,7 +60,7 @@ func TestCareerNavy(t *testing.T) {
 }
 
 func TestCareerMerchant(t *testing.T) {
-	options["role"] = "MerchantMarine"
+	options["career"] = "Merchant"
 	testP := person.MakePerson(options)
 	if testP.Career != "Merchant" {
 		t.Error(`MakePerson failed to specify Merchant career`)
