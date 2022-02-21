@@ -43,7 +43,7 @@ func TestTeamgenCLI(t *testing.T) {
 			t.Fatal(err)
 		}
 		output := strings.Split(string(out), "\n")
-		fmt.Printf("First line: %s\n", output[0])
+		//fmt.Printf("First line: %s\n", output[0])
 		matched_0, err := regexp.MatchString(`[a-zA-Z]+\s+[a-zA-Z]+\s+\[[FM]\]\s+[2-9A-F]{6}\s+Age:\s+[1-5][0-9]\s+human`, output[0])
 		if err != nil {
 			t.Fatal(err)
@@ -52,29 +52,116 @@ func TestTeamgenCLI(t *testing.T) {
 			t.Errorf("Did not find match")
 		}
 
-		fmt.Printf("Second line: %s\n", output[1])
-		fmt.Printf("Third line: %s\n", output[2])
+		//fmt.Printf("Second line: %s\n", output[1])
+		//fmt.Printf("Third line: %s\n", output[2])
 		//matched_1, err := regexp.MatchString(`[a-zA-Z]+\s+[a-zA-Z]+\s+\[[FM]\]\s+[2-9A-F]{6}\s+Age:\s+[1-5][0-9]\s+human`, output[0])
 		//if err != nil { t.Fatal(err) }
 		//if !matched_0 { t.Errorf("Did not find match") }
 	})
 
-  t.Run("TestGenderF", func(t *testing.T) {
-    cmd := exec.Command(cmdPath, "-gender", "F")
-    out, err := cmd.CombinedOutput()
-    if err != nil {
-      t.Fatal(err)
-    }
-    output := strings.Split(string(out), "\n")
-		fmt.Printf("First line: %s\n", output[0])
-    matched_0, err := regexp.MatchString(`\[F\]`, output[0])
-    if err != nil {
-      t.Fatal(err)
-    }
-    if !matched_0 {
-      t.Error("Did not find match")
-    } 
-  })
+	t.Run("TestGenderF", func(t *testing.T) {
+		cmd := exec.Command(cmdPath, "-gender", "F")
+		out, err := cmd.CombinedOutput()
+		if err != nil {
+			t.Fatal(err)
+		}
+		output := strings.Split(string(out), "\n")
+		//fmt.Printf("First line: %s\n", output[0])
+		matched_0, err := regexp.MatchString(`\[F\]`, output[0])
+		if err != nil {
+			t.Fatal(err)
+		}
+		if !matched_0 {
+			t.Error("Did not find match to [F]")
+		}
+	})
 
+	t.Run("TestGenderM", func(t *testing.T) {
+		cmd := exec.Command(cmdPath, "-gender", "M")
+		out, err := cmd.CombinedOutput()
+		if err != nil {
+			t.Fatal(err)
+		}
+		output := strings.Split(string(out), "\n")
+		//fmt.Printf("First line: %s\n", output[0])
+		matched_0, err := regexp.MatchString(`\[M\]`, output[0])
+		if err != nil {
+			t.Fatal(err)
+		}
+		if !matched_0 {
+			t.Error("Did not find match to [M]")
+		}
+	})
+
+	t.Run("TestGenderOdd", func(t *testing.T) {
+		cmd := exec.Command(cmdPath, "-gender", "G")
+		out, err := cmd.CombinedOutput()
+		if err != nil {
+			t.Fatal(err)
+		}
+		output := strings.Split(string(out), "\n")
+		//fmt.Printf("First line: %s\n", output[0])
+		matched_0, err := regexp.MatchString(`\[[FM]\]`, output[0])
+		if err != nil {
+			t.Fatal(err)
+		}
+		if !matched_0 {
+			t.Error("Did not find match to [M] or [F]")
+		}
+	})
+
+	t.Run("TestTerms1", func(t *testing.T) {
+		cmd := exec.Command(cmdPath, "-terms", "1")
+		out, err := cmd.CombinedOutput()
+		if err != nil {
+			t.Fatal(err)
+		}
+		output := strings.Split(string(out), "\n")
+		//fmt.Printf("First line: %s\n", output[0])
+		//fmt.Printf("Second line: %s\n", output[1])
+		matched_1, err := regexp.MatchString(`^1 term`, output[1])
+		if err != nil {
+			t.Fatal(err)
+		}
+		if !matched_1 {
+			t.Error("Did not find match to 1 term")
+		}
+	})
+
+	t.Run("TestTerms10", func(t *testing.T) {
+		cmd := exec.Command(cmdPath, "-terms", "10")
+		out, err := cmd.CombinedOutput()
+		if err != nil {
+			t.Fatal(err)
+		}
+		output := strings.Split(string(out), "\n")
+		//fmt.Printf("First line: %s\n", output[0])
+		//fmt.Printf("Second line: %s\n", output[1])
+		matched_1, err := regexp.MatchString(`^[1-5] term`, output[1])
+		if err != nil {
+			t.Fatal(err)
+		}
+		if !matched_1 {
+			t.Error("Did not find match to random term less than 10")
+		}
+	})
+
+	t.Run("TestAgeOneTerm", func(t *testing.T) {
+		cmd := exec.Command(cmdPath, "-terms", "1")
+		out, err := cmd.CombinedOutput()
+		if err != nil {
+			t.Fatal(err)
+		}
+		output := strings.Split(string(out), "\n")
+		//fmt.Printf("First line: %s\n", output[0])
+		//fmt.Printf("Second line: %s\n", output[1])
+		matched_1, err := regexp.MatchString(`Age: 2[2-5]`, output[0])
+		if err != nil {
+			t.Fatal(err)
+		}
+		if !matched_1 {
+			t.Error("Age not correct for 1 term")
+		}
+	})
 
 }
