@@ -41,6 +41,7 @@ func main() {
 	options["career"] = *career
 	options["job"] = "pilot"
 	options["db_name"] = path.Join(datadir, "names.db")
+	options["datadir"] = datadir
 
 	p := person.MakePerson(options)
 	tmpl, err := template.New("supp4").Parse(supp4)

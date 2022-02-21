@@ -2,6 +2,7 @@ package person_test
 
 import (
 	"os"
+	//"path"
 	"strings"
 	"testing"
 
@@ -12,9 +13,18 @@ var options map[string]string
 
 func TestMain(m *testing.M) {
 	options = make(map[string]string)
-	options["db_name"] = "data/names.db"
+	//options["db_name"] = "data/names.db"
+	/*exe, err := os.Executable()
+	if err != nil {
+		fmt.Println(`exe failed`)
+	}
+	exedir := path.Dir(exe)
+	//options["datadir"] = path.Join(exedir, "data")
+	*/
+	datadir := "/home/leam/lang/git/makhidkarun/crewgen/cmd/teamgen/data"
 	options["terms"] = "1"
 	options["career"] = "Navy"
+	options["datadir"] = datadir
 	//options["job"] = "pilot"
 	exitVal := m.Run()
 	os.Exit(exitVal)

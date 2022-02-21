@@ -29,3 +29,21 @@ func TestRandomStringFromArray(t *testing.T) {
 		t.Error(`Bad rank output.`)
 	}
 }
+
+func TestGetFemaleFirstName(t *testing.T) {
+	gender := "F"
+	datadir := "data"
+	name := datamine.GetName(gender, datadir)
+	if len(name) < 5 {
+		t.Error(`Name too short`)
+	}
+}
+
+func TestGetMaleFirstName(t *testing.T) {
+	gender := "M"
+	datadir := "data"
+	name := datamine.GetName(gender, datadir)
+	if len(name) < 5 {
+		t.Error(`Name too short`)
+	}
+}

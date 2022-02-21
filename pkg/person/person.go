@@ -8,14 +8,12 @@
 package person
 
 import (
-	"database/sql"
 	"fmt"
 	"strconv"
 	"strings"
 
 	"github.com/makhidkarun/crewgen/pkg/datamine"
 	"github.com/makhidkarun/crewgen/pkg/dice"
-	_ "github.com/mattn/go-sqlite3"
 )
 
 // Person holds data. Most fields are exported.
@@ -95,7 +93,7 @@ func incSkill(skills map[string]int, skill string) map[string]int {
 	return skills
 }
 
-//func setCareer(career ...string) string) {
+// setCareer sets a random career if a valid string is not given.
 func setCareer(career string) (c string) {
 	cOptions := []string{"Navy", "Merchant", "Army", "Marines", "Scout", "Other"}
 
@@ -107,6 +105,7 @@ func setCareer(career string) (c string) {
 	return
 }
 
+// formatUPP returns a string of alphanumeric Hex.
 func formatUPP(upp [6]int) string {
 	var newUPP string
 	for _, val := range upp {
@@ -115,6 +114,7 @@ func formatUPP(upp [6]int) string {
 	return newUPP
 }
 
+// modifyUpp ensures all UPP numbers are between 2 and 15, decimal.
 func modifyUpp(upp [6]int, stat int, mod int) [6]int {
 	// Requires the UPP [6]int, stat index [0-5], and modifier
 	if stat < 0 || stat > 5 {
@@ -158,51 +158,6 @@ func setGender(input ...string) string {
 	}
 }
 
-// getName takes a string of "F" or "M" and a string of a database location.
-// Returns a string of "FirstName LastName".
-func getName(gender string, db_name string) string {
-	var lname string
-	var fname string
-	var fresult *sql.Rows
-
-	db, err := sql.Open("sqlite3", db_name)
-	if err != nil {
-		fmt.Println(err)
-	}
-	defer db.Close()
-
-	// First Name
-	if gender == "M" {
-		fresult, err = db.Query("SELECT name FROM humaniti_male_first ORDER BY RANDOM() LIMIT 1")
-	} else {
-		fresult, err = db.Query("SELECT name FROM humaniti_female_first ORDER BY RANDOM() LIMIT 1")
-	}
-	if err != nil {
-		fmt.Println(err)
-	}
-	for fresult.Next() {
-		err = fresult.Scan(&fname)
-		if err != nil {
-			fmt.Println(err)
-		}
-	}
-
-	// Last Name
-	result, err := db.Query("SELECT name FROM humaniti_last ORDER BY RANDOM() LIMIT 1")
-	if err != nil {
-		fmt.Println(err)
-	}
-	for result.Next() {
-		err = result.Scan(&lname)
-		if err != nil {
-			fmt.Println(err)
-		}
-	}
-
-	name := fname + " " + lname
-	return name
-}
-
 // numTerms sets the number of terms the character served.
 func numTerms() (t int) {
 	t = dice.Random(1, 4)
@@ -236,6 +191,9 @@ func writePhysical(c Person) string {
 	return physical
 }
 
+// addSkills returns a map of skill (string) and level (int).
+//  It auto assigns the primary skill for the job given.
+// Need to put this into the datamine.
 func addSkills(job string, terms int) map[string]int {
 	skills := make(map[string]int)
 
@@ -272,7 +230,7 @@ func addSkills(job string, terms int) map[string]int {
 func MakePerson(options map[string]string) Person {
 	terms, _ := strconv.Atoi(options["terms"])
 	input_gender := options["gender"]
-	db_name := options["db_name"]
+	datadir := options["datadir"]
 	career := options["career"]
 	job := options["job"]
 
@@ -286,7 +244,7 @@ func MakePerson(options map[string]string) Person {
 	}
 
 	character.Gender = setGender(input_gender)
-	character.Name = getName(character.Gender, db_name)
+	character.Name = datamine.GetName(character.Gender, datadir)
 	character.UPP = rollUPP()
 	character.UPPs = formatUPP(character.UPP)
 	character.Age = age(character.Terms)
