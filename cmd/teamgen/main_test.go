@@ -43,7 +43,6 @@ func TestTeamgenCLI(t *testing.T) {
 			t.Fatal(err)
 		}
 		output := strings.Split(string(out), "\n")
-		//fmt.Printf("First line: %s\n", output[0])
 		matched_0, err := regexp.MatchString(`[a-zA-Z]+\s+[a-zA-Z]+\s+\[[FM]\]\s+[2-9A-F]{6}\s+Age:\s+[1-5][0-9]\s+human`, output[0])
 		if err != nil {
 			t.Fatal(err)
@@ -51,12 +50,6 @@ func TestTeamgenCLI(t *testing.T) {
 		if !matched_0 {
 			t.Errorf("Did not find match")
 		}
-
-		//fmt.Printf("Second line: %s\n", output[1])
-		//fmt.Printf("Third line: %s\n", output[2])
-		//matched_1, err := regexp.MatchString(`[a-zA-Z]+\s+[a-zA-Z]+\s+\[[FM]\]\s+[2-9A-F]{6}\s+Age:\s+[1-5][0-9]\s+human`, output[0])
-		//if err != nil { t.Fatal(err) }
-		//if !matched_0 { t.Errorf("Did not find match") }
 	})
 
 	t.Run("TestGenderF", func(t *testing.T) {
@@ -66,7 +59,6 @@ func TestTeamgenCLI(t *testing.T) {
 			t.Fatal(err)
 		}
 		output := strings.Split(string(out), "\n")
-		//fmt.Printf("First line: %s\n", output[0])
 		matched_0, err := regexp.MatchString(`\[F\]`, output[0])
 		if err != nil {
 			t.Fatal(err)
@@ -83,7 +75,6 @@ func TestTeamgenCLI(t *testing.T) {
 			t.Fatal(err)
 		}
 		output := strings.Split(string(out), "\n")
-		//fmt.Printf("First line: %s\n", output[0])
 		matched_0, err := regexp.MatchString(`\[M\]`, output[0])
 		if err != nil {
 			t.Fatal(err)
@@ -100,7 +91,6 @@ func TestTeamgenCLI(t *testing.T) {
 			t.Fatal(err)
 		}
 		output := strings.Split(string(out), "\n")
-		//fmt.Printf("First line: %s\n", output[0])
 		matched_0, err := regexp.MatchString(`\[[FM]\]`, output[0])
 		if err != nil {
 			t.Fatal(err)
@@ -117,8 +107,6 @@ func TestTeamgenCLI(t *testing.T) {
 			t.Fatal(err)
 		}
 		output := strings.Split(string(out), "\n")
-		//fmt.Printf("First line: %s\n", output[0])
-		//fmt.Printf("Second line: %s\n", output[1])
 		matched_1, err := regexp.MatchString(`^1 term`, output[1])
 		if err != nil {
 			t.Fatal(err)
@@ -135,8 +123,6 @@ func TestTeamgenCLI(t *testing.T) {
 			t.Fatal(err)
 		}
 		output := strings.Split(string(out), "\n")
-		//fmt.Printf("First line: %s\n", output[0])
-		//fmt.Printf("Second line: %s\n", output[1])
 		matched_1, err := regexp.MatchString(`^[1-5] term`, output[1])
 		if err != nil {
 			t.Fatal(err)
@@ -153,8 +139,6 @@ func TestTeamgenCLI(t *testing.T) {
 			t.Fatal(err)
 		}
 		output := strings.Split(string(out), "\n")
-		//fmt.Printf("First line: %s\n", output[0])
-		//fmt.Printf("Second line: %s\n", output[1])
 		matched_1, err := regexp.MatchString(`Age: 2[2-5]`, output[0])
 		if err != nil {
 			t.Fatal(err)
@@ -171,8 +155,6 @@ func TestTeamgenCLI(t *testing.T) {
 			t.Fatal(err)
 		}
 		output := strings.Split(string(out), "\n")
-		//fmt.Printf("First line: %s\n", output[0])
-		//fmt.Printf("Second line: %s\n", output[1])
 		matched_1, err := regexp.MatchString(`Navy`, output[1])
 		if err != nil {
 			t.Fatal(err)
@@ -189,16 +171,29 @@ func TestTeamgenCLI(t *testing.T) {
 			t.Fatal(err)
 		}
 		output := strings.Split(string(out), "\n")
-		//fmt.Printf("First line: %s\n", output[0])
-		//fmt.Printf("Second line: %s\n", output[1])
 		matched_1, err := regexp.MatchString(`Merchant`, output[1])
 		if err != nil {
 			t.Fatal(err)
 		}
 		if !matched_1 {
-			t.Error("Career not Navy")
+			t.Error("Career not Merchant")
 		}
 	})
 
+	t.Run("TestCareerMarines", func(t *testing.T) {
+		cmd := exec.Command(cmdPath, "-career", "Marines")
+		out, err := cmd.CombinedOutput()
+		if err != nil {
+			t.Fatal(err)
+		}
+		output := strings.Split(string(out), "\n")
+		matched_1, err := regexp.MatchString(`Marines`, output[1])
+		if err != nil {
+			t.Fatal(err)
+		}
+		if !matched_1 {
+			t.Error("Career not Marines")
+		}
+	})
 
 }

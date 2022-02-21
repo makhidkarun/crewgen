@@ -95,14 +95,14 @@ func incSkill(skills map[string]int, skill string) map[string]int {
 	return skills
 }
 
-func setCareer(career ...string) (c string) {
-	if career[0] == "Navy" {
-		c = "Navy"
-	} else if career[0] == "Merchant" {
-		c = "Merchant"
-	} else {
-		cOptions := []string{"Navy", "Merchant"}
+//func setCareer(career ...string) string) {
+func setCareer(career string) (c string) {
+	cOptions := []string{"Navy", "Merchant", "Army", "Marines", "Scout", "Other"}
+
+	if !tools.StringInArray(career, cOptions) {
 		c = tools.RandomStringFromArray(cOptions)
+	} else {
+		c = career
 	}
 	return
 }
