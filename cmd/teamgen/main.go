@@ -33,13 +33,14 @@ func main() {
 	exedir := path.Dir(exe)
 	datadir := path.Join(exedir, "data")
 	gender := flag.String("gender", "", "F or M, default random")
-	terms := flag.String("terms", "0", "Number of terms, default 1-4")
+	terms := flag.String("terms", "0", "Number of terms, random 1-5")
 	career := flag.String("career", "", "Career or Branch")
+	job := flag.String("job", "", "Job")
 	flag.Parse()
 	options["gender"] = *gender
 	options["terms"] = *terms
 	options["career"] = *career
-	options["job"] = "pilot"
+	options["job"] = *job
 	options["db_name"] = path.Join(datadir, "names.db")
 	options["datadir"] = datadir
 

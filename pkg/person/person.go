@@ -204,7 +204,7 @@ func addSkills(job string, terms int) map[string]int {
 	case "pilot":
 		primarySkill = "Pilot"
 	case "navigator":
-		primarySkill = "Navigator"
+		primarySkill = "Navigation"
 	case "engineer":
 		primarySkill = "Engineering"
 	case "gunner":

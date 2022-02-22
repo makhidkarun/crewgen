@@ -196,4 +196,82 @@ func TestTeamgenCLI(t *testing.T) {
 		}
 	})
 
+	t.Run("TestJobPilot", func(t *testing.T) {
+		cmd := exec.Command(cmdPath, "-job", "pilot", "-terms", "1")
+		out, err := cmd.CombinedOutput()
+		if err != nil {
+			t.Fatal(err)
+		}
+		output := strings.Split(string(out), "\n")
+		matched_2, err := regexp.MatchString(`Pilot-[1-9]`, output[2])
+		if !matched_2 {
+			t.Error("Does not have Pilot skill")
+		}
+	})
+
+	t.Run("TestJobMedic", func(t *testing.T) {
+		cmd := exec.Command(cmdPath, "-job", "medic", "-terms", "1")
+		out, err := cmd.CombinedOutput()
+		if err != nil {
+			t.Fatal(err)
+		}
+		output := strings.Split(string(out), "\n")
+		matched_2, err := regexp.MatchString(`Medical-[1-9]`, output[2])
+		if !matched_2 {
+			t.Error("Does not have Medic skill")
+		}
+	})
+
+	t.Run("TestJobEngineer", func(t *testing.T) {
+		cmd := exec.Command(cmdPath, "-job", "engineer", "-terms", "1")
+		out, err := cmd.CombinedOutput()
+		if err != nil {
+			t.Fatal(err)
+		}
+		output := strings.Split(string(out), "\n")
+		matched_2, err := regexp.MatchString(`Engineering-[1-9]`, output[2])
+		if !matched_2 {
+			t.Error("Does not have Engineering skill")
+		}
+	})
+
+	t.Run("TestJobNavigator", func(t *testing.T) {
+		cmd := exec.Command(cmdPath, "-job", "navigator", "-terms", "1")
+		out, err := cmd.CombinedOutput()
+		if err != nil {
+			t.Fatal(err)
+		}
+		output := strings.Split(string(out), "\n")
+		matched_2, err := regexp.MatchString(`Navigation-[1-9]`, output[2])
+		if !matched_2 {
+			t.Error("Does not have Navigation skill")
+		}
+	})
+
+	t.Run("TestJobGunner", func(t *testing.T) {
+		cmd := exec.Command(cmdPath, "-job", "gunner", "-terms", "1")
+		out, err := cmd.CombinedOutput()
+		if err != nil {
+			t.Fatal(err)
+		}
+		output := strings.Split(string(out), "\n")
+		matched_2, err := regexp.MatchString(`Gunnery-[1-9]`, output[2])
+		if !matched_2 {
+			t.Error("Does not have Gunnery skill")
+		}
+	})
+
+	t.Run("TestJobSteward", func(t *testing.T) {
+		cmd := exec.Command(cmdPath, "-job", "steward", "-terms", "1")
+		out, err := cmd.CombinedOutput()
+		if err != nil {
+			t.Fatal(err)
+		}
+		output := strings.Split(string(out), "\n")
+		matched_2, err := regexp.MatchString(`Steward-[1-9]`, output[2])
+		if !matched_2 {
+			t.Error("Does not have Steward skill")
+		}
+	})
+
 }
