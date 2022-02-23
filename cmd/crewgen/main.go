@@ -10,14 +10,13 @@ import (
 	"log"
 	"net/http"
 	"os"
+	"path"
 	"path/filepath"
 	"strconv"
 	"strings"
 
 	"github.com/makhidkarun/crewgen/pkg/person"
 )
-
-var templateDir string = "web"
 
 type Crew struct {
 	ShipName  string
@@ -38,13 +37,13 @@ type Ship struct {
 	Role       string
 }
 
-func buildCrew(ship Ship) Crew {
+func buildCrew(ship Ship, datadir string) Crew {
 	var crew Crew
 	crew.ShipName = ship.ShipName
 	var options = make(map[string]string)
 	options["terms"] = "0"
 	options["gender"] = ""
-	options["db_name"] = "data/names.db"
+	options["datadir"] = datadir
 	options["role"] = ship.Role
 	options["job"] = "pilot"
 	crew.Pilot = person.MakePerson(options)
@@ -79,6 +78,13 @@ func buildCrew(ship Ship) Crew {
 
 func crewGen(w http.ResponseWriter, r *http.Request) {
 	r.ParseForm()
+	exe, err := os.Executable()
+	if err != nil {
+		panic(err)
+	}
+	exedir := path.Dir(exe)
+	datadir := path.Join(exedir, "data")
+	webdir := path.Join(exedir, "web")
 	// Needs more input sanitization.
 	shipName := strings.Join(r.Form["shipName"], "")
 	hullSize, _ := strconv.Atoi(strings.Join(r.Form["hullSize"], ""))
@@ -93,13 +99,13 @@ func crewGen(w http.ResponseWriter, r *http.Request) {
 		Weapons:    weapons,
 		Role:       role,
 	}
-	crew := buildCrew(ship)
-	layoutT := filepath.Join(templateDir, "layout.tmpl")
-	htmlOpenT := filepath.Join(templateDir, "htmlOpen.tmpl")
-	htmlCloseT := filepath.Join(templateDir, "htmlClose.tmpl")
-	formT := filepath.Join(templateDir, "form.tmpl")
-	crewT := filepath.Join(templateDir, "crew.tmpl")
-	personT := filepath.Join(templateDir, "person.tmpl")
+	crew := buildCrew(ship, datadir)
+	layoutT := filepath.Join(webdir, "layout.tmpl")
+	htmlOpenT := filepath.Join(webdir, "htmlOpen.tmpl")
+	htmlCloseT := filepath.Join(webdir, "htmlClose.tmpl")
+	formT := filepath.Join(webdir, "form.tmpl")
+	crewT := filepath.Join(webdir, "crew.tmpl")
+	personT := filepath.Join(webdir, "person.tmpl")
 	t, err := template.ParseFiles(layoutT, htmlOpenT, htmlCloseT, formT, crewT, personT)
 	if err != nil {
 		log.Println(err.Error())
@@ -113,10 +119,6 @@ func crewGen(w http.ResponseWriter, r *http.Request) {
 }
 
 func main() {
-	//server := http.Server{
-	//	Addr: "127.0.0.1:8080",
-	//}
-
 	port := os.Getenv("PORT")
 	if port == "" {
 		port = "8080"
