@@ -25,7 +25,6 @@ func TestMain(m *testing.M) {
 	options["terms"] = "1"
 	options["career"] = "Navy"
 	options["datadir"] = datadir
-	//options["job"] = "pilot"
 	exitVal := m.Run()
 	os.Exit(exitVal)
 }
@@ -104,12 +103,12 @@ func TestSkills(t *testing.T) {
 	}
 }
 
-func TestNoSkills(t *testing.T) {
+func TestNoJob(t *testing.T) {
 	options["terms"] = "4"
 	options["job"] = ""
 	testP := person.MakePerson(options)
-	if len(testP.SkillString) > 0 {
-		t.Errorf("MakePerson didn't do a blank skillstring %q\n", testP.SkillString)
+	if len(testP.SkillString) <= 0 {
+		t.Errorf("MakePerson did a blank skillstring for no job: %q\n", testP.SkillString)
 	}
 }
 func TestUPP(t *testing.T) {

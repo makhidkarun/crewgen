@@ -32,40 +32,27 @@ type Person struct {
 	Physical    string
 }
 
+// buildSkillList returns a map with a job (string) key and skills (array) data.
+func buildSkillList() map[string][]string {
+	skillList := make(map[string][]string)
+	skillList["engineer"] = []string{"Engineering", "Engineering", "Mechanical", "Electronics"}
+	skillList["pilot"] = []string{"Pilot", "Navigation", "Comms", "Sensors", "FleetTactics"}
+	skillList["navigator"] = []string{"Navigation", "ShipsBoat", "Comms", "Sensors"}
+	skillList["medic"] = []string{"Medical", "Medical", "Medical", "Diplomacy", "Science(Any)"}
+	skillList["gunner"] = []string{"Gunnery", "Gunnery", "Brawling", "Mechanical", "Electronics"}
+	skillList["steward"] = []string{"Steward", "Steward", "Diplomacy", "Carouse", "Medic"}
+	skillList["life"] = []string{"Drive(Any)", "Computer", "Admin", "Streetwise"}
+	return skillList
+}
+
 // age sets the base age, assuming some time after leaving the service.
 func age(terms int) int {
 	return 18 + (terms * 4) + dice.Random(0, 3)
 }
 
-// newSkill takes a string and returns a string from a slice.
-func newSkill(job string) (skill string) {
-	switch job {
-	case "engineer":
-		skills := []string{"Engineering", "Engineering", "Engineering", "Mechanical", "Electronics"}
-		n := dice.Random(0, len(skills)-1)
-		skill = skills[n]
-	case "pilot":
-		skills := []string{"Pilot", "Pilot", "Navigation", "Comms", "Sensors", "FleetTactics"}
-		n := dice.Random(0, len(skills)-1)
-		skill = skills[n]
-	case "navigator":
-		skills := []string{"Navigation", "Navigation", "ShipsBoat", "Comms", "Sensors"}
-		n := dice.Random(0, len(skills)-1)
-		skill = skills[n]
-	case "medic":
-		skills := []string{"Medical", "Medical", "Medical", "Diplomacy", "Science(Any)"}
-		n := dice.Random(0, len(skills)-1)
-		skill = skills[n]
-	case "gunner":
-		skills := []string{"Gunnery", "Gunnery", "Brawling", "Mechanical", "Electronics"}
-		n := dice.Random(0, len(skills)-1)
-		skill = skills[n]
-	case "steward":
-		skills := []string{"Steward", "Steward", "Diplomacy", "Carouse", "Medic"}
-		n := dice.Random(0, len(skills)-1)
-		skill = skills[n]
-	}
-	return
+// newSkill takes an array and returns a string
+func newSkill(job []string) string {
+	return datamine.RandomStringFromArray(job)
 }
 
 // skillsToString returns a comma separate single string.
@@ -130,32 +117,16 @@ func modifyUpp(upp [6]int, stat int, mod int) [6]int {
 	return upp
 }
 
-// stringInArray returns true if an exact string match is in an array.
-// Returns false otherwise.
-func stringInArray(val string, array []string) bool {
-	for _, value := range array {
-		if value == val {
-			return true
-		}
-	}
-	return false
-}
-
 // setGender allows choosing a gender from M, F, or random assignment.
-// This could better be done with datamine.RandomStringFromArray()
 func setGender(input ...string) string {
 	var genders []string = []string{"F", "M"}
 	if len(input) != 0 {
 		test_gender := strings.ToUpper(input[0])
-		if stringInArray(test_gender, genders) {
+		if datamine.StringInArray(test_gender, genders) {
 			return test_gender
 		}
 	}
-	if dice.OneD6()%2 == 0 {
-		return "F"
-	} else {
-		return "M"
-	}
+	return datamine.RandomStringFromArray(genders)
 }
 
 // numTerms sets the number of terms the character served.
@@ -196,31 +167,19 @@ func writePhysical(c Person) string {
 // Need to put this into the datamine.
 func addSkills(job string, terms int) map[string]int {
 	skills := make(map[string]int)
-
-	var primarySkill string
-	var nS string
-
-	switch job {
-	case "pilot":
-		primarySkill = "Pilot"
-	case "navigator":
-		primarySkill = "Navigation"
-	case "engineer":
-		primarySkill = "Engineering"
-	case "gunner":
-		primarySkill = "Gunnery"
-	case "medic":
-		primarySkill = "Medical"
-	case "steward":
-		primarySkill = "Steward"
-	default:
-		return skills
+	skillList := buildSkillList()
+	jobs := make([]string, 0, len(skillList))
+	for j := range skillList {
+		jobs = append(jobs, j)
 	}
+	if !datamine.StringInArray(job, jobs) {
+		job = "life"
+	}
+	primarySkill := datamine.FirstStringInArray(skillList[job])
 
 	skills = incSkill(skills, primarySkill)
 	for i := 0; i < terms; i++ {
-		nS = newSkill(job)
-		skills = incSkill(skills, nS)
+		skills = incSkill(skills, newSkill(skillList[job]))
 	}
 	return skills
 }

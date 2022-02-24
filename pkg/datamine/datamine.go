@@ -43,6 +43,11 @@ func RandomStringFromArray(array []string) string {
 	return array[dice.Random(0, len(array)-1)]
 }
 
+// FirstStringInArray takes an array and returns the first string.
+func FirstStringInArray(array []string) string {
+	return array[0]
+}
+
 // GetName takes a gender of string and returns a string of first and last names.
 func GetName(gender string, datadir string) string {
 	var first_name_file string

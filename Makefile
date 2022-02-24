@@ -23,3 +23,8 @@ test:	vet
 	go test ./...
 .PHONY:test
 
+clean:
+	rm cmd/teamgen/teamgen
+	rm cmd/crewgen/crewgen
+.PHONY:clean
+

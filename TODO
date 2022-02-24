@@ -16,10 +16,9 @@ refactor: figure out err handling in whine and cry
 refactor: crewgen to use encapsulated web dir
 refactor: crewgen to use datadir
 refactor: crewgen fails due to web dir and data dir, but tests pass
+refactor: pass datafile to buildSkillList
 
 
-datamine: set primary skill in job skill array
-          - use index[0] as primary skill
 datamine: move getSpecies to dm
 
 
@@ -35,3 +34,5 @@ refactor: go to a datamine, using flat files
 refactor: remove sqlite 
 refactor: getName 
 refactor: add job option
+datamine: set primary skill in job skill array
+          - use index[0] as primary skill

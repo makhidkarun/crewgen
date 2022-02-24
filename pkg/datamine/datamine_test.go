@@ -17,6 +17,15 @@ func TestStringInArray(t *testing.T) {
 	}
 }
 
+func TestFirstStringFromArray(t *testing.T) {
+	var arr []string = []string{"first", "second"}
+	expected := "first"
+	result := datamine.FirstStringInArray(arr)
+	if result != expected {
+		t.Error(`TestFirstStringFromArray failed`)
+	}
+}
+
 func TestRandomStringFromArray(t *testing.T) {
 	var genders []string = []string{"F", "M"}
 	gender := datamine.RandomStringFromArray(genders)
