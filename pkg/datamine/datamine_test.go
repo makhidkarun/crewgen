@@ -1,6 +1,8 @@
 package datamine_test
 
 import (
+	"strings"
+
 	"github.com/makhidkarun/crewgen/pkg/datamine"
 	"testing"
 )
@@ -55,4 +57,21 @@ func TestGetMaleFirstName(t *testing.T) {
 	if len(name) < 5 {
 		t.Error(`Name too short`)
 	}
+}
+
+func TestArrayFromFile(t *testing.T) {
+	datafile := "testdata/human_female_first.txt"
+	items := datamine.ArrayFromFile(datafile)
+	if len(items) == 0 {
+		t.Error("TestArrayFromFile has no items")
+	}
+	for _, item := range items {
+		if strings.HasPrefix(item, "#") {
+			t.Errorf("TestArrayFromFile let a pounder get in: %s", item)
+		}
+		if len(item) < 1 {
+			t.Errorf("TestArrayFromFile let a blank line in: %s", item)
+		}
+	}
+
 }

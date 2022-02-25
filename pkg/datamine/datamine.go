@@ -21,9 +21,18 @@ func whine(err error) {
 // ArrayFromFile takes a string filename and returns an array of strings,
 //  one array item per file line.
 func ArrayFromFile(filename string) []string {
+	var items []string
 	file, err := os.ReadFile(filename)
 	whine(err)
-	items := strings.Split(string(file), "\n")
+	unwashed_items := strings.Split(string(file), "\n")
+	for _, item := range unwashed_items {
+		if !strings.HasPrefix(item, "#") {
+			item = strings.Trim(item, " \n\t")
+			if len(item) > 0 {
+				items = append(items, item)
+			}
+		}
+	}
 	return items
 }
 

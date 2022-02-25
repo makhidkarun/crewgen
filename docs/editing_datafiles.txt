@@ -1,0 +1,14 @@
+Using datafiles
+===============
+
+The binaries refer to a "data" directory relative to the binary. So, if you
+place the binary in /home/me/bin/<binary>, then you need to put the datafiles
+into /home/me/bin/data/. 
+
+The datafiles can have blank lines and comments that begin with "#". Any other
+line will be consumed and used as data.
+
+There is a feature recommendation for allowing the program to be given a 
+specific directory for datafiles.
+
+
