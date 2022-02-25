@@ -13,7 +13,6 @@ var options map[string]string
 
 func TestMain(m *testing.M) {
 	options = make(map[string]string)
-	//options["db_name"] = "data/names.db"
 	/*exe, err := os.Executable()
 	if err != nil {
 		fmt.Println(`exe failed`)
@@ -91,6 +90,13 @@ func TestPhysical(t *testing.T) {
 	}
 }
 
+func TestUPP(t *testing.T) {
+	testP := person.MakePerson(options)
+	if testP.UPPs == "000000" {
+		t.Error("MakePerson did not roll a UPP")
+	}
+}
+
 func TestSkills(t *testing.T) {
 	options["terms"] = "4"
 	options["job"] = "pilot"
@@ -111,9 +117,22 @@ func TestNoJob(t *testing.T) {
 		t.Errorf("MakePerson did a blank skillstring for no job: %q\n", testP.SkillString)
 	}
 }
-func TestUPP(t *testing.T) {
+
+func TestMercCareer(t *testing.T) {
+	options["career"] = "Merc"
+	options["terms"] = "4"
+	options["job"] = "infantry"
 	testP := person.MakePerson(options)
-	if testP.UPPs == "000000" {
-		t.Error("MakePerson did not roll a UPP")
+	if len(testP.SkillString) < 8 {
+		t.Error(`TestMercCareer failed to specify a long skillstring`)
+	}
+	if strings.Index(testP.SkillString, ", ") < 4 {
+		t.Error("TestMercCareer does not have a comma and space in skillstring.")
+	}
+	if testP.Career != "Merc" {
+		t.Error(`TestMercCareer failed to specify Merc career`)
+	}
+	if !strings.Contains(testP.SkillString, "GunCbt(CbtR)") {
+		t.Error("TestMercCareer does not give infantry CbtR")
 	}
 }

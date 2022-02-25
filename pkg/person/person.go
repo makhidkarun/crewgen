@@ -41,6 +41,8 @@ func buildSkillList() map[string][]string {
 	skillList["medic"] = []string{"Medical", "Medical", "Medical", "Diplomacy", "Science(Any)"}
 	skillList["gunner"] = []string{"Gunnery", "Gunnery", "Brawling", "Mechanical", "Electronics"}
 	skillList["steward"] = []string{"Steward", "Steward", "Diplomacy", "Carouse", "Medic"}
+	skillList["infantry"] = []string{"GunCbt(CbtR)", "GunCbt(Any)", "HvyWpns(Any)", "Recon", "Drive(any)", "VaccSuit", "Brawling", "Gambling", "Mechanic", "Leader", "GunCbt(Any)"}
+	skillList["commando"] = []string{"GunCbt(CbtR)", "GunCbt(Any)", "HvyWpns(Any)", "Demolition", "Survival", "Recon", "Battledress", "Leader", "Tactics", "Blade", "Instruction"}
 	skillList["life"] = []string{"Drive(Any)", "Computer", "Admin", "Streetwise"}
 	return skillList
 }
@@ -82,7 +84,8 @@ func incSkill(skills map[string]int, skill string) map[string]int {
 
 // setCareer sets a random career if a valid string is not given.
 func setCareer(career string) (c string) {
-	cOptions := []string{"Navy", "Merchant", "Army", "Marines", "Scout", "Other"}
+	cOptions := []string{"Navy", "Merchant", "Army", "Marines", "Scout", "Other",
+		"Merc"}
 
 	if !datamine.StringInArray(career, cOptions) {
 		c = datamine.RandomStringFromArray(cOptions)

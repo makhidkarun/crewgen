@@ -17,9 +17,11 @@ refactor: crewgen to use encapsulated web dir
 refactor: crewgen to use datadir
 refactor: crewgen fails due to web dir and data dir, but tests pass
 refactor: pass datafile to buildSkillList
+refactor: remove hard coded datadir in person_test.go
 
 
 datamine: move getSpecies to dm
+datamine: skill lists in data files
 
 
 DONE
