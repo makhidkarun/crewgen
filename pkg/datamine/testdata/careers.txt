@@ -1,0 +1,5 @@
+# list of careers and data, seperated by ":".
+# career : defaultJob : careerSkills seperated by ",".
+# careerSkills will be assigned a 0 level, at a minimum.
+Navy:engineer:Mechanic,Engineer,Electrical
+Army:infantry:GunCbt(CbtR),Brawling,Recon

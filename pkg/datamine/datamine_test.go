@@ -73,5 +73,83 @@ func TestArrayFromFile(t *testing.T) {
 			t.Errorf("TestArrayFromFile let a blank line in: %s", item)
 		}
 	}
+}
 
+func TestLineToList(t *testing.T) {
+	line := "Mechanic,Engineer,Electrical"
+	sep := ","
+	list := datamine.LineToList(line, sep)
+	if len(list) < 3 {
+		t.Errorf("TestLineToList has %d items\n", len(list))
+	}
+	if list[0] != "Mechanic" {
+		t.Errorf("TestLineToList; expected Mechanic, got %q.\n", list[0])
+	}
+}
+
+func TestDataFromListLine(t *testing.T) {
+	var careerList []string
+	careerOne := "Navy:engineer:Mechanic,Engineer,Electrical"
+	careerTwo := "Army:infantry:GunCbt(CbtR),Brawling,Recon"
+	careerList = append(careerList, careerOne)
+	careerList = append(careerList, careerTwo)
+	expected := "Navy"
+	sep := ":"
+	career := datamine.DataFromListLine(careerList, expected, sep, 0)
+	if career != "Navy" {
+		t.Errorf("TestDataFromListLine failed: wanted %s, got %q.\n", expected, career)
+	}
+	job := datamine.DataFromListLine(careerList, expected, sep, 1)
+	if job != "engineer" {
+		t.Errorf("TestDataFromListLine failed: wanted engineer, got %q.\n", job)
+	}
+	skillList := datamine.DataFromListLine(careerList, expected, sep, 2)
+	if skillList != "Mechanic,Engineer,Electrical" {
+		t.Errorf("TestDataFromListLine failed: wanted skillList, got %q.\n", skillList)
+	}
+}
+
+func TestHeadersFromList(t *testing.T) {
+	datafile := "testdata/careers.txt"
+	items := datamine.ArrayFromFile(datafile)
+	headers := datamine.HeadersFromList(items, ":")
+	if len(headers) == 0 {
+		t.Error("TestHeadersFromList has no items")
+	}
+	for _, item := range headers {
+		if strings.HasPrefix(item, "#") {
+			t.Error("TestHeadersFromList let a comment in")
+		}
+	}
+	expectedList := []string{"Navy", "Army"}
+	if len(headers) != len(expectedList) {
+		t.Error("TestHeadersFromList has the wrong list count")
+	}
+	for index, header := range headers {
+		if expectedList[index] != header {
+			t.Errorf("TestHeadersFromList mixed up %s and %s", expectedList[index], header)
+		}
+	}
+}
+
+func TestCareerList(t *testing.T) {
+	datafile := "testdata/careers.txt"
+	careers := datamine.CareerList(datafile)
+	if len(careers) == 0 {
+		t.Error("TestCareerList has no items")
+	}
+	for _, item := range careers {
+		if strings.HasPrefix(item, "#") {
+			t.Error("TestCareerList let a comment in")
+		}
+	}
+	expectedList := []string{"Navy", "Army"}
+	if len(careers) != len(expectedList) {
+		t.Error("TestCareerList has the wrong list count")
+	}
+	for index, career := range careers {
+		if expectedList[index] != career {
+			t.Errorf("TestCareerList mixed up %s and %s", expectedList[index], career)
+		}
+	}
 }

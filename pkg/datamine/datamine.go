@@ -12,6 +12,44 @@ import (
 	"github.com/makhidkarun/crewgen/pkg/dice"
 )
 
+//var careerList []string
+//var jobList []string
+
+func LineToList(line string, sep string) []string {
+	var data []string
+	for _, item := range strings.Split(line, sep) {
+		data = append(data, strings.Trim(item, " "))
+	}
+	return data
+}
+
+func HeadersFromList(data []string, sep string) []string {
+	// assumes blank lines and comments have been filtered out.
+	var headers []string
+	for _, line := range data {
+		datum := strings.Split(line, sep)[0]
+		headers = append(headers, strings.Trim(datum, " "))
+		//fmt.Printf("datum is %s\n", datum)
+	}
+	return headers
+}
+
+func DataFromListLine(data []string, key string, sep string, index int) string {
+	var datum string
+	for _, line := range data {
+		if strings.HasPrefix(line, key) {
+			if sep != "" && index >= 0 {
+				datum = strings.Split(line, sep)[index]
+			} else {
+				datum = line
+			}
+			break
+		}
+	}
+	return datum
+}
+
+// whine prints the error message but keeps on going.
 func whine(err error) {
 	if err != nil {
 		fmt.Println(err)
@@ -74,4 +112,12 @@ func GetName(gender string, datadir string) string {
 	last_name := RandomStringFromArray(last_name_list)
 	name := fmt.Sprintf("%s %s", first_name, last_name)
 	return name
+}
+
+// CareerList provides the career options based on datafiles.
+func CareerList(careerFile string) []string {
+	sep := ":"
+	careerData := ArrayFromFile(careerFile)
+	careerList := HeadersFromList(careerData, sep)
+	return careerList
 }

@@ -9,6 +9,7 @@ package person
 
 import (
 	"fmt"
+	"path"
 	"strconv"
 	"strings"
 
@@ -83,10 +84,9 @@ func incSkill(skills map[string]int, skill string) map[string]int {
 }
 
 // setCareer sets a random career if a valid string is not given.
-func setCareer(career string) (c string) {
-	cOptions := []string{"Navy", "Merchant", "Army", "Marines", "Scout", "Other",
-		"Merc"}
-
+func setCareer(career string, datadir string) (c string) {
+	datafile := path.Join(datadir, "careers.txt")
+	cOptions := datamine.CareerList(datafile)
 	if !datamine.StringInArray(career, cOptions) {
 		c = datamine.RandomStringFromArray(cOptions)
 	} else {
@@ -210,7 +210,7 @@ func MakePerson(options map[string]string) Person {
 	character.UPP = rollUPP()
 	character.UPPs = formatUPP(character.UPP)
 	character.Age = age(character.Terms)
-	character.Career = setCareer(career)
+	character.Career = setCareer(career, datadir)
 	character.Species = setSpecies(speciesOptions)
 	character.Skills = addSkills(job, character.Terms)
 	character.SkillString = skillsToStr(character.Skills)
