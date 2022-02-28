@@ -29,7 +29,6 @@ func HeadersFromList(data []string, sep string) []string {
 	for _, line := range data {
 		datum := strings.Split(line, sep)[0]
 		headers = append(headers, strings.Trim(datum, " "))
-		//fmt.Printf("datum is %s\n", datum)
 	}
 	return headers
 }
@@ -120,4 +119,26 @@ func CareerList(careerFile string) []string {
 	careerData := ArrayFromFile(careerFile)
 	careerList := HeadersFromList(careerData, sep)
 	return careerList
+}
+
+// CareerSkills provides the skill options for specific careers.
+// Format is "career:Skill, Skill, Skill, Skill
+func CareerSkills(careerFile, career string) []string {
+	careerSep := ":"
+	skillSep := ","
+	careerData := ArrayFromFile(careerFile)
+	careerLine := DataFromListLine(careerData, career, careerSep, 2)
+	careerSkills := LineToList(careerLine, skillSep)
+	return careerSkills
+}
+
+// JobSkills provides the skill options for specific jobs.
+// Format is "job:Skill, Skill, Skill, Skill
+func JobSkills(jobFile, job string) []string {
+	jobSep := ":"
+	skillSep := ","
+	jobData := ArrayFromFile(jobFile)
+	jobLine := DataFromListLine(jobData, job, jobSep, 1)
+	jobSkills := LineToList(jobLine, skillSep)
+	return jobSkills
 }

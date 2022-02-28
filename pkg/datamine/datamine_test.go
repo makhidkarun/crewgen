@@ -153,3 +153,27 @@ func TestCareerList(t *testing.T) {
 		}
 	}
 }
+
+func TestCareerSkills(t *testing.T) {
+	datafile := "testdata/careers.txt"
+	career := "Navy"
+	careerSkills := datamine.CareerSkills(datafile, career)
+	if len(careerSkills) == 0 {
+		t.Error("TestCareerSkills has no careers")
+	}
+	if careerSkills[0] != "Mechanic" {
+		t.Error("TestCareerSkills has the wrong list")
+	}
+}
+
+func TestJobSkillList(t *testing.T) {
+	datafile := "testdata/jobs.txt"
+	job := "scout"
+	jobSkills := datamine.JobSkills(datafile, job)
+	if len(jobSkills) == 0 {
+		t.Error("TestJobSkillList has no jobs")
+	}
+	if jobSkills[0] != "Pilot" {
+		t.Error("TestJobSkillList has the wrong list")
+	}
+}

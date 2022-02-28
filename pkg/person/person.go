@@ -45,6 +45,7 @@ func buildSkillList() map[string][]string {
 	skillList["infantry"] = []string{"GunCbt(CbtR)", "GunCbt(Any)", "HvyWpns(Any)", "Recon", "Drive(any)", "VaccSuit", "Brawling", "Gambling", "Mechanic", "Leader", "GunCbt(Any)"}
 	skillList["commando"] = []string{"GunCbt(CbtR)", "GunCbt(Any)", "HvyWpns(Any)", "Demolition", "Survival", "Recon", "Battledress", "Leader", "Tactics", "Blade", "Instruction"}
 	skillList["life"] = []string{"Drive(Any)", "Computer", "Admin", "Streetwise"}
+
 	return skillList
 }
 
