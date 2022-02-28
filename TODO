@@ -9,6 +9,8 @@ feature:  give users the ability to add data files
 feature:  add command tests
 feature:  remove case from job and career
 feature:  allow listing of available jobs and careers
+feature:  allow stat increases as a skill
+feature:  include muster out benefits
 
 
 refactor: fix ship role vs person career
@@ -21,7 +23,6 @@ refactor: remove hard coded datadir in person_test.go
 
 
 datamine: move getSpecies to dm
-datamine: skill lists in data files
 
 
 DONE
@@ -38,3 +39,4 @@ refactor: getName
 refactor: add job option
 datamine: set primary skill in job skill array
           - use index[0] as primary skill
+datamine: skill lists in data files
