@@ -13,13 +13,6 @@ var options map[string]string
 
 func TestMain(m *testing.M) {
 	options = make(map[string]string)
-	/*exe, err := os.Executable()
-	if err != nil {
-		fmt.Println(`exe failed`)
-	}
-	exedir := path.Dir(exe)
-	//options["datadir"] = path.Join(exedir, "data")
-	*/
 	datadir := "/home/leam/lang/git/makhidkarun/crewgen/cmd/teamgen/data"
 	options["terms"] = "1"
 	options["career"] = "Navy"
@@ -99,7 +92,7 @@ func TestUPP(t *testing.T) {
 
 func TestSkills(t *testing.T) {
 	options["terms"] = "4"
-	options["job"] = "pilot"
+	options["job"] = "other"
 	testP := person.MakePerson(options)
 	if len(testP.SkillString) < 8 {
 		t.Error(`MakePerson failed to specify a long skillstring`)
@@ -115,6 +108,14 @@ func TestNoJob(t *testing.T) {
 	testP := person.MakePerson(options)
 	if len(testP.SkillString) <= 0 {
 		t.Errorf("MakePerson did a blank skillstring for no job: %q\n", testP.SkillString)
+	}
+}
+
+func TestDefaultJob(t *testing.T) {
+	options["career"] = "Scout"
+	testP := person.MakePerson(options)
+	if !strings.HasPrefix(testP.SkillString, "Pilot-") {
+		t.Errorf("TestDefaultJob does not give Scouts pilot: %s", testP.SkillString)
 	}
 }
 

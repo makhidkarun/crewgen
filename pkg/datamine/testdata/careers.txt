@@ -3,3 +3,8 @@
 # careerSkills will be assigned a 0 level, at a minimum.
 Navy:engineer:Mechanic,Engineer,Electrical
 Army:infantry:GunCbt(CbtR),Brawling,Recon
+Merchant:trader:Broker,Sales
+Marines:infantry:GunCbt(CbtR),Battledress
+Scout:scout:Pilot,Engineer
+Other:other:Drive(Any),Steal
+Merc:infantry:GunCbt(CbtR),Recon

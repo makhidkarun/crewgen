@@ -132,6 +132,23 @@ func CareerSkills(careerFile, career string) []string {
 	return careerSkills
 }
 
+// DefaultJob provides the default job, if the career exists.
+// Otherwise "other".
+func DefaultJob(careerFile, career string) string {
+	careerSep := ":"
+	careerData := ArrayFromFile(careerFile)
+	defaultJob := DataFromListLine(careerData, career, careerSep, 1)
+	return defaultJob
+}
+
+// JobList provides the job options based on datafiles.
+func JobList(jobFile string) []string {
+	sep := ":"
+	jobData := ArrayFromFile(jobFile)
+	jobList := HeadersFromList(jobData, sep)
+	return jobList
+}
+
 // JobSkills provides the skill options for specific jobs.
 // Format is "job:Skill, Skill, Skill, Skill
 func JobSkills(jobFile, job string) []string {

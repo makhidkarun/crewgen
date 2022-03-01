@@ -5,4 +5,9 @@ scout:Pilot, Engineer, Gunner, Navigation, Pilot, ShipTactics, Vehicle, Vehicle,
 spacer:Mechanical, VaccSuit, Vehicle, ZeroG, Admin, Commo, Blade, Gambling, Liaison, Engineering
 merchant:Streetwise, Broker, Trader, Liaison, Admin, Legal, Vehicle, GunCbt, VaccSuit, Gambling, Carousing, Trader
 other:Streetwise, Blade, Brawling, Vehicle, Gambling, Bribery, GunCbt(Any), Streetwise, Mechanical, Electronic Forgery, JoT
-
+pilot: Pilot, Navigation ,  ShipsBoat ,  Comms ,  Sensors 
+medic: Medical ,  Medical ,  Medical ,  Diplomacy ,  Science(Any) 
+gunner: Gunnery ,  Gunnery ,  Brawling ,  Mechanical ,  Electronics 
+navigator: Navigation ,  ShipsBoat ,  Comms ,  Sensors 
+steward: Steward ,  Steward ,  Diplomacy ,  Carouse ,  Medic 
+engineer: Engineering

@@ -13,7 +13,8 @@ vet: fmt
 .PHONY:vet
 
 build: vet
-	cp -Rp pkg/datamine/data bin
+	#cp -Rp pkg/datamine/data bin
+	cp -Rp cmd/teamgen/data bin
 	cp -Rp cmd/crewgen/web bin
 	go build -o bin/crewgen  cmd/crewgen/main.go
 	go build -o bin/teamgen  cmd/teamgen/main.go

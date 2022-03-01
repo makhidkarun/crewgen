@@ -33,22 +33,6 @@ type Person struct {
 	Physical    string
 }
 
-// buildSkillList returns a map with a job (string) key and skills (array) data.
-func buildSkillList() map[string][]string {
-	skillList := make(map[string][]string)
-	skillList["engineer"] = []string{"Engineering", "Engineering", "Mechanical", "Electronics"}
-	skillList["pilot"] = []string{"Pilot", "Navigation", "Comms", "Sensors", "FleetTactics"}
-	skillList["navigator"] = []string{"Navigation", "ShipsBoat", "Comms", "Sensors"}
-	skillList["medic"] = []string{"Medical", "Medical", "Medical", "Diplomacy", "Science(Any)"}
-	skillList["gunner"] = []string{"Gunnery", "Gunnery", "Brawling", "Mechanical", "Electronics"}
-	skillList["steward"] = []string{"Steward", "Steward", "Diplomacy", "Carouse", "Medic"}
-	skillList["infantry"] = []string{"GunCbt(CbtR)", "GunCbt(Any)", "HvyWpns(Any)", "Recon", "Drive(any)", "VaccSuit", "Brawling", "Gambling", "Mechanic", "Leader", "GunCbt(Any)"}
-	skillList["commando"] = []string{"GunCbt(CbtR)", "GunCbt(Any)", "HvyWpns(Any)", "Demolition", "Survival", "Recon", "Battledress", "Leader", "Tactics", "Blade", "Instruction"}
-	skillList["life"] = []string{"Drive(Any)", "Computer", "Admin", "Streetwise"}
-
-	return skillList
-}
-
 // age sets the base age, assuming some time after leaving the service.
 func age(terms int) int {
 	return 18 + (terms * 4) + dice.Random(0, 3)
@@ -168,22 +152,31 @@ func writePhysical(c Person) string {
 
 // addSkills returns a map of skill (string) and level (int).
 //  It auto assigns the primary skill for the job given.
-// Need to put this into the datamine.
-func addSkills(job string, terms int) map[string]int {
+func addSkills(job string, career string, terms int, datadir string) map[string]int {
 	skills := make(map[string]int)
-	skillList := buildSkillList()
-	jobs := make([]string, 0, len(skillList))
-	for j := range skillList {
-		jobs = append(jobs, j)
+	careerFile := path.Join(datadir, "careers.txt")
+	careerList := datamine.CareerList(careerFile)
+	if !datamine.StringInArray(career, careerList) {
+		career = "Other"
 	}
-	if !datamine.StringInArray(job, jobs) {
-		job = "life"
+	careerSkills := datamine.CareerSkills(careerFile, career)
+
+	jobFile := path.Join(datadir, "jobs.txt")
+	if job == "" {
+		job = datamine.DefaultJob(careerFile, career)
+	} else {
+		jobList := datamine.JobList(jobFile)
+		if !datamine.StringInArray(job, jobList) {
+			job = "other"
+		}
 	}
-	primarySkill := datamine.FirstStringInArray(skillList[job])
+	jobSkills := datamine.JobSkills(jobFile, job)
+	skillList := append(jobSkills, careerSkills[:]...)
+	primarySkill := datamine.FirstStringInArray(skillList)
 
 	skills = incSkill(skills, primarySkill)
 	for i := 0; i < terms; i++ {
-		skills = incSkill(skills, newSkill(skillList[job]))
+		skills = incSkill(skills, newSkill(skillList))
 	}
 	return skills
 }
@@ -213,7 +206,7 @@ func MakePerson(options map[string]string) Person {
 	character.Age = age(character.Terms)
 	character.Career = setCareer(career, datadir)
 	character.Species = setSpecies(speciesOptions)
-	character.Skills = addSkills(job, character.Terms)
+	character.Skills = addSkills(job, character.Career, character.Terms, datadir)
 	character.SkillString = skillsToStr(character.Skills)
 	character.Physical = writePhysical(character)
 

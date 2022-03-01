@@ -205,7 +205,11 @@ func TestTeamgenCLI(t *testing.T) {
 		output := strings.Split(string(out), "\n")
 		matched_2, err := regexp.MatchString(`Pilot-[1-9]`, output[2])
 		if !matched_2 {
-			t.Error("Does not have Pilot skill")
+			t.Errorf("Does not have Pilot skill: %s", output[3])
+			t.Errorf("zero line %s", output[0])
+			t.Errorf("first line: %s", output[1])
+			t.Errorf("second line: %s", output[2])
+			t.Errorf("third line: %s", output[3])
 		}
 	})
 

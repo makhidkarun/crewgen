@@ -121,7 +121,7 @@ func TestHeadersFromList(t *testing.T) {
 			t.Error("TestHeadersFromList let a comment in")
 		}
 	}
-	expectedList := []string{"Navy", "Army"}
+	expectedList := []string{"Navy", "Army", "Merchant", "Marines", "Scout", "Other", "Merc"}
 	if len(headers) != len(expectedList) {
 		t.Error("TestHeadersFromList has the wrong list count")
 	}
@@ -143,7 +143,7 @@ func TestCareerList(t *testing.T) {
 			t.Error("TestCareerList let a comment in")
 		}
 	}
-	expectedList := []string{"Navy", "Army"}
+	expectedList := []string{"Navy", "Army", "Merchant", "Marines", "Scout", "Other", "Merc"}
 	if len(careers) != len(expectedList) {
 		t.Error("TestCareerList has the wrong list count")
 	}
@@ -166,14 +166,46 @@ func TestCareerSkills(t *testing.T) {
 	}
 }
 
+func TestJobList(t *testing.T) {
+	datafile := "testdata/jobs.txt"
+	jobs := datamine.JobList(datafile)
+	if len(jobs) == 0 {
+		t.Error("TestJobList has no items")
+	}
+	for _, item := range jobs {
+		if strings.HasPrefix(item, "#") {
+			t.Error("TestJobList let a comment in")
+		}
+	}
+	expectedList := []string{"infantry", "marine", "commando", "scout", "spacer", "merchant", "other", "pilot",
+		"medic", "gunner", "navigator", "steward", "engineer"}
+	if len(jobs) != len(expectedList) {
+		t.Error("TestJobList has the wrong list count")
+	}
+	for index, job := range jobs {
+		if expectedList[index] != job {
+			t.Errorf("TestJobList mixed up %s and %s", expectedList[index], job)
+		}
+	}
+}
+
 func TestJobSkillList(t *testing.T) {
 	datafile := "testdata/jobs.txt"
-	job := "scout"
+	job := "other"
 	jobSkills := datamine.JobSkills(datafile, job)
 	if len(jobSkills) == 0 {
 		t.Error("TestJobSkillList has no jobs")
 	}
-	if jobSkills[0] != "Pilot" {
+	if jobSkills[0] != "Streetwise" {
 		t.Error("TestJobSkillList has the wrong list")
+	}
+}
+
+func TestDefaultJob(t *testing.T) {
+	datafile := "testdata/careers.txt"
+	result := datamine.DefaultJob(datafile, "Scout")
+	expected := "scout"
+	if result != expected {
+		t.Errorf("TestDefaultJob got %s, expected %s", result, expected)
 	}
 }
