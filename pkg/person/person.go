@@ -171,7 +171,8 @@ func addSkills(job string, career string, terms int, datadir string) map[string]
 		}
 	}
 	jobSkills := datamine.JobSkills(jobFile, job)
-	skillList := append(jobSkills, careerSkills[:]...)
+	var skillList = make([]string, len(jobSkills)+len(careerSkills))
+	copy(skillList, append(jobSkills, careerSkills[:]...))
 	primarySkill := datamine.FirstStringInArray(skillList)
 
 	skills = incSkill(skills, primarySkill)

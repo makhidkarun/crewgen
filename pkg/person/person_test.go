@@ -97,9 +97,6 @@ func TestSkills(t *testing.T) {
 	if len(testP.SkillString) < 8 {
 		t.Error(`MakePerson failed to specify a long skillstring`)
 	}
-	if strings.Index(testP.SkillString, ", ") < 4 {
-		t.Errorf("MakePerson does not have a comma and space in skillstring.")
-	}
 }
 
 func TestNoJob(t *testing.T) {
@@ -114,26 +111,23 @@ func TestNoJob(t *testing.T) {
 func TestDefaultJob(t *testing.T) {
 	options["career"] = "Scout"
 	testP := person.MakePerson(options)
-	if !strings.HasPrefix(testP.SkillString, "Pilot-") {
+	if !strings.Contains(testP.SkillString, "Pilot-") {
 		t.Errorf("TestDefaultJob does not give Scouts pilot: %s", testP.SkillString)
 	}
 }
 
-func TestMercCareer(t *testing.T) {
-	options["career"] = "Merc"
+func TestMercenaryCareer(t *testing.T) {
+	options["career"] = "Mercenary"
 	options["terms"] = "4"
 	options["job"] = "infantry"
 	testP := person.MakePerson(options)
 	if len(testP.SkillString) < 8 {
-		t.Error(`TestMercCareer failed to specify a long skillstring`)
+		t.Error(`TestMercenaryCareer failed to specify a long skillstring`)
 	}
-	if strings.Index(testP.SkillString, ", ") < 4 {
-		t.Error("TestMercCareer does not have a comma and space in skillstring.")
-	}
-	if testP.Career != "Merc" {
-		t.Error(`TestMercCareer failed to specify Merc career`)
+	if testP.Career != "Mercenary" {
+		t.Error(`TestMercenaryCareer failed to specify Mercenary career`)
 	}
 	if !strings.Contains(testP.SkillString, "GunCbt(CbtR)") {
-		t.Error("TestMercCareer does not give infantry CbtR")
+		t.Error("TestMercenaryCareer does not give infantry CbtR")
 	}
 }

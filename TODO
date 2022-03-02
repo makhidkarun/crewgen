@@ -1,16 +1,12 @@
 
 document: figure out how to use config file for data dir and files
-document: document data file usage and updating
 
  
-feature:  give users the ability to add data files
-          - look at go's 'embed' option
-          - set up to use either way
-feature:  add command tests
 feature:  remove case from job and career
 feature:  allow listing of available jobs and careers
 feature:  allow stat increases as a skill
 feature:  include muster out benefits
+feature:  include zero level skills
 
 
 refactor: fix ship role vs person career
@@ -18,8 +14,8 @@ refactor: figure out err handling in whine and cry
 refactor: crewgen to use encapsulated web dir
 refactor: crewgen to use datadir
 refactor: crewgen fails due to web dir and data dir, but tests pass
-refactor: pass datafile to buildSkillList
 refactor: remove hard coded datadir in person_test.go
+refatcot: fix Makefile so it doesn't error on cleaning missing files
 
 
 datamine: move getSpecies to dm
@@ -40,3 +36,7 @@ refactor: add job option
 datamine: set primary skill in job skill array
           - use index[0] as primary skill
 datamine: skill lists in data files
+feature:  add command tests
+refactor: pass datafile to buildSkillList // Removed buildSkillList
+feature:  give users the ability to add data files
+document: document data file usage and updating

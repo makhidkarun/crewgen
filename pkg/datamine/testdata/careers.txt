@@ -7,4 +7,4 @@ Merchant:trader:Broker,Sales
 Marines:infantry:GunCbt(CbtR),Battledress
 Scout:scout:Pilot,Engineer
 Other:other:Drive(Any),Steal
-Merc:infantry:GunCbt(CbtR),Recon
+Mercenary:infantry:GunCbt(CbtR),Recon

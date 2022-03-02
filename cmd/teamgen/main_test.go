@@ -43,11 +43,10 @@ func TestTeamgenCLI(t *testing.T) {
 			t.Fatal(err)
 		}
 		output := strings.Split(string(out), "\n")
-		matched_0, err := regexp.MatchString(`[a-zA-Z]+\s+[a-zA-Z]+\s+\[[FM]\]\s+[2-9A-F]{6}\s+Age:\s+[1-5][0-9]\s+human`, output[0])
-		if err != nil {
-			t.Fatal(err)
-		}
+		re := regexp.MustCompile(`[\p{L}]+\s+[\p{L}]+\s+\[[FM]\]\s+[2-9A-F]{6}\s+Age:\s+[1-5][0-9]\s+human`)
+		matched_0 := re.MatchString(output[0])
 		if !matched_0 {
+			t.Errorf("output[0] is: :%s:", output[0])
 			t.Errorf("Did not find match")
 		}
 	})
