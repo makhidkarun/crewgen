@@ -1,5 +1,6 @@
 
 document: figure out how to use config file for data dir and files
+document: Add config file notes to usage (-help)
 
  
 feature:  remove case from job and career

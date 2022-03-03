@@ -30,7 +30,7 @@ func TestMain(m *testing.M) {
 	fmt.Println("Running crewgen tests...")
 	result := m.Run()
 	fmt.Println("Cleanng up")
-	//os.Remove(binName)
+	os.Remove(binName)
 	os.Exit(result)
 }
 

@@ -26,6 +26,7 @@ func TestMain(m *testing.M) {
 	fmt.Println("Running tests...")
 	result := m.Run()
 	fmt.Println("Cleaning up")
+	os.Remove(binName)
 	os.Exit(result)
 }
 
