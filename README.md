@@ -1,17 +1,34 @@
 # crewgen
-Web based generic ship crew generator
 
+Generic 2d6 OGL NPC generator
 
+## Note that updates to the code have broken the web version. CLI still works.
 
-## Building the binary
+## Building the teamgen binary
 
 ```
-go build -o crewgen main.go
+cd cmd/teamgen
+go build -o teamgen main.go
 ```
+
+## Cross-compiling 
+
+```
+make build
+```
+
+## Contributing
+
+The datafiles can always use new material. Check out 
+cmd/teamgen/data/careers.txt and cmd/teamgen/data/jobs.txt for places to start.
+You can also customize those for your own campaign.
+
+If you want to do some coding, Go is pretty simple, and there's a TODO list 
+here for things that need to be worked on. 
 
 ## Using crewgen with Docker
 
-Create a directory for the Docker build, and create the subdirectory "app".
+Create a directory for the Docker build, and create the sub-directory "app".
 
 ### Dockerfile
 
