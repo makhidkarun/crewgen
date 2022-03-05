@@ -310,4 +310,16 @@ func TestTeamgenCLI(t *testing.T) {
 		}
 	})
 
+	t.Run("TestJobMerchant", func(t *testing.T) {
+		cmd := exec.Command(cmdPath, "-career", "Merchant", "-terms", "1")
+		out, err := cmd.CombinedOutput()
+		if err != nil {
+			t.Fatal(err)
+		}
+		output := strings.Split(string(out), "\n")
+		matched_2, err := regexp.MatchString(`Streetwise-`, output[2])
+		if !matched_2 {
+			t.Error("TestJobMerchant does not default assign Streetwise")
+		}
+	})
 }

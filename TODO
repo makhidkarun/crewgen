@@ -1,13 +1,12 @@
 TODO
 ====
  
-feature:  numeric increase in skills (to allow % based systems)
 feature:  allow stat increases as a skill
 feature:  include zero level skills
 feature:  include muster out benefits?
 
+refactor: test template output
 refactor: option to use datadir
-refactor: test supp4 output
 refactor: figure out err handling in whine and cry
 refactor: crewgen to use encapsulated web dir
 refactor: crewgen fails due to web dir and data dir, but tests pass
@@ -21,6 +20,7 @@ document: figure out how to use config file for data dir and files
 
 DONE
 ====
+feature:  numeric increase in skills (to allow % based systems)
 refactor: fix Makefile so it doesn't error on cleaning missing files (OBE)
 feature:  allow listing of available jobs and careers
 feature:  remove case from job and career

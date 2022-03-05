@@ -17,6 +17,7 @@ func TestMain(m *testing.M) {
 	options["terms"] = "1"
 	options["career"] = "navy"
 	options["datadir"] = datadir
+	options["game"] = "2d6"
 	exitVal := m.Run()
 	os.Exit(exitVal)
 }

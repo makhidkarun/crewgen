@@ -20,7 +20,10 @@ const supp4 = `{{ .Name }} [{{ .Gender }}] {{ .UPPs }} Age: {{ .Age }} {{ .Speci
 {{ .SkillString }}
 `
 
-const brp = `{{ .Name }} [{{ .Gender }}]`
+const brp = `{{ .Name }} [{{ .Gender }}] Age: {{ .Age }} {{ .Species }} {{ .Terms }} terms {{ title .Career }}
+{{ .UPPs }}
+{{ .SkillString }}
+`
 
 var funcMap = template.FuncMap{
 	"title": strings.Title,

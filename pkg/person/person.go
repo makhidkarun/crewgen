@@ -20,7 +20,7 @@ import (
 // Person holds data. Most fields are exported.
 type Person struct {
 	Name        string
-	UPP         [6]int
+	UPP         []int
 	UPPs        string
 	Gender      string
 	PSR         int
@@ -45,7 +45,7 @@ func newSkill(job []string) string {
 
 // skillsToString returns a comma separate single string.
 //   Skill-1,Skill-3
-func skillsToStr(skills map[string]int) string {
+func skillsToStr(skills map[string]int, game string) string {
 	s := ""
 	i := 1
 	if len(skills) == 0 {
@@ -55,7 +55,11 @@ func skillsToStr(skills map[string]int) string {
 		s += k + "-" + strconv.Itoa(v)
 		if i < len(skills) {
 			i++
-			s += ", "
+			if game == "brp" {
+				s += "\n"
+			} else {
+				s += ", "
+			}
 		}
 	}
 	return s
@@ -63,8 +67,8 @@ func skillsToStr(skills map[string]int) string {
 
 // incSkill increases a skill by 1
 // probably needs a variable?
-func incSkill(skills map[string]int, skill string) map[string]int {
-	skills[skill] += 1
+func incSkill(skills map[string]int, skill string, value int) map[string]int {
+	skills[skill] += value
 	return skills
 }
 
@@ -81,18 +85,25 @@ func setCareer(career string, datadir string) (c string) {
 }
 
 // formatUPP returns a string of alphanumeric Hex.
-func formatUPP(upp [6]int) string {
+func formatUPP(upp []int, game string) string {
 	var newUPP string
-	for _, val := range upp {
-		newUPP += fmt.Sprintf("%X", val)
+	if game == "brp" {
+		statKeys := []string{"Str", "Con", "Siz", "Int", "Pow", "Dex"} //, "Edu"}
+		for idx, val := range statKeys {
+			newUPP += fmt.Sprintf("%s: %d  ", val, upp[idx])
+		}
+	} else {
+		for _, val := range upp {
+			newUPP += fmt.Sprintf("%X", val)
+		}
 	}
 	return newUPP
 }
 
 // modifyUpp ensures all UPP numbers are between 2 and 15, decimal.
-func modifyUpp(upp [6]int, stat int, mod int) [6]int {
+func modifyUpp(upp []int, stat int, mod int) []int {
 	// Requires the UPP [6]int, stat index [0-5], and modifier
-	if stat < 0 || stat > 5 {
+	if stat < 0 || stat >= len(upp) {
 		return upp
 	} else {
 		upp[stat] += mod
@@ -124,10 +135,20 @@ func numTerms() (t int) {
 }
 
 // rollUPP starts the basic 2d6 rolls.
-func rollUPP() [6]int {
-	var upp [6]int
-	for i := 0; i < 6; i++ {
-		upp[i] = dice.TwoD6()
+func rollUPP(game string) []int {
+	stats := 6
+	numDice := 2
+	if game == "brp" {
+		stats = 8
+		numDice = 3
+	}
+	upp := make([]int, 0, stats)
+	for i := 0; i < stats; i++ {
+		roll := 0
+		for j := 0; j < numDice; j++ {
+			roll += dice.OneD6()
+		}
+		upp = append(upp, roll)
 	}
 	return upp
 }
@@ -152,7 +173,7 @@ func writePhysical(c Person) string {
 
 // addSkills returns a map of skill (string) and level (int).
 //  It auto assigns the primary skill for the job given.
-func addSkills(job string, career string, terms int, datadir string) map[string]int {
+func addSkills(job string, career string, terms int, datadir string, game string) map[string]int {
 	skills := make(map[string]int)
 	careerFile := path.Join(datadir, "careers.txt")
 	careerList := datamine.CareerList(careerFile)
@@ -175,9 +196,13 @@ func addSkills(job string, career string, terms int, datadir string) map[string]
 	copy(skillList, append(jobSkills, careerSkills[:]...))
 	primarySkill := datamine.FirstStringInArray(skillList)
 
-	skills = incSkill(skills, primarySkill)
+	value := 1
+	if game == "brp" {
+		value = 5
+	}
+	skills = incSkill(skills, primarySkill, value)
 	for i := 0; i < terms; i++ {
-		skills = incSkill(skills, newSkill(skillList))
+		skills = incSkill(skills, newSkill(skillList), value)
 	}
 	return skills
 }
@@ -198,18 +223,19 @@ func MakePerson(options map[string]string) Person {
 	datadir := options["datadir"]
 	career := strings.ToLower(options["career"])
 	job := strings.ToLower(options["job"])
+	game := options["game"]
 
 	speciesOptions := []string{"human"}
 
 	character.Gender = setGender(input_gender)
 	character.Name = datamine.GetName(character.Gender, datadir)
-	character.UPP = rollUPP()
-	character.UPPs = formatUPP(character.UPP)
+	character.UPP = rollUPP(game)
+	character.UPPs = formatUPP(character.UPP, game)
 	character.Age = age(character.Terms)
 	character.Career = setCareer(career, datadir)
 	character.Species = setSpecies(speciesOptions)
-	character.Skills = addSkills(job, character.Career, character.Terms, datadir)
-	character.SkillString = skillsToStr(character.Skills)
+	character.Skills = addSkills(job, character.Career, character.Terms, datadir, game)
+	character.SkillString = skillsToStr(character.Skills, game)
 	character.Physical = writePhysical(character)
 
 	return character
