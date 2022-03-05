@@ -188,8 +188,8 @@ func MakePerson(options map[string]string) Person {
 	terms, _ := strconv.Atoi(options["terms"])
 	input_gender := options["gender"]
 	datadir := options["datadir"]
-	career := options["career"]
-	job := options["job"]
+	career := strings.ToLower(options["career"])
+	job := strings.ToLower(options["job"])
 
 	speciesOptions := []string{"human"}
 	var character Person

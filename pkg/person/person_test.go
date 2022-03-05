@@ -15,7 +15,7 @@ func TestMain(m *testing.M) {
 	options = make(map[string]string)
 	datadir := "/home/leam/lang/git/makhidkarun/crewgen/cmd/teamgen/data"
 	options["terms"] = "1"
-	options["career"] = "Navy"
+	options["career"] = "navy"
 	options["datadir"] = datadir
 	exitVal := m.Run()
 	os.Exit(exitVal)
@@ -53,17 +53,17 @@ func TestMakePersonNameTwoWordString(t *testing.T) {
 }
 
 func TestCareerNavy(t *testing.T) {
-	options["career"] = "Navy"
+	options["career"] = "navy"
 	testP := person.MakePerson(options)
-	if testP.Career != "Navy" {
+	if testP.Career != "navy" {
 		t.Error(`MakePerson failed to specify Navy career`)
 	}
 }
 
 func TestCareerMerchant(t *testing.T) {
-	options["career"] = "Merchant"
+	options["career"] = "merchant"
 	testP := person.MakePerson(options)
-	if testP.Career != "Merchant" {
+	if testP.Career != "merchant" {
 		t.Error(`MakePerson failed to specify Merchant career`)
 	}
 }
@@ -109,7 +109,7 @@ func TestNoJob(t *testing.T) {
 }
 
 func TestDefaultJob(t *testing.T) {
-	options["career"] = "Scout"
+	options["career"] = "scout"
 	testP := person.MakePerson(options)
 	if !strings.Contains(testP.SkillString, "Pilot-") {
 		t.Errorf("TestDefaultJob does not give Scouts pilot: %s", testP.SkillString)
@@ -117,14 +117,14 @@ func TestDefaultJob(t *testing.T) {
 }
 
 func TestMercenaryCareer(t *testing.T) {
-	options["career"] = "Mercenary"
+	options["career"] = "mercenary"
 	options["terms"] = "4"
 	options["job"] = "infantry"
 	testP := person.MakePerson(options)
 	if len(testP.SkillString) < 8 {
 		t.Error(`TestMercenaryCareer failed to specify a long skillstring`)
 	}
-	if testP.Career != "Mercenary" {
+	if testP.Career != "mercenary" {
 		t.Error(`TestMercenaryCareer failed to specify Mercenary career`)
 	}
 	if !strings.Contains(testP.SkillString, "GunCbt(CbtR)") {

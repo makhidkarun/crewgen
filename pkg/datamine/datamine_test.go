@@ -1,11 +1,19 @@
 package datamine_test
 
 import (
-	"strings"
-
 	"github.com/makhidkarun/crewgen/pkg/datamine"
+	"strings"
 	"testing"
 )
+
+func hasElement(s []string, str string) bool {
+	for _, v := range s {
+		if v == str {
+			return true
+		}
+	}
+	return false
+}
 
 func TestStringInArray(t *testing.T) {
 	var genders []string = []string{"F", "M"}
@@ -89,14 +97,14 @@ func TestLineToList(t *testing.T) {
 
 func TestDataFromListLine(t *testing.T) {
 	var careerList []string
-	careerOne := "Navy:engineer:Mechanic,Engineer,Electrical"
-	careerTwo := "Army:infantry:GunCbt(CbtR),Brawling,Recon"
+	careerOne := "navy:engineer:Mechanic,Engineer,Electrical"
+	careerTwo := "army:infantry:GunCbt(CbtR),Brawling,Recon"
 	careerList = append(careerList, careerOne)
 	careerList = append(careerList, careerTwo)
-	expected := "Navy"
+	expected := "navy"
 	sep := ":"
 	career := datamine.DataFromListLine(careerList, expected, sep, 0)
-	if career != "Navy" {
+	if career != "navy" {
 		t.Errorf("TestDataFromListLine failed: wanted %s, got %q.\n", expected, career)
 	}
 	job := datamine.DataFromListLine(careerList, expected, sep, 1)
@@ -121,13 +129,13 @@ func TestHeadersFromList(t *testing.T) {
 			t.Error("TestHeadersFromList let a comment in")
 		}
 	}
-	expectedList := []string{"Navy", "Army", "Merchant", "Marines", "Scout", "Other", "Mercenary"}
-	if len(headers) != len(expectedList) {
+	expectedList := []string{"navy", "army", "merchant", "marines", "scout", "other", "mercenary"}
+	if len(headers) < len(expectedList) {
 		t.Error("TestHeadersFromList has the wrong list count")
 	}
-	for index, header := range headers {
-		if expectedList[index] != header {
-			t.Errorf("TestHeadersFromList mixed up %s and %s", expectedList[index], header)
+	for _, header := range headers {
+		if !hasElement(expectedList, header) {
+			t.Errorf("TestHeadersFromList mixed expectedList does not have %s", header)
 		}
 	}
 }
@@ -143,20 +151,20 @@ func TestCareerList(t *testing.T) {
 			t.Error("TestCareerList let a comment in")
 		}
 	}
-	expectedList := []string{"Navy", "Army", "Merchant", "Marines", "Scout", "Other", "Mercenary"}
-	if len(careers) != len(expectedList) {
+	expectedList := []string{"navy", "army", "merchant", "marines", "scout", "other", "mercenary"}
+	if len(careers) < len(expectedList) {
 		t.Error("TestCareerList has the wrong list count")
 	}
-	for index, career := range careers {
-		if expectedList[index] != career {
-			t.Errorf("TestCareerList mixed up %s and %s", expectedList[index], career)
+	for _, career := range careers {
+		if !hasElement(expectedList, career) {
+			t.Errorf("TestCareerList does not have %s", career)
 		}
 	}
 }
 
 func TestCareerSkills(t *testing.T) {
 	datafile := "testdata/careers.txt"
-	career := "Navy"
+	career := "navy"
 	careerSkills := datamine.CareerSkills(datafile, career)
 	if len(careerSkills) == 0 {
 		t.Error("TestCareerSkills has no careers")
@@ -179,12 +187,12 @@ func TestJobList(t *testing.T) {
 	}
 	expectedList := []string{"infantry", "marine", "commando", "scout", "spacer", "merchant", "other", "pilot",
 		"medic", "gunner", "navigator", "steward", "engineer"}
-	if len(jobs) != len(expectedList) {
+	if len(jobs) < len(expectedList) {
 		t.Error("TestJobList has the wrong list count")
 	}
-	for index, job := range jobs {
-		if expectedList[index] != job {
-			t.Errorf("TestJobList mixed up %s and %s", expectedList[index], job)
+	for _, job := range jobs {
+		if !hasElement(expectedList, job) {
+			t.Errorf("TestJobList does not have %s", job)
 		}
 	}
 }
@@ -203,9 +211,20 @@ func TestJobSkillList(t *testing.T) {
 
 func TestDefaultJob(t *testing.T) {
 	datafile := "testdata/careers.txt"
-	result := datamine.DefaultJob(datafile, "Scout")
+	result := datamine.DefaultJob(datafile, "scout")
 	expected := "scout"
 	if result != expected {
 		t.Errorf("TestDefaultJob got %s, expected %s", result, expected)
 	}
+}
+
+func TestOptions(t *testing.T) {
+	careerfile := "testdata/careers.txt"
+	jobfile := "testdata/jobs.txt"
+
+	result := datamine.ListOptions(careerfile, jobfile)
+	if !strings.Contains(result, "Scout") {
+		t.Errorf("result does not contain Scout: %s", result)
+	}
+
 }

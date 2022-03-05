@@ -7,13 +7,11 @@ import (
 	"fmt"
 	"os"
 	"path"
+	"sort"
 	"strings"
 
 	"github.com/makhidkarun/crewgen/pkg/dice"
 )
-
-//var careerList []string
-//var jobList []string
 
 func LineToList(line string, sep string) []string {
 	var data []string
@@ -30,6 +28,7 @@ func HeadersFromList(data []string, sep string) []string {
 		datum := strings.Split(line, sep)[0]
 		headers = append(headers, strings.Trim(datum, " "))
 	}
+	sort.Strings(headers)
 	return headers
 }
 
@@ -146,6 +145,8 @@ func JobList(jobFile string) []string {
 	sep := ":"
 	jobData := ArrayFromFile(jobFile)
 	jobList := HeadersFromList(jobData, sep)
+	//jobSlice := jobList[:]
+	//sort.Strings(jobSlice)
 	return jobList
 }
 
@@ -158,4 +159,17 @@ func JobSkills(jobFile, job string) []string {
 	jobLine := DataFromListLine(jobData, job, jobSep, 1)
 	jobSkills := LineToList(jobLine, skillSep)
 	return jobSkills
+}
+
+// ListOptions provides the Career and Job options available.
+func ListOptions(careerFile, jobFile string) string {
+	listOptions := "Careers:\n"
+	for _, c := range CareerList(careerFile) {
+		listOptions += fmt.Sprintf("  %s\n", strings.Title(c))
+	}
+	listOptions += "Jobs:\n"
+	for _, j := range JobList(jobFile) {
+		listOptions += fmt.Sprintf("  %s\n", strings.Title(j))
+	}
+	return listOptions
 }
