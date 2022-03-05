@@ -119,7 +119,7 @@ func setGender(input ...string) string {
 
 // numTerms sets the number of terms the character served.
 func numTerms() (t int) {
-	t = dice.Random(1, 4)
+	t = dice.Random(1, 5)
 	return
 }
 
@@ -185,20 +185,21 @@ func addSkills(job string, career string, terms int, datadir string) map[string]
 // MakePerson takes a map of options and returns a Person.
 // It is a basic factory.
 func MakePerson(options map[string]string) Person {
-	terms, _ := strconv.Atoi(options["terms"])
+	var character Person
+
+	terms, tErr := strconv.Atoi(options["terms"])
+	if tErr != nil {
+		character.Terms = numTerms()
+	} else {
+		character.Terms = terms
+	}
+
 	input_gender := options["gender"]
 	datadir := options["datadir"]
 	career := strings.ToLower(options["career"])
 	job := strings.ToLower(options["job"])
 
 	speciesOptions := []string{"human"}
-	var character Person
-
-	if terms <= 0 || terms > 5 {
-		character.Terms = numTerms()
-	} else {
-		character.Terms = terms
-	}
 
 	character.Gender = setGender(input_gender)
 	character.Name = datamine.GetName(character.Gender, datadir)

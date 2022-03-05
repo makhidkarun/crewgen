@@ -20,8 +20,26 @@ const supp4 = `{{ .Name }} [{{ .Gender }}] {{ .UPPs }} Age: {{ .Age }} {{ .Speci
 {{ .SkillString }}
 `
 
+const brp = `{{ .Name }} [{{ .Gender }}]`
+
 var funcMap = template.FuncMap{
 	"title": strings.Title,
+}
+
+var outstring bytes.Buffer
+
+func outstringer(p person.Person, tmpl string) string {
+	t := template.New("t")
+	t, err := t.Funcs(funcMap).Parse(tmpl)
+	if err != nil {
+		panic(err)
+	}
+	err = t.Execute(&outstring, p)
+	if err != nil {
+		panic(err)
+	}
+	result := outstring.String()
+	return result
 }
 
 func whine(err error) {
@@ -33,7 +51,6 @@ func whine(err error) {
 func main() {
 
 	var options = make(map[string]string)
-	var outstring bytes.Buffer
 
 	exe, err := os.Executable()
 	whine(err)
@@ -41,9 +58,10 @@ func main() {
 	datadir := path.Join(exedir, "data")
 
 	gender := flag.String("gender", "", "F or M, default random")
-	terms := flag.String("terms", "0", "Number of terms, random 1-5")
+	terms := flag.String("terms", "", "Number of terms, random 1-5")
 	career := flag.String("career", "", "Career or Branch")
 	job := flag.String("job", "", "Job")
+	game := flag.String("game", "2d6", "Game version")
 	listOptions := flag.Bool("list", false, "List Career and Job options")
 	flag.Parse()
 
@@ -60,16 +78,14 @@ func main() {
 	options["career"] = *career
 	options["job"] = *job
 	options["db_name"] = path.Join(datadir, "names.db")
+	options["game"] = *game
 	p := person.MakePerson(options)
-	tmpl := template.New("supp4")
-	tmpl, tErr := tmpl.Funcs(funcMap).Parse(supp4)
-	if tErr != nil {
-		panic(err)
+
+	result := ""
+	if *game == "brp" {
+		result = outstringer(p, brp)
+	} else {
+		result = outstringer(p, supp4)
 	}
-	err = tmpl.Execute(&outstring, p)
-	if err != nil {
-		panic(err)
-	}
-	result := outstring.String()
 	fmt.Println(result)
 }

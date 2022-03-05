@@ -123,12 +123,44 @@ func TestTeamgenCLI(t *testing.T) {
 			t.Fatal(err)
 		}
 		output := strings.Split(string(out), "\n")
-		matched_1, err := regexp.MatchString(`^[1-5] term`, output[1])
+		matched_1, err := regexp.MatchString(`^[1-9][0-9]* term`, output[1])
 		if err != nil {
 			t.Fatal(err)
 		}
 		if !matched_1 {
-			t.Error("Did not find match to random term less than 10")
+			t.Error("Did not find match to 10 terms")
+		}
+	})
+
+	t.Run("TestManyTerms", func(t *testing.T) {
+		cmd := exec.Command(cmdPath, "-terms", "99")
+		out, err := cmd.CombinedOutput()
+		if err != nil {
+			t.Fatal(err)
+		}
+		output := strings.Split(string(out), "\n")
+		matched_1, err := regexp.MatchString(`^99 term`, output[1])
+		if err != nil {
+			t.Fatal(err)
+		}
+		if !matched_1 {
+			t.Error("Did not find match to 99 terms")
+		}
+	})
+
+	t.Run("TestAgeOneTerm", func(t *testing.T) {
+		cmd := exec.Command(cmdPath, "-terms", "1")
+		out, err := cmd.CombinedOutput()
+		if err != nil {
+			t.Fatal(err)
+		}
+		output := strings.Split(string(out), "\n")
+		matched_1, err := regexp.MatchString(`Age: 2[2-5]`, output[0])
+		if err != nil {
+			t.Fatal(err)
+		}
+		if !matched_1 {
+			t.Error("Age not correct for 1 term")
 		}
 	})
 
