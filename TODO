@@ -5,6 +5,7 @@ feature:  allow stat increases as a skill
 feature:  include zero level skills
 feature:  include muster out benefits?
 
+refactor: remove aging from brp, based on terms
 refactor: test template output
 refactor: option to use datadir
 refactor: figure out err handling in whine and cry
