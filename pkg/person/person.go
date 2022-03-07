@@ -35,8 +35,8 @@ type Person struct {
 }
 
 // age sets the base age, assuming some time after leaving the service.
-func age(terms int) int {
-	return 18 + (terms * 4) + dice.Random(0, 3)
+func age(terms int, termMod int) int {
+	return 18 + (terms * termMod) + dice.Random(0, 3)
 }
 
 // newSkill takes an array and returns a string
@@ -231,12 +231,15 @@ func MakePerson(options map[string]string) Person {
 	game := options["game"]
 
 	speciesOptions := []string{"human"}
-
+	termMod := 4
+	if game == "brp" {
+		termMod = 0
+	}
 	character.Gender = setGender(input_gender)
 	character.Name = datamine.GetName(character.Gender, datadir)
 	character.UPP = rollUPP(game)
 	character.UPPs = formatUPP(character.UPP, game)
-	character.Age = age(character.Terms)
+	character.Age = age(character.Terms, termMod)
 	character.Career = setCareer(career, datadir)
 	character.Species = setSpecies(speciesOptions)
 	character.Skills = addSkills(job, character.Career, character.Terms, datadir, game)

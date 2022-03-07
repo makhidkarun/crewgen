@@ -32,9 +32,28 @@ func TestMakePerson(t *testing.T) {
 
 func TestMakePersonAge(t *testing.T) {
 	options["terms"] = "1"
+	options["game"] = "2d6"
 	testP := person.MakePerson(options)
 	if testP.Age <= 21 || testP.Age >= 26 {
-		t.Error(`MakePerson failed age`)
+		t.Errorf("MakePerson failed age for 2d6: %d", testP.Age)
+	}
+}
+
+func TestMakePersonAge10(t *testing.T) {
+	options["terms"] = "10"
+	options["game"] = "2d6"
+	testP := person.MakePerson(options)
+	if testP.Age < 58 || testP.Age > 61 {
+		t.Errorf("MakePerson failed age for 10 terms 2d6: %d", testP.Age)
+	}
+}
+
+func TestMakePersonAgeBRP(t *testing.T) {
+	options["terms"] = "10"
+	options["game"] = "brp"
+	testP := person.MakePerson(options)
+	if testP.Age < 18 || testP.Age > 21 {
+		t.Error("MakePerson failed age for BRP")
 	}
 }
 
