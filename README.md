@@ -4,6 +4,11 @@ Generic 2d6 OGL NPC generator
 
 ## Note that updates to the code have broken the web version. CLI still works.
 
+## Basic usage
+
+Copy the teamgen.zip file into a new directory, and unzip it. Read the README.txt file.
+
+
 ## Building the teamgen binary
 
 ```

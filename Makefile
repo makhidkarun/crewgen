@@ -39,6 +39,7 @@ longtest: vet
 
 #distro: longtest
 distro: build
+	cp docs/README.txt bin
 	cd bin && zip -r ../tmp/teamgen.zip .
 .PHONY:distro
 
