@@ -10,6 +10,7 @@ package person
 import (
 	"fmt"
 	"path"
+	"sort"
 	"strconv"
 	"strings"
 
@@ -43,23 +44,27 @@ func newSkill(job []string) string {
 	return datamine.RandomStringFromArray(job)
 }
 
-// skillsToString returns a comma separate single string.
-//   Skill-1,Skill-3
+// skillsToString returns a comma or newline separated single string.
 func skillsToStr(skills map[string]int, game string) string {
 	s := ""
 	i := 1
 	if len(skills) == 0 {
 		return s
 	}
-	for k, v := range skills {
-		s += k + "-" + strconv.Itoa(v)
-		if i < len(skills) {
-			i++
+	skillList := make([]string, 0, len(skills))
+	for skill, _ := range skills {
+		skillList = append(skillList, skill)
+	}
+	sort.Strings(skillList)
+	for _, key := range skillList {
+		s += key + "-" + strconv.Itoa(skills[key])
+		if i < len(skillList) {
 			if game == "brp" {
 				s += "\n"
 			} else {
 				s += ", "
 			}
+			i++
 		}
 	}
 	return s
