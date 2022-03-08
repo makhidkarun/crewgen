@@ -16,6 +16,7 @@ refactor: crewgen to use encapsulated web dir
 refactor: crewgen fails due to web dir and data dir, but tests pass
 refactor: fix ship role vs person career
 refactor: remove hard coded datadir in person_test.go
+refactor: outstringer return err if fail; pass up err vice panic.
 
 datamine: move getSpecies to dm
 datamine: add plot

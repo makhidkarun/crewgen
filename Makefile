@@ -20,13 +20,6 @@ build: test
 	export GOARCH=arm64 GOOS=linux;	 go build -o bin/teamgen_$${GOOS}.$${GOARCH} cmd/teamgen/main.go
 	export GOARCH=amd64 GOOS=darwin; go build -o bin/teamgen_$${GOOS}.$${GOARCH} cmd/teamgen/main.go
 	export GOARCH=amd64 GOOS=windows; go build -o bin/teamgen_$${GOOS}.$${GOARCH} cmd/teamgen/main.go
-	#cp -Rp cmd/crewgen/web bin
-	#go build -o bin/crewgen  cmd/crewgen/main.go
-	#for arch in ${archs[@]}
-	#export GOOS = linux
-	#do GOARCH=$${arch} go build -o bin/teamgen_linux.$${GOARCH}  cmd/teamgen/main.go; done;
-	#for arch in amd64 arm64 386; \
-	#	do export GOARCH=$${arch} GOOS=linux go build -o bin/teamgen_linux.$${GOARCH} cmd/teamgen/main.go; done
 .PHONY:build
 
 test:	vet
@@ -37,8 +30,9 @@ longtest: vet
 	go test -count 1000 -timeout 30m ./...
 .PHONY:longtest
 
-#distro: longtest
 distro: build
+	rm -rf tmp
+	mkdir tmp
 	cp docs/README.txt bin
 	cd bin && zip -r ../tmp/teamgen.zip .
 .PHONY:distro
