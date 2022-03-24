@@ -322,4 +322,12 @@ func TestTeamgenCLI(t *testing.T) {
 			t.Error("TestJobMerchant does not default assign Streetwise")
 		}
 	})
+
+	t.Run("TestPOptions", func(t *testing.T) {
+		cmd := exec.Command(cmdPath, "-p", ",,,,,,,,")
+		_, err := cmd.CombinedOutput()
+		if err != nil {
+			t.Fatal(err)
+		}
+	})
 }

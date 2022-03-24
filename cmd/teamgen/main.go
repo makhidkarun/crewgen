@@ -51,6 +51,13 @@ func whine(err error) {
 	}
 }
 
+func parsePersonOptions(personOptions string) map[string]string {
+	options := make(map[string]string)
+	//optionKeys := []string{"game", "job", "career", "terms", "gender",
+	//	"fName", "mName", "lName", "suffix", "datadir", "careerFile", "jobFile"}
+	return options
+}
+
 func main() {
 
 	var options = make(map[string]string)
@@ -60,6 +67,7 @@ func main() {
 	exedir := path.Dir(exe)
 	datadir := path.Join(exedir, "data")
 
+	personOptions := flag.String("p", "", "Person options as 'game,job,career,terms,gender,first name, middle name, last name, suffix'")
 	gender := flag.String("gender", "", "F or M, default random")
 	terms := flag.String("terms", "", "Number of terms, random 1-5")
 	career := flag.String("career", "", "Career or Branch")
@@ -76,6 +84,7 @@ func main() {
 		os.Exit(0)
 	}
 
+	options["personOptions"] = *personOptions
 	options["gender"] = *gender
 	options["terms"] = *terms
 	options["career"] = *career
