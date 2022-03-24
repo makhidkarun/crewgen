@@ -1,0 +1,13 @@
+# Planned State
+
+
+{cli, web, api} passes person.MakePerson a map of string person options, and 
+person.MakePerson returns a person object.
+
+
+That gets passed back to the {cli, web, api}, to be optionally passed 
+a template.
+
+The template has an output format for a person, and optionally an output
+format for a group of people (ship crew, fire team, village).
+

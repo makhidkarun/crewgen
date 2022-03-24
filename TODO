@@ -8,6 +8,9 @@ feature:  add personality
 feature:  add plot
 feature:  add physical description
 
+refactor: allow person data to be passed in
+refactor: split up for cli, api, and web versions
+refactor: pass map of strings by default
 refactor: test template output
 refactor: option to use datadir
 refactor: figure out err handling in whine and cry
@@ -16,6 +19,8 @@ refactor: crewgen fails due to web dir and data dir, but tests pass
 refactor: fix ship role vs person career
 refactor: remove hard coded datadir in person_test.go
 refactor: outstringer return err if fail; pass up err vice panic.
+refactor: make build also does GCE
+refactor: make build also does Docker image
 
 datamine: move getSpecies to dm
 datamine: add plot
