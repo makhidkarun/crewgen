@@ -3,15 +3,13 @@ TODO
  
 feature:  allow stat increases as a skill
 feature:  include zero level skills
-feature:  include muster out benefits?
 feature:  add personality
 feature:  add plot
 feature:  add physical description
 
+refactor: pass options to datamine and person
 refactor: allow person data to be passed in
 refactor: split up for cli, api, and web versions
-refactor: pass map of strings by default
-refactor: test template output
 refactor: option to use datadir
 refactor: figure out err handling in whine and cry
 refactor: crewgen to use encapsulated web dir
@@ -21,6 +19,7 @@ refactor: remove hard coded datadir in person_test.go
 refactor: outstringer return err if fail; pass up err vice panic.
 refactor: make build also does GCE
 refactor: make build also does Docker image
+refactor: use templates for output, vice outstringer
 
 datamine: move getSpecies to dm
 datamine: add plot
@@ -32,6 +31,8 @@ document: figure out how to use config file for data dir and files
 
 DONE
 ====
+refactor: test template output
+refactor: pass map of strings by default
 refactor: remove aging from brp, based on terms
 refactor: skills output in alpha order
 feature:  numeric increase in skills (to allow % based systems)
