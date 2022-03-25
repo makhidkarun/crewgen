@@ -100,6 +100,39 @@ func TestTeamgenCLI(t *testing.T) {
 		}
 	})
 
+	t.Run("TestGame2d6", func(t *testing.T) {
+		cmd := exec.Command(cmdPath, "-game", "2d6")
+		out, err := cmd.CombinedOutput()
+		if err != nil {
+			t.Fatal(err)
+		}
+		output := strings.Split(string(out), "\n")
+		matched_0, err := regexp.MatchString(`[2-9A-F]{6}`, output[0])
+		if err != nil {
+			t.Fatal(err)
+		}
+		if !matched_0 {
+			t.Error("Did not find a UPP match")
+		}
+	})
+
+	t.Run("TestGameBRP", func(t *testing.T) {
+		cmd := exec.Command(cmdPath, "-game", "brp")
+		out, err := cmd.CombinedOutput()
+		if err != nil {
+			t.Fatal(err)
+		}
+		output := strings.Split(string(out), "\n")
+		matched_1, err := regexp.MatchString(`Pow:\s[0-9]{1,2}`, output[1])
+		if err != nil {
+			t.Fatal(err)
+		}
+		if !matched_1 {
+			fmt.Printf("error %q\n", output[1])
+			t.Error("Did not find a BRP match")
+		}
+	})
+
 	t.Run("TestTerms1", func(t *testing.T) {
 		cmd := exec.Command(cmdPath, "-terms", "1")
 		out, err := cmd.CombinedOutput()
@@ -323,11 +356,15 @@ func TestTeamgenCLI(t *testing.T) {
 		}
 	})
 
-	t.Run("TestPOptions", func(t *testing.T) {
-		cmd := exec.Command(cmdPath, "-p", ",,,,,,,,")
-		_, err := cmd.CombinedOutput()
+	t.Run("TestLastName", func(t *testing.T) {
+		cmd := exec.Command(cmdPath, "-lastName", "Domici")
+		out, err := cmd.CombinedOutput()
+		output := string(out)
 		if err != nil {
 			t.Fatal(err)
+		}
+		if !strings.Contains(output, "Domici") {
+			t.Error("In teamgen main, TestLastName does not match")
 		}
 	})
 }

@@ -52,7 +52,8 @@ func TestRandomStringFromArray(t *testing.T) {
 func TestGetFemaleFirstName(t *testing.T) {
 	gender := "F"
 	datadir := "data"
-	name := datamine.GetName(gender, datadir)
+	lastName := ""
+	name := datamine.GetName(gender, datadir, lastName)
 	if len(name) < 5 {
 		t.Error(`Name too short`)
 	}
@@ -61,9 +62,20 @@ func TestGetFemaleFirstName(t *testing.T) {
 func TestGetMaleFirstName(t *testing.T) {
 	gender := "M"
 	datadir := "data"
-	name := datamine.GetName(gender, datadir)
+	lastName := ""
+	name := datamine.GetName(gender, datadir, lastName)
 	if len(name) < 5 {
 		t.Error(`Name too short`)
+	}
+}
+
+func TestLastName(t *testing.T) {
+	datadir := "data"
+	gender := "F"
+	lastName := "Domici"
+	name := datamine.GetName(gender, datadir, lastName)
+	if !strings.Contains(name, lastName) {
+		t.Error("In datamine, lastName does not match")
 	}
 }
 

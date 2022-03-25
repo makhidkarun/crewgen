@@ -151,3 +151,11 @@ func TestMercenaryCareer(t *testing.T) {
 		t.Error("TestMercenaryCareer does not give infantry CbtR")
 	}
 }
+
+func TestLastName(t *testing.T) {
+	options["lastName"] = "Domici"
+	testP := person.MakePerson(options)
+	if !strings.Contains(testP.Name, "Domici") {
+		t.Error("In person, TestLastName does not match")
+	}
+}

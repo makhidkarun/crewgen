@@ -51,13 +51,6 @@ func whine(err error) {
 	}
 }
 
-func parsePersonOptions(personOptions string) map[string]string {
-	options := make(map[string]string)
-	//optionKeys := []string{"game", "job", "career", "terms", "gender",
-	//	"fName", "mName", "lName", "suffix", "datadir", "careerFile", "jobFile"}
-	return options
-}
-
 func main() {
 
 	var options = make(map[string]string)
@@ -67,12 +60,14 @@ func main() {
 	exedir := path.Dir(exe)
 	datadir := path.Join(exedir, "data")
 
-	personOptions := flag.String("p", "", "Person options as 'game,job,career,terms,gender,first name, middle name, last name, suffix'")
-	gender := flag.String("gender", "", "F or M, default random")
-	terms := flag.String("terms", "", "Number of terms, random 1-5")
+	//'game,job,career,terms,gender,first name, middle name, last name, suffix'")
 	career := flag.String("career", "", "Career or Branch")
-	job := flag.String("job", "", "Job")
 	game := flag.String("game", "2d6", "Game version")
+	gender := flag.String("gender", "", "F or M, default random")
+	job := flag.String("job", "", "Job")
+	lastName := flag.String("lastName", "", "Last name")
+	terms := flag.String("terms", "", "Number of terms, random 1-5")
+
 	listOptions := flag.Bool("list", false, "List Career and Job options")
 	flag.Parse()
 
@@ -84,11 +79,11 @@ func main() {
 		os.Exit(0)
 	}
 
-	options["personOptions"] = *personOptions
 	options["gender"] = *gender
 	options["terms"] = *terms
 	options["career"] = *career
 	options["job"] = *job
+	options["lastName"] = *lastName
 	options["db_name"] = path.Join(datadir, "names.db")
 	options["game"] = *game
 	p := person.MakePerson(options)

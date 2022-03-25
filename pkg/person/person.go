@@ -229,6 +229,7 @@ func MakePerson(options map[string]string) Person {
 	career := strings.ToLower(options["career"])
 	job := strings.ToLower(options["job"])
 	game := options["game"]
+	lastName := options["lastName"]
 
 	speciesOptions := []string{"human"}
 	termMod := 4
@@ -236,7 +237,7 @@ func MakePerson(options map[string]string) Person {
 		termMod = 0
 	}
 	character.Gender = setGender(input_gender)
-	character.Name = datamine.GetName(character.Gender, datadir)
+	character.Name = datamine.GetName(character.Gender, datadir, lastName)
 	character.UPP = rollUPP(game)
 	character.UPPs = formatUPP(character.UPP, game)
 	character.Age = age(character.Terms, termMod)
