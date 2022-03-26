@@ -41,8 +41,9 @@ func TestTeamgenCLI(t *testing.T) {
 		cmd := exec.Command(cmdPath)
 		out, err := cmd.CombinedOutput()
 		if err != nil {
-			t.Fatal(err)
+			t.Fatal(out, err)
 		}
+		fmt.Println(out)
 		output := strings.Split(string(out), "\n")
 		re := regexp.MustCompile(`[\p{L}]+\s+[\p{L}]+\s+\[[FM]\]\s+[2-9A-F]{6}\s+Age:\s+[1-5][0-9]\s+human`)
 		matched_0 := re.MatchString(output[0])

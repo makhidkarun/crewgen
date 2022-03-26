@@ -13,6 +13,8 @@ import (
 	"github.com/makhidkarun/crewgen/pkg/dice"
 )
 
+// LineToList takes a string and a separator, and returns a slice of string.
+// Spaces are trimmed from each element.
 func LineToList(line string, sep string) []string {
 	var data []string
 	for _, item := range strings.Split(line, sep) {
@@ -21,6 +23,9 @@ func LineToList(line string, sep string) []string {
 	return data
 }
 
+// HeadersFromList takes a slice of strings and a separator, and returns
+// a slice of strings containing the first [0] element of each line in the
+// source slice
 func HeadersFromList(data []string, sep string) []string {
 	// assumes blank lines and comments have been filtered out.
 	var headers []string
@@ -32,6 +37,9 @@ func HeadersFromList(data []string, sep string) []string {
 	return headers
 }
 
+// DataFromListLine takes a slice of strings, a string key, a separator key, and
+// an index int. The first slice string that begins with the string key is
+// separated by the separator, and the element at index is returned.
 func DataFromListLine(data []string, key string, sep string, index int) string {
 	var datum string
 	for _, line := range data {
@@ -152,8 +160,6 @@ func JobList(jobFile string) []string {
 	sep := ":"
 	jobData := ArrayFromFile(jobFile)
 	jobList := HeadersFromList(jobData, sep)
-	//jobSlice := jobList[:]
-	//sort.Strings(jobSlice)
 	return jobList
 }
 

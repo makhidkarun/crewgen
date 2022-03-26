@@ -7,7 +7,7 @@ feature:  add personality
 feature:  add plot
 feature:  add physical description
 
-refactor: pass options to datamine and person
+refactor: remove mix of data and testdata directories in tests files
 refactor: allow person data to be passed in
 refactor: split up for cli, api, and web versions
 refactor: option to use datadir
@@ -26,11 +26,12 @@ datamine: add plot
 datamine: add temperament
 datamine: add physical
 
+document: document each function
 document: figure out how to use config file for data dir and files
-
 
 DONE
 ====
+refactor: pass options to datamine and person
 refactor: test template output
 refactor: pass map of strings by default
 refactor: remove aging from brp, based on terms

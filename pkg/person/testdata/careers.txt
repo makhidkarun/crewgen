@@ -1,0 +1,10 @@
+# list of careers and data, seperated by ":".
+# career : defaultJob : careerSkills seperated by ",".
+# careerSkills will be assigned a 0 level, at a minimum.
+navy:engineer:Mechanic,Engineer,Electrical
+army:infantry:GunCbt(CbtR),Brawling,Recon
+merchant:trader:Broker,Sales
+marines:infantry:GunCbt(CbtR),Battledress
+scout:scout:Pilot,Engineer
+other:other:Drive(Any),Steal
+mercenary:infantry:GunCbt(CbtR),Recon

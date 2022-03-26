@@ -60,7 +60,6 @@ func main() {
 	exedir := path.Dir(exe)
 	datadir := path.Join(exedir, "data")
 
-	//'game,job,career,terms,gender,first name, middle name, last name, suffix'")
 	career := flag.String("career", "", "Career or Branch")
 	game := flag.String("game", "2d6", "Game version")
 	gender := flag.String("gender", "", "F or M, default random")
@@ -72,10 +71,10 @@ func main() {
 	flag.Parse()
 
 	options["datadir"] = datadir
-	careerFile := path.Join(datadir, "careers.txt")
-	jobFile := path.Join(datadir, "jobs.txt")
+	options["careerFile"] = path.Join(datadir, "careers.txt")
+	options["jobFile"] = path.Join(datadir, "jobs.txt")
 	if *listOptions {
-		fmt.Println(datamine.ListOptions(careerFile, jobFile))
+		fmt.Println(datamine.ListOptions(options["careerFile"], options["jobFile"]))
 		os.Exit(0)
 	}
 

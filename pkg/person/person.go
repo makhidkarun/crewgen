@@ -9,13 +9,12 @@ package person
 
 import (
 	"fmt"
-	"path"
+	"github.com/makhidkarun/crewgen/pkg/datamine"
+	"github.com/makhidkarun/crewgen/pkg/dice"
+	"os"
 	"sort"
 	"strconv"
 	"strings"
-
-	"github.com/makhidkarun/crewgen/pkg/datamine"
-	"github.com/makhidkarun/crewgen/pkg/dice"
 )
 
 // Person holds data. Most fields are exported.
@@ -35,8 +34,12 @@ type Person struct {
 }
 
 // age sets the base age, assuming some time after leaving the service.
-func age(terms int, termMod int) int {
-	return 18 + (terms * termMod) + dice.Random(0, 3)
+func age(options map[string]string, p Person) int {
+	termMod, err := strconv.Atoi(options["termMod"])
+	if err != nil {
+		termMod = 4
+	}
+	return 18 + (p.Terms * termMod) + dice.Random(0, 3)
 }
 
 // newSkill takes an array and returns a string
@@ -45,21 +48,21 @@ func newSkill(job []string) string {
 }
 
 // skillsToString returns a comma or newline separated single string.
-func skillsToStr(skills map[string]int, game string) string {
+func skillsToStr(options map[string]string, p Person) string {
 	s := ""
 	i := 1
-	if len(skills) == 0 {
+	if len(p.Skills) == 0 {
 		return s
 	}
-	skillList := make([]string, 0, len(skills))
-	for skill, _ := range skills {
+	skillList := make([]string, 0, len(p.Skills))
+	for skill, _ := range p.Skills {
 		skillList = append(skillList, skill)
 	}
 	sort.Strings(skillList)
 	for _, key := range skillList {
-		s += key + "-" + strconv.Itoa(skills[key])
+		s += key + "-" + strconv.Itoa(p.Skills[key])
 		if i < len(skillList) {
-			if game == "brp" {
+			if options["game"] == "brp" {
 				s += "\n"
 			} else {
 				s += ", "
@@ -70,35 +73,47 @@ func skillsToStr(skills map[string]int, game string) string {
 	return s
 }
 
-// incSkill increases a skill by 1
-// probably needs a variable?
+// incSkill increases a skill by value of int
 func incSkill(skills map[string]int, skill string, value int) map[string]int {
 	skills[skill] += value
 	return skills
 }
 
 // setCareer sets a random career if a valid string is not given.
-func setCareer(career string, datadir string) (c string) {
-	datafile := path.Join(datadir, "careers.txt")
-	cOptions := datamine.CareerList(datafile)
-	if !datamine.StringInArray(career, cOptions) {
+func setCareer(options map[string]string) string {
+	cwd, err := os.Getwd()
+	if err != nil {
+		fmt.Println(err)
+		os.Exit(1)
+	}
+	if _, err := os.Stat(cwd); err != nil {
+		os.Exit(1)
+	}
+	var c string
+	if _, err := os.Stat(options["careerFile"]); err != nil {
+		fmt.Printf("%s does not exist error\n", options["careerFile"])
+		os.Exit(1)
+	}
+
+	cOptions := datamine.CareerList(options["careerFile"])
+	if !datamine.StringInArray(options["career"], cOptions) {
 		c = datamine.RandomStringFromArray(cOptions)
 	} else {
-		c = career
+		c = options["career"]
 	}
-	return
+	return c
 }
 
-// formatUPP returns a string of alphanumeric Hex.
-func formatUPP(options map[string]string, UPP []int) string {
+// formatUPP returns a string based on the game type.
+func formatUPP(options map[string]string, p Person) string {
 	var newUPP string
 	if options["game"] == "brp" {
 		statKeys := []string{"Str", "Con", "Siz", "Int", "Pow", "Dex"} //, "Edu"}
 		for idx, val := range statKeys {
-			newUPP += fmt.Sprintf("%s: %d  ", val, UPP[idx])
+			newUPP += fmt.Sprintf("%s: %d  ", val, p.UPP[idx])
 		}
 	} else {
-		for _, val := range UPP {
+		for _, val := range p.UPP {
 			newUPP += fmt.Sprintf("%X", val)
 		}
 	}
@@ -177,42 +192,40 @@ func writePhysical(c Person) string {
 
 // addSkills returns a map of skill (string) and level (int).
 //  It auto assigns the primary skill for the job given.
-func addSkills(job string, career string, terms int, datadir string, game string) map[string]int {
+func addSkills(options map[string]string, p Person) map[string]int {
 	skills := make(map[string]int)
-	careerFile := path.Join(datadir, "careers.txt")
-	careerList := datamine.CareerList(careerFile)
-	if !datamine.StringInArray(career, careerList) {
-		career = "Other"
+	careerList := datamine.CareerList(options["careerFile"])
+	if !datamine.StringInArray(options["career"], careerList) {
+		options["career"] = "Other"
 	}
-	careerSkills := datamine.CareerSkills(careerFile, career)
+	careerSkills := datamine.CareerSkills(options["careerFile"], options["career"])
 
-	jobFile := path.Join(datadir, "jobs.txt")
+	job := options["job"]
 	if job == "" {
-		job = datamine.DefaultJob(careerFile, career)
+		job = datamine.DefaultJob(options["careerFile"], options["career"])
 	} else {
-		jobList := datamine.JobList(jobFile)
+		jobList := datamine.JobList(options["jobFile"])
 		if !datamine.StringInArray(job, jobList) {
 			job = "other"
 		}
 	}
-	jobSkills := datamine.JobSkills(jobFile, job)
+	jobSkills := datamine.JobSkills(options["jobFile"], job)
 	var skillList = make([]string, len(jobSkills)+len(careerSkills))
 	copy(skillList, append(jobSkills, careerSkills[:]...))
 	primarySkill := datamine.FirstStringInArray(skillList)
 
-	value := 1
-	if game == "brp" {
-		value = 5
+	incValue := 1
+	if options["game"] == "brp" {
+		incValue = 5
 	}
-	skills = incSkill(skills, primarySkill, value)
-	for i := 0; i < terms; i++ {
-		skills = incSkill(skills, newSkill(skillList), value)
+	skills = incSkill(skills, primarySkill, incValue)
+	for i := 0; i < p.Terms; i++ {
+		skills = incSkill(skills, newSkill(skillList), incValue)
 	}
 	return skills
 }
 
 // MakePerson takes a map of options and returns a Person.
-// It is a basic factory.
 func MakePerson(options map[string]string) Person {
 	var character Person
 
@@ -223,25 +236,25 @@ func MakePerson(options map[string]string) Person {
 		character.Terms = terms
 	}
 
-	datadir := options["datadir"]
-	career := strings.ToLower(options["career"])
-	job := strings.ToLower(options["job"])
-	game := options["game"]
-
+	options["career"] = strings.ToLower(options["career"])
+	options["job"] = strings.ToLower(options["job"])
+	// This needs expansion, for each game type. Use in RandomStringFromArray
 	speciesOptions := []string{"human"}
-	termMod := 4
-	if game == "brp" {
-		termMod = 0
+
+	if options["game"] == "brp" {
+		options["termMod"] = "0"
+	} else {
+		options["termMod"] = "4"
 	}
 	character.Gender = setGender(options)
 	character.UPP = rollUPP(options)
 	character.Name = datamine.GetName(options)
-	character.UPPs = formatUPP(options, character.UPP)
-	character.Age = age(character.Terms, termMod)
-	character.Career = setCareer(career, datadir)
+	character.UPPs = formatUPP(options, character)
+	character.Age = age(options, character)
+	character.Career = setCareer(options)
 	character.Species = setSpecies(speciesOptions)
-	character.Skills = addSkills(job, character.Career, character.Terms, datadir, game)
-	character.SkillString = skillsToStr(character.Skills, game)
+	character.Skills = addSkills(options, character)
+	character.SkillString = skillsToStr(options, character)
 	character.Physical = writePhysical(character)
 
 	return character

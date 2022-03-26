@@ -2,6 +2,7 @@ package person_test
 
 import (
 	"os"
+	"path"
 	"strings"
 	"testing"
 
@@ -12,10 +13,11 @@ var options map[string]string
 
 func TestMain(m *testing.M) {
 	options = make(map[string]string)
-	datadir := "/home/leam/lang/git/makhidkarun/crewgen/cmd/teamgen/data"
 	options["terms"] = "1"
 	options["career"] = "navy"
-	options["datadir"] = datadir
+	options["datadir"] = "testdata"
+	options["careerFile"] = path.Join(options["datadir"], "careers.txt")
+	options["jobFile"] = path.Join(options["datadir"], "jobs.txt")
 	options["game"] = "2d6"
 	exitVal := m.Run()
 	os.Exit(exitVal)
@@ -24,8 +26,8 @@ func TestMain(m *testing.M) {
 func TestMakePerson(t *testing.T) {
 	testP := person.MakePerson(options)
 	var tP interface{} = testP.Name
-	if _, ok := tP.(string); !ok {
-		t.Error(`MakePerson failed by name test`)
+	if data, ok := tP.(string); !ok {
+		t.Errorf("MakePerson failed by name test %s", data)
 	}
 }
 
@@ -157,8 +159,6 @@ func TestDefaultJob(t *testing.T) {
 
 func TestMercenaryCareer(t *testing.T) {
 	options["career"] = "mercenary"
-	options["terms"] = "4"
-	options["job"] = "infantry"
 	testP := person.MakePerson(options)
 	if len(testP.SkillString) < 8 {
 		t.Error(`TestMercenaryCareer failed to specify a long skillstring`)
@@ -167,7 +167,7 @@ func TestMercenaryCareer(t *testing.T) {
 		t.Error(`TestMercenaryCareer failed to specify Mercenary career`)
 	}
 	if !strings.Contains(testP.SkillString, "GunCbt(CbtR)") {
-		t.Error("TestMercenaryCareer does not give infantry CbtR")
+		t.Errorf("TestMercenaryCareer does not give infantry CbtR: %q in %q", testP.SkillString, testP.Career)
 	}
 }
 

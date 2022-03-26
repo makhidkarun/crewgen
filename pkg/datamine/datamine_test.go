@@ -82,7 +82,7 @@ func TestGetMaleFirstName(t *testing.T) {
 
 func TestLastName(t *testing.T) {
 	options["gender"] = "F"
-	options["datadir"] = "data"
+	options["datadir"] = "testdata"
 	options["lastName"] = "Domici"
 	name := datamine.GetName(options)
 	if !strings.Contains(name, options["lastName"]) {

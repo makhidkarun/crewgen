@@ -1,0 +1,17 @@
+# list of jobs and possible skills, seperated by ":".
+# The first skill is the "default", and characters will have at least Skill-1.
+# job : skills seperated by ",".
+
+infantry:GunCbt(CbtR), GunCbt(Any), HvyWpns, HvyWpns, Vehicle, Recon, VaccSuit, Brawling, Gambling
+marine:GunCbt(Any), GunCbt(Any), ZeroG, ZeroG, HvyWpns, FwdObs, Battledress
+commando:GunCbt(Any), GunCbt(Any), HvyWpns, Demolitions, Survival, Recon, Battledress
+scout:Pilot, Engineer, Gunner, Navigation, Pilot, ShipTactics, Vehicle, Vehicle, GunCbt(Any), VaccSuit, Recon, Survival, JoT 
+spacer:Mechanical, VaccSuit, Vehicle, ZeroG, Admin, Commo, Blade, Gambling, Liaison, Engineering
+merchant:Streetwise, Broker, Trader, Liaison, Admin, Legal, Vehicle, GunCbt, VaccSuit, Gambling, Carousing, Trader
+other:Streetwise, Blade, Brawling, Vehicle, Gambling, Bribery, GunCbt(Any), Streetwise, Mechanical, Electronic Forgery, JoT
+pilot: Pilot, Navigation ,  ShipsBoat ,  Comms ,  Sensors 
+medic: Medical ,  Medical ,  Medical ,  Diplomacy ,  Science(Any) 
+gunner: Gunnery ,  Gunnery ,  Brawling ,  Mechanical ,  Electronics 
+navigator: Navigation ,  ShipsBoat ,  Comms ,  Sensors 
+steward: Steward ,  Steward ,  Diplomacy ,  Carouse ,  Medic 
+engineer: Engineering
