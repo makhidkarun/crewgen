@@ -90,15 +90,15 @@ func setCareer(career string, datadir string) (c string) {
 }
 
 // formatUPP returns a string of alphanumeric Hex.
-func formatUPP(upp []int, game string) string {
+func formatUPP(options map[string]string, UPP []int) string {
 	var newUPP string
-	if game == "brp" {
+	if options["game"] == "brp" {
 		statKeys := []string{"Str", "Con", "Siz", "Int", "Pow", "Dex"} //, "Edu"}
 		for idx, val := range statKeys {
-			newUPP += fmt.Sprintf("%s: %d  ", val, upp[idx])
+			newUPP += fmt.Sprintf("%s: %d  ", val, UPP[idx])
 		}
 	} else {
-		for _, val := range upp {
+		for _, val := range UPP {
 			newUPP += fmt.Sprintf("%X", val)
 		}
 	}
@@ -122,12 +122,11 @@ func modifyUpp(upp []int, stat int, mod int) []int {
 }
 
 // setGender allows choosing a gender from M, F, or random assignment.
-func setGender(input ...string) string {
+func setGender(options map[string]string) string {
 	var genders []string = []string{"F", "M"}
-	if len(input) != 0 {
-		test_gender := strings.ToUpper(input[0])
-		if datamine.StringInArray(test_gender, genders) {
-			return test_gender
+	if len(options["gender"]) != 0 {
+		if datamine.StringInArray(options["gender"], genders) {
+			return options["gender"]
 		}
 	}
 	return datamine.RandomStringFromArray(genders)
@@ -140,10 +139,10 @@ func numTerms() (t int) {
 }
 
 // rollUPP starts the basic 2d6 rolls.
-func rollUPP(game string) []int {
+func rollUPP(options map[string]string) []int {
 	stats := 6
 	numDice := 2
-	if game == "brp" {
+	if options["game"] == "brp" {
 		stats = 8
 		numDice = 3
 	}
@@ -224,22 +223,20 @@ func MakePerson(options map[string]string) Person {
 		character.Terms = terms
 	}
 
-	input_gender := options["gender"]
 	datadir := options["datadir"]
 	career := strings.ToLower(options["career"])
 	job := strings.ToLower(options["job"])
 	game := options["game"]
-	lastName := options["lastName"]
 
 	speciesOptions := []string{"human"}
 	termMod := 4
 	if game == "brp" {
 		termMod = 0
 	}
-	character.Gender = setGender(input_gender)
-	character.Name = datamine.GetName(character.Gender, datadir, lastName)
-	character.UPP = rollUPP(game)
-	character.UPPs = formatUPP(character.UPP, game)
+	character.Gender = setGender(options)
+	character.UPP = rollUPP(options)
+	character.Name = datamine.GetName(options)
+	character.UPPs = formatUPP(options, character.UPP)
 	character.Age = age(character.Terms, termMod)
 	character.Career = setCareer(career, datadir)
 	character.Species = setSpecies(speciesOptions)

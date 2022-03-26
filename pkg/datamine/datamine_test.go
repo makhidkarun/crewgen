@@ -1,10 +1,21 @@
 package datamine_test
 
 import (
-	"github.com/makhidkarun/crewgen/pkg/datamine"
+	"os"
 	"strings"
 	"testing"
+
+	"github.com/makhidkarun/crewgen/pkg/datamine"
 )
+
+var options map[string]string
+
+func TestMain(m *testing.M) {
+	options = make(map[string]string)
+	options["game"] = "2d6"
+	exitVal := m.Run()
+	os.Exit(exitVal)
+}
 
 func hasElement(s []string, str string) bool {
 	for _, v := range s {
@@ -50,31 +61,31 @@ func TestRandomStringFromArray(t *testing.T) {
 }
 
 func TestGetFemaleFirstName(t *testing.T) {
-	gender := "F"
-	datadir := "data"
-	lastName := ""
-	name := datamine.GetName(gender, datadir, lastName)
+	options["gender"] = "F"
+	options["datadir"] = "data"
+	options["lastName"] = ""
+	name := datamine.GetName(options)
 	if len(name) < 5 {
 		t.Error(`Name too short`)
 	}
 }
 
 func TestGetMaleFirstName(t *testing.T) {
-	gender := "M"
-	datadir := "data"
-	lastName := ""
-	name := datamine.GetName(gender, datadir, lastName)
+	options["gender"] = "M"
+	options["datadir"] = "data"
+	options["lastName"] = ""
+	name := datamine.GetName(options)
 	if len(name) < 5 {
 		t.Error(`Name too short`)
 	}
 }
 
 func TestLastName(t *testing.T) {
-	datadir := "data"
-	gender := "F"
-	lastName := "Domici"
-	name := datamine.GetName(gender, datadir, lastName)
-	if !strings.Contains(name, lastName) {
+	options["gender"] = "F"
+	options["datadir"] = "data"
+	options["lastName"] = "Domici"
+	name := datamine.GetName(options)
+	if !strings.Contains(name, options["lastName"]) {
 		t.Error("In datamine, lastName does not match")
 	}
 }

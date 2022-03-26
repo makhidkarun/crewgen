@@ -79,7 +79,7 @@ func main() {
 		os.Exit(0)
 	}
 
-	options["gender"] = *gender
+	options["gender"] = strings.ToUpper(*gender)
 	options["terms"] = *terms
 	options["career"] = *career
 	options["job"] = *job

@@ -2,7 +2,6 @@ package person_test
 
 import (
 	"os"
-	//"path"
 	"strings"
 	"testing"
 
@@ -103,10 +102,30 @@ func TestPhysical(t *testing.T) {
 	}
 }
 
-func TestUPP(t *testing.T) {
+func TestUPPsEmptyUPP(t *testing.T) {
 	testP := person.MakePerson(options)
 	if testP.UPPs == "000000" {
 		t.Error("MakePerson did not roll a UPP")
+	}
+}
+
+func Test2d6Stats(t *testing.T) {
+	options["game"] = "2d6"
+	testP := person.MakePerson(options)
+	for _, value := range testP.UPP {
+		if value < 2 || value > 15 {
+			t.Errorf("MakePerson has a UPP value outside of 2-15: %d", value)
+		}
+	}
+}
+
+func TestBRPStats(t *testing.T) {
+	options["game"] = "brp"
+	testP := person.MakePerson(options)
+	for _, value := range testP.UPP {
+		if value < 3 || value > 18 {
+			t.Errorf("MakePerson has a BRP UPP value outside of 3-18: %d", value)
+		}
 	}
 }
 
@@ -157,5 +176,21 @@ func TestLastName(t *testing.T) {
 	testP := person.MakePerson(options)
 	if !strings.Contains(testP.Name, "Domici") {
 		t.Error("In person, TestLastName does not match")
+	}
+}
+
+func TestSetGenderF(t *testing.T) {
+	options["gender"] = "F"
+	testP := person.MakePerson(options)
+	if !strings.Contains(testP.Gender, "F") {
+		t.Errorf("In person, TestSetGender failed for F, got %s", testP.Gender)
+	}
+}
+
+func TestSetGenderM(t *testing.T) {
+	options["gender"] = "M"
+	testP := person.MakePerson(options)
+	if !strings.Contains(testP.Gender, "M") {
+		t.Errorf("In person, TestSetGender failed for M, got %s", testP.Gender)
 	}
 }
