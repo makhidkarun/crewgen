@@ -31,6 +31,8 @@ type Person struct {
 	SkillString string
 	Species     string
 	Physical    string
+	Plot        string
+	Mental      []string
 }
 
 // age sets the base age, assuming some time after leaving the service.
