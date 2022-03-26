@@ -2,7 +2,7 @@ Using teamgen
 =============
 
 The binaries are named for the operating system and the architecture you
-are using. For example, "teamgen_windows.amd64" is should run on most 
+are using. For example, "teamgen_windows.amd64" should run on most 
 64 bit Windows systems. If not, please let me know.
 
 The teamgen.zip file has multiple binaries and a data directory. To use, 

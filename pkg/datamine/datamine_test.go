@@ -13,6 +13,7 @@ var options map[string]string
 func TestMain(m *testing.M) {
 	options = make(map[string]string)
 	options["game"] = "2d6"
+	options["datadir"] = "testdata"
 	exitVal := m.Run()
 	os.Exit(exitVal)
 }
@@ -62,7 +63,6 @@ func TestRandomStringFromArray(t *testing.T) {
 
 func TestGetFemaleFirstName(t *testing.T) {
 	options["gender"] = "F"
-	options["datadir"] = "data"
 	options["lastName"] = ""
 	name := datamine.GetName(options)
 	if len(name) < 5 {
@@ -72,7 +72,6 @@ func TestGetFemaleFirstName(t *testing.T) {
 
 func TestGetMaleFirstName(t *testing.T) {
 	options["gender"] = "M"
-	options["datadir"] = "data"
 	options["lastName"] = ""
 	name := datamine.GetName(options)
 	if len(name) < 5 {

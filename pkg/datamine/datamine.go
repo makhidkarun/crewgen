@@ -102,7 +102,6 @@ func FirstStringInArray(array []string) string {
 }
 
 // GetName takes a gender of string and returns a string of first and last names.
-//func GetName(gender string, datadir string, lastName string) string {
 func GetName(options map[string]string) string {
 	var first_name_file string
 	var last_name string
