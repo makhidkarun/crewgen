@@ -140,6 +140,13 @@ func TestSkills(t *testing.T) {
 	}
 }
 
+func TestSkillsStartMinus(t *testing.T) {
+	testP := person.MakePerson(options)
+	if strings.HasPrefix(testP.SkillString, "-") {
+		t.Errorf("SkillString starting with a '-': %s\n", testP.SkillString)
+	}
+}
+
 func TestNoJob(t *testing.T) {
 	options["terms"] = "4"
 	options["job"] = ""

@@ -7,7 +7,6 @@ feature:  add personality
 feature:  add plot
 feature:  add physical description
 
-refactor: sometimes skill string starts with "-{num}"
 refactor: allow person data to be passed in
 refactor: split up for cli, api, and web versions
 refactor: option to use datadir
@@ -15,7 +14,6 @@ refactor: figure out err handling in whine and cry
 refactor: crewgen to use encapsulated web dir
 refactor: crewgen fails due to web dir and data dir, but tests pass
 refactor: fix ship role vs person career
-refactor: remove hard coded datadir in person_test.go
 refactor: outstringer return err if fail; pass up err vice panic.
 refactor: make build also does GCE
 refactor: make build also does Docker image
@@ -31,6 +29,8 @@ document: figure out how to use config file for data dir and files
 
 DONE
 ====
+refactor: remove hard coded datadir in person_test.go
+refactor: sometimes skill string starts with "-{num}"
 refactor: remove mix of data and testdata directories in tests files
 refactor: pass options to datamine and person
 refactor: test template output

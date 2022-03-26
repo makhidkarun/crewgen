@@ -196,10 +196,9 @@ func addSkills(options map[string]string, p Person) map[string]int {
 	skills := make(map[string]int)
 	careerList := datamine.CareerList(options["careerFile"])
 	if !datamine.StringInArray(options["career"], careerList) {
-		options["career"] = "Other"
+		options["career"] = "other"
 	}
 	careerSkills := datamine.CareerSkills(options["careerFile"], options["career"])
-
 	job := options["job"]
 	if job == "" {
 		job = datamine.DefaultJob(options["careerFile"], options["career"])
@@ -213,7 +212,6 @@ func addSkills(options map[string]string, p Person) map[string]int {
 	var skillList = make([]string, len(jobSkills)+len(careerSkills))
 	copy(skillList, append(jobSkills, careerSkills[:]...))
 	primarySkill := datamine.FirstStringInArray(skillList)
-
 	incValue := 1
 	if options["game"] == "brp" {
 		incValue = 5
