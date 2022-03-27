@@ -12,6 +12,7 @@ import (
 	"github.com/makhidkarun/crewgen/pkg/datamine"
 	"github.com/makhidkarun/crewgen/pkg/dice"
 	"os"
+	"path"
 	"sort"
 	"strconv"
 	"strings"
@@ -104,6 +105,17 @@ func setCareer(options map[string]string) string {
 		c = options["career"]
 	}
 	return c
+}
+
+// getPlot selects a plot from the given file, and returns a string
+func getPlot(options map[string]string) string {
+	plotfile := path.Join(options["datadir"], "plots.txt")
+	plot, err := datamine.RandomStringFromFile(plotfile)
+	if err != nil {
+		fmt.Println("Error getting a plot")
+		os.Exit(1)
+	}
+	return plot
 }
 
 // formatUPP returns a string based on the game type.
@@ -256,6 +268,7 @@ func MakePerson(options map[string]string) Person {
 	character.Skills = addSkills(options, character)
 	character.SkillString = skillsToStr(options, character)
 	character.Physical = writePhysical(character)
+	character.Plot = getPlot(options)
 
 	return character
 }

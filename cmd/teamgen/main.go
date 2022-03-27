@@ -18,11 +18,13 @@ import (
 const supp4 = `{{ .Name }} [{{ .Gender }}] {{ .UPPs }} Age: {{ .Age }} {{ .Species }}
 {{ .Terms }} terms {{ title .Career }}
 {{ .SkillString }}
+Plot: {{ .Plot }}
 `
 
 const brp = `{{ .Name }} [{{ .Gender }}] Age: {{ .Age }} {{ .Species }} {{ .Terms }} terms {{ title .Career }}
 {{ .UPPs }}
 {{ .SkillString }}
+Plot: {{ .Plot }}
 `
 
 var funcMap = template.FuncMap{
@@ -83,7 +85,7 @@ func main() {
 	options["career"] = *career
 	options["job"] = *job
 	options["lastName"] = *lastName
-	options["db_name"] = path.Join(datadir, "names.db")
+	//options["db_name"] = path.Join(datadir, "names.db")
 	options["game"] = *game
 	p := person.MakePerson(options)
 

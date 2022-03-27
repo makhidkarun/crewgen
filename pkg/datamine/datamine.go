@@ -185,3 +185,9 @@ func ListOptions(careerFile, jobFile string) string {
 	}
 	return listOptions
 }
+
+// RandomStringFromFile takes a filename and returns one line from it.
+func RandomStringFromFile(filename string) (string, error) {
+	fArray := ArrayFromFile(filename)
+	return RandomStringFromArray(fArray), nil
+}

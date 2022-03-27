@@ -43,7 +43,6 @@ func TestTeamgenCLI(t *testing.T) {
 		if err != nil {
 			t.Fatal(out, err)
 		}
-		fmt.Println(out)
 		output := strings.Split(string(out), "\n")
 		re := regexp.MustCompile(`[\p{L}]+\s+[\p{L}]+\s+\[[FM]\]\s+[2-9A-F]{6}\s+Age:\s+[1-5][0-9]\s+human`)
 		matched_0 := re.MatchString(output[0])
@@ -366,6 +365,18 @@ func TestTeamgenCLI(t *testing.T) {
 		}
 		if !strings.Contains(output, "Domici") {
 			t.Error("In teamgen main, TestLastName does not match")
+		}
+	})
+
+	t.Run("TestHasPlot", func(t *testing.T) {
+		cmd := exec.Command(cmdPath, "-lastName", "Domici")
+		out, err := cmd.CombinedOutput()
+		output := string(out)
+		if err != nil {
+			t.Fatal(err)
+		}
+		if !strings.Contains(output, "Plot") {
+			t.Errorf("In teamgen main, TestHasPlot does not match: %q\n", output)
 		}
 	})
 }

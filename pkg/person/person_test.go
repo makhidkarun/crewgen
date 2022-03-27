@@ -9,6 +9,15 @@ import (
 	"github.com/makhidkarun/crewgen/pkg/person"
 )
 
+func hasElement(s []string, str string) bool {
+	for _, v := range s {
+		if v == str {
+			return true
+		}
+	}
+	return false
+}
+
 var options map[string]string
 
 func TestMain(m *testing.M) {
@@ -199,5 +208,14 @@ func TestSetGenderM(t *testing.T) {
 	testP := person.MakePerson(options)
 	if !strings.Contains(testP.Gender, "M") {
 		t.Errorf("In person, TestSetGender failed for M, got %s", testP.Gender)
+	}
+}
+
+func TestGetPlot(t *testing.T) {
+	//plotfile := path.Join(options["datadir"], "plots.txt")
+	plots := []string{"Love", "Money", "Murder"}
+	testP := person.MakePerson(options)
+	if !hasElement(plots, testP.Plot) {
+		t.Errorf("In person, TestGetPlot gave %s, not an option\n", testP.Plot)
 	}
 }

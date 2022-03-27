@@ -4,9 +4,9 @@ TODO
 feature:  allow stat increases as a skill
 feature:  include zero level skills
 feature:  add personality
-feature:  add plot
 feature:  add physical description
 
+refactor: be more error aware, and float errors up
 refactor: allow person data to be passed in
 refactor: split up for cli, api, and web versions
 refactor: option to use datadir
@@ -20,7 +20,6 @@ refactor: make build also does Docker image
 refactor: use templates for output, vice outstringer
 
 datamine: move getSpecies to dm
-datamine: add plot
 datamine: add temperament
 datamine: add physical
 
@@ -29,6 +28,8 @@ document: figure out how to use config file for data dir and files
 
 DONE
 ====
+datamine: add plot
+feature:  add plot
 refactor: remove hard coded datadir in person_test.go
 refactor: sometimes skill string starts with "-{num}"
 refactor: remove mix of data and testdata directories in tests files

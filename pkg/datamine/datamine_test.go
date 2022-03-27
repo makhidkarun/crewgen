@@ -248,5 +248,16 @@ func TestOptions(t *testing.T) {
 	if !strings.Contains(result, "Scout") {
 		t.Errorf("result does not contain Scout: %s", result)
 	}
+}
 
+func TestRandomStringFromFile(t *testing.T) {
+	randfile := "testdata/randfile.txt"
+	values := []string{"Sam", "Frodo", "Bilbo"}
+	result, err := datamine.RandomStringFromFile(randfile)
+	if err != nil {
+		t.Errorf("Error: %q\n", err)
+	}
+	if !hasElement(values, result) {
+		t.Errorf("Expected one of Sam, Frodo, or Bilbo, got %s\n", result)
+	}
 }
