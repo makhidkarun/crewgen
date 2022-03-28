@@ -33,7 +33,8 @@ type Person struct {
 	Species     string
 	Physical    string
 	Plot        string
-	Mental      []string
+	Mental      string
+	Temperament string
 }
 
 // age sets the base age, assuming some time after leaving the service.
@@ -118,6 +119,17 @@ func getPlot(options map[string]string) string {
 	return plot
 }
 
+// randomFromFile returns a random line from the given file
+func randomFromFile(options map[string]string, f string) string {
+	searchFile := path.Join(options["datadir"], f)
+	value, err := datamine.RandomStringFromFile(searchFile)
+	if err != nil {
+		fmt.Printf("Error getting a value from %s\n", searchFile)
+		os.Exit(1)
+	}
+	return value
+}
+
 // formatUPP returns a string based on the game type.
 func formatUPP(options map[string]string, p Person) string {
 	var newUPP string
@@ -186,10 +198,15 @@ func rollUPP(options map[string]string) []int {
 	return upp
 }
 
-// setSpecies takes a list of options and assigns one randomly to the character.
-func setSpecies(l []string) (species string) {
-	species = datamine.RandomStringFromArray(l)
-	return
+// getMentalTraits selects traits from given files and returns a string
+func getMentalTraits(options map[string]string, files []string) string {
+	traits := []string{}
+	for _, file := range files {
+		newTrait := randomFromFile(options, file)
+		traits = append(traits, newTrait)
+	}
+	result := strings.Join(traits, ", ")
+	return strings.Title(result)
 }
 
 // writePhysical takes a Person and returns a physical description string.
@@ -250,25 +267,28 @@ func MakePerson(options map[string]string) Person {
 
 	options["career"] = strings.ToLower(options["career"])
 	options["job"] = strings.ToLower(options["job"])
-	// This needs expansion, for each game type. Use in RandomStringFromArray
-	speciesOptions := []string{"human"}
 
 	if options["game"] == "brp" {
 		options["termMod"] = "0"
 	} else {
 		options["termMod"] = "4"
 	}
+
+	mentalTraitFiles := []string{"positive_traits.txt", "negative_traits.txt"}
+
 	character.Gender = setGender(options)
 	character.UPP = rollUPP(options)
 	character.Name = datamine.GetName(options)
 	character.UPPs = formatUPP(options, character)
 	character.Age = age(options, character)
 	character.Career = setCareer(options)
-	character.Species = setSpecies(speciesOptions)
+	character.Species = randomFromFile(options, "species.txt")
 	character.Skills = addSkills(options, character)
 	character.SkillString = skillsToStr(options, character)
 	character.Physical = writePhysical(character)
-	character.Plot = getPlot(options)
+	character.Mental = getMentalTraits(options, mentalTraitFiles)
+	character.Plot = randomFromFile(options, "plots.txt")
+	character.Temperament = randomFromFile(options, "temperaments.txt")
 
 	return character
 }

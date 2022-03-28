@@ -18,12 +18,14 @@ import (
 const supp4 = `{{ .Name }} [{{ .Gender }}] {{ .UPPs }} Age: {{ .Age }} {{ .Species }}
 {{ .Terms }} terms {{ title .Career }}
 {{ .SkillString }}
+Temperament: {{ .Temperament }}   Mental Traits: {{ .Mental }}
 Plot: {{ .Plot }}
 `
 
 const brp = `{{ .Name }} [{{ .Gender }}] Age: {{ .Age }} {{ .Species }} {{ .Terms }} terms {{ title .Career }}
 {{ .UPPs }}
 {{ .SkillString }}
+Temperament: {{ .Temperament }}   Mental Traits: {{ .Mental }}
 Plot: {{ .Plot }}
 `
 

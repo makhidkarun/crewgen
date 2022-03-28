@@ -212,10 +212,17 @@ func TestSetGenderM(t *testing.T) {
 }
 
 func TestGetPlot(t *testing.T) {
-	//plotfile := path.Join(options["datadir"], "plots.txt")
 	plots := []string{"Love", "Money", "Murder"}
 	testP := person.MakePerson(options)
 	if !hasElement(plots, testP.Plot) {
 		t.Errorf("In person, TestGetPlot gave %s, not an option\n", testP.Plot)
+	}
+}
+
+func TestGetTemperament(t *testing.T) {
+	temperaments := []string{"Crafter", "Promoter", "Composer"}
+	testP := person.MakePerson(options)
+	if !hasElement(temperaments, testP.Temperament) {
+		t.Errorf("In person, TestGetTemperament gave %s, not an option\n", testP.Temperament)
 	}
 }

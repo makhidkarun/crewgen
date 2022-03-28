@@ -379,4 +379,29 @@ func TestTeamgenCLI(t *testing.T) {
 			t.Errorf("In teamgen main, TestHasPlot does not match: %q\n", output)
 		}
 	})
+
+	t.Run("TestHasTemperament", func(t *testing.T) {
+		cmd := exec.Command(cmdPath, "-lastName", "Domici")
+		out, err := cmd.CombinedOutput()
+		output := string(out)
+		if err != nil {
+			t.Fatal(err)
+		}
+		if !strings.Contains(output, "Temperament") {
+			t.Errorf("In teamgen main, TestHasTemperament does not match: %q\n", output)
+		}
+	})
+
+	t.Run("TestHasMental", func(t *testing.T) {
+		cmd := exec.Command(cmdPath, "-lastName", "Domici")
+		out, err := cmd.CombinedOutput()
+		output := string(out)
+		if err != nil {
+			t.Fatal(err)
+		}
+		if !strings.Contains(output, "Mental") {
+			t.Errorf("In teamgen main, TestHasMental does not match: %q\n", output)
+		}
+	})
+
 }
