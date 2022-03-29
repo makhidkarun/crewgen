@@ -15,11 +15,11 @@ vet: fmt
 build: test
 	rm -rf bin
 	mkdir bin
-	cp -Rp cmd/teamgen/data bin
-	export GOARCH=amd64 GOOS=linux;  go build -o bin/teamgen_$${GOOS}.$${GOARCH} cmd/teamgen/main.go
-	export GOARCH=arm64 GOOS=linux;	 go build -o bin/teamgen_$${GOOS}.$${GOARCH} cmd/teamgen/main.go
-	export GOARCH=amd64 GOOS=darwin; go build -o bin/teamgen_$${GOOS}.$${GOARCH} cmd/teamgen/main.go
-	export GOARCH=amd64 GOOS=windows; go build -o bin/teamgen_$${GOOS}.$${GOARCH} cmd/teamgen/main.go
+	cp -Rp cmd/npcGen/data bin
+	export GOARCH=amd64 GOOS=linux;  go build -o bin/npcGen_$${GOOS}.$${GOARCH} cmd/npcGen/main.go
+	export GOARCH=arm64 GOOS=linux;	 go build -o bin/npcGen_$${GOOS}.$${GOARCH} cmd/npcGen/main.go
+	export GOARCH=amd64 GOOS=darwin; go build -o bin/npcGen_$${GOOS}.$${GOARCH} cmd/npcGen/main.go
+	export GOARCH=amd64 GOOS=windows; go build -o bin/npcGen_$${GOOS}.$${GOARCH} cmd/npcGen/main.go
 .PHONY:build
 
 test:	vet
@@ -34,12 +34,12 @@ distro: build
 	rm -rf tmp
 	mkdir tmp
 	cp docs/README.txt bin
-	cd bin && zip -r ../tmp/teamgen.zip .
+	cd bin && zip -r ../tmp/npcGen.zip .
 .PHONY:distro
 
 clean:
 	# this may be OBE
-	rm cmd/teamgen/teamgen
+	rm cmd/npcGen/npcGen
 	rm cmd/crewgen/crewgen
 .PHONY:clean
 

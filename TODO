@@ -5,9 +5,11 @@ feature:  allow stat increases as a skill
 feature:  include zero level skills
 feature:  add physical description
 
-refactor: be more error aware, and float errors up
+refactor: teamgen to npcGen
 refactor: use templates for output, vice outstringer
-refactor: outstringer return err if fail; pass up err vice panic.
+refactor: outstringer return err if fail; pass up err vice panic
+refactor: set gender earlier, so the names and genders match
+refactor: be more error aware, and float errors up
 refactor: allow person data to be passed in
 refactor: split up for cli, api, and web versions
 refactor: figure out err handling in whine and cry
