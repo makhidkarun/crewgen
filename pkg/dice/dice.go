@@ -7,10 +7,12 @@ import (
 	mbig "math/big"
 )
 
+// OneD6 returns a random int between 1 and 6, inclusive.
 func OneD6() int {
 	return Random(1, 6)
 }
 
+// TwoD6 returns a random int between 2 and 12, inclusive
 func TwoD6() int {
 	return Random(1, 6) + Random(1, 6)
 }

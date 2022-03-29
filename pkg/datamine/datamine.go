@@ -105,7 +105,6 @@ func FirstStringInArray(array []string) string {
 func GetName(options map[string]string) string {
 	var first_name_file string
 	var last_name string
-
 	if options["gender"] == "F" {
 		first_name_file = path.Join(options["datadir"], "human_female_first.txt")
 	} else {

@@ -18,6 +18,7 @@ import (
 	"github.com/makhidkarun/crewgen/pkg/person"
 )
 
+// type Crew is a struct that hold the crew data.
 type Crew struct {
 	ShipName  string
 	Pilot     person.Person
@@ -28,6 +29,7 @@ type Crew struct {
 	Steward   person.Person
 }
 
+// type Ship is a struct that holds the ship data.
 type Ship struct {
 	ShipName   string
 	HullSize   int
@@ -37,6 +39,7 @@ type Ship struct {
 	Role       string
 }
 
+// buildCrew takes a Ship and a datadir and returns a Crew.
 func buildCrew(ship Ship, datadir string) Crew {
 	var crew Crew
 	crew.ShipName = ship.ShipName
@@ -76,6 +79,7 @@ func buildCrew(ship Ship, datadir string) Crew {
 	return crew
 }
 
+// crewGen handles the http.Request and the http.ResponseWriter
 func crewGen(w http.ResponseWriter, r *http.Request) {
 	r.ParseForm()
 	exe, err := os.Executable()
