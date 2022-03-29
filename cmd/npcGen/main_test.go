@@ -11,7 +11,7 @@ import (
 	"testing"
 )
 
-var binName = "teamgen"
+var binName = "npcGen"
 
 func TestMain(m *testing.M) {
 	fmt.Println("Building tool...")
@@ -364,7 +364,7 @@ func TestTeamgenCLI(t *testing.T) {
 			t.Fatal(err)
 		}
 		if !strings.Contains(output, "Domici") {
-			t.Error("In teamgen main, TestLastName does not match")
+			t.Error("In npcGen main, TestLastName does not match")
 		}
 	})
 
@@ -376,7 +376,7 @@ func TestTeamgenCLI(t *testing.T) {
 			t.Fatal(err)
 		}
 		if !strings.Contains(output, "Plot") {
-			t.Errorf("In teamgen main, TestHasPlot does not match: %q\n", output)
+			t.Errorf("In npcGen main, TestHasPlot does not match: %q\n", output)
 		}
 	})
 
@@ -388,7 +388,7 @@ func TestTeamgenCLI(t *testing.T) {
 			t.Fatal(err)
 		}
 		if !strings.Contains(output, "Temperament") {
-			t.Errorf("In teamgen main, TestHasTemperament does not match: %q\n", output)
+			t.Errorf("In npcGen main, TestHasTemperament does not match: %q\n", output)
 		}
 	})
 
@@ -400,7 +400,7 @@ func TestTeamgenCLI(t *testing.T) {
 			t.Fatal(err)
 		}
 		if !strings.Contains(output, "Mental") {
-			t.Errorf("In teamgen main, TestHasMental does not match: %q\n", output)
+			t.Errorf("In npcGen main, TestHasMental does not match: %q\n", output)
 		}
 	})
 

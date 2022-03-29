@@ -1,19 +1,19 @@
 # crewgen
 
-Generic 2d6 OGL NPC generator
-
-## Note that updates to the code have broken the web version. CLI still works.
+Generic 2d6 OGL NPC generators
 
 ## Basic usage
 
-Copy the teamgen.zip file into a new directory, and unzip it. Read the README.txt file.
+Copy npcGen.zip file into a new directory, and unzip it. Read the README.txt file.
 
 
-## Building the teamgen binary
+
+
+## Building the npcGen binary
 
 ```
-cd cmd/teamgen
-go build -o teamgen main.go
+cd cmd/npcGen
+go build -o npcGen main.go
 ```
 
 ## Cross-compiling 
@@ -25,7 +25,7 @@ make build
 ## Contributing
 
 The datafiles can always use new material. Check out 
-cmd/teamgen/data/careers.txt and cmd/teamgen/data/jobs.txt for places to start.
+cmd/npcGen/data/careers.txt and cmd/npcGen/data/jobs.txt for places to start.
 You can also customize those for your own campaign.
 
 If you want to do some coding, Go is pretty simple, and there's a TODO list 

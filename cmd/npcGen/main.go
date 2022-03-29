@@ -1,4 +1,4 @@
-//  teamgen/main.go
+//  npcGen/main.go
 
 package main
 
