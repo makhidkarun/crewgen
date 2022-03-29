@@ -3,8 +3,8 @@ TODO
  
 feature:  allow stat increases as a skill
 feature:  include zero level skills
-feature:  add physical description
 
+refactor: templates use exedir as root
 refactor: use templates for output, vice outstringer
 refactor: outstringer return err if fail; pass up err vice panic
 refactor: set gender earlier, so the names and genders match
@@ -18,11 +18,12 @@ refactor: fix ship role vs person career
 refactor: make build also does GCE
 refactor: make build also does Docker image
 
-datamine: add physical
+datamine: move physical to datamine
 
 
 DONE
 ====
+feature:  add physical description
 refactor: teamgen to npcGen
 document: document each function
 datamine: move getSpecies to dm

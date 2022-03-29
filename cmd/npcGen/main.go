@@ -40,17 +40,33 @@ var funcMap = template.FuncMap{
 var outstring bytes.Buffer
 
 // func outstringer takes a person and a template, and returns a string.
-func outstringer(p person.Person, tmpl string) string {
-	t := template.New("t")
-	t, err := t.Funcs(funcMap).Parse(tmpl)
+func outstringer(p person.Person) string {
+	/*
+		t := template.New("t")
+		t, err := t.Funcs(funcMap).Parse(tmpl)
+		if err != nil {
+			panic(err)
+		}
+		err = t.Execute(&outstring, p)
+		if err != nil {
+			panic(err)
+		}
+		result := outstring.String()
+		return result
+	*/
+	var b bytes.Buffer
+	templateDir := "templates"
+	personTFile := path.Join(templateDir, "supp4.tmpl")
+	_, err := os.Stat(personTFile)
 	if err != nil {
-		panic(err)
+		fmt.Printf("Error:  %q", err)
 	}
-	err = t.Execute(&outstring, p)
+	t, err := template.ParseFiles(personTFile)
 	if err != nil {
-		panic(err)
+		fmt.Println(err)
 	}
-	result := outstring.String()
+	err = t.ExecuteTemplate(&b, "person", p)
+	result := b.String()
 	return result
 }
 
@@ -99,9 +115,9 @@ func main() {
 
 	result := ""
 	if *game == "brp" {
-		result = outstringer(p, brp)
+		result = outstringer(p)
 	} else {
-		result = outstringer(p, supp4)
+		result = outstringer(p)
 	}
 	fmt.Println(result)
 }

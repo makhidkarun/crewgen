@@ -16,6 +16,7 @@ build: test
 	rm -rf bin
 	mkdir bin
 	cp -Rp cmd/npcGen/data bin
+	cp -Rp cmd/npcGen/templates bin
 	export GOARCH=amd64 GOOS=linux;  go build -o bin/npcGen_$${GOOS}.$${GOARCH} cmd/npcGen/main.go
 	export GOARCH=arm64 GOOS=linux;	 go build -o bin/npcGen_$${GOOS}.$${GOARCH} cmd/npcGen/main.go
 	export GOARCH=amd64 GOOS=darwin; go build -o bin/npcGen_$${GOOS}.$${GOARCH} cmd/npcGen/main.go
