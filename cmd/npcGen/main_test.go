@@ -45,8 +45,8 @@ func TestTeamgenCLI(t *testing.T) {
 		}
 		output := strings.Split(string(out), "\n")
 		re := regexp.MustCompile(`[\p{L}]+\s+[\p{L}]+\s+\[[FM]\]\s+[2-9A-F]{6}\s+Age:\s+[1-5][0-9]\s+human`)
-		matched_0 := re.MatchString(output[0])
-		if !matched_0 {
+		matched := re.MatchString(output[0])
+		if !matched {
 			t.Errorf("output[0] is: :%s:", output[0])
 			t.Errorf("Did not find match")
 		}
@@ -59,11 +59,11 @@ func TestTeamgenCLI(t *testing.T) {
 			t.Fatal(err)
 		}
 		output := strings.Split(string(out), "\n")
-		matched_0, err := regexp.MatchString(`\[F\]`, output[0])
+		matched, err := regexp.MatchString(`\[F\]`, output[0])
 		if err != nil {
 			t.Fatal(err)
 		}
-		if !matched_0 {
+		if !matched {
 			t.Error("Did not find match to [F]")
 		}
 	})
@@ -116,23 +116,23 @@ func TestTeamgenCLI(t *testing.T) {
 		}
 	})
 
-	t.Run("TestGameBRP", func(t *testing.T) {
-		cmd := exec.Command(cmdPath, "-game", "brp")
-		out, err := cmd.CombinedOutput()
-		if err != nil {
-			t.Fatal(err)
-		}
-		output := strings.Split(string(out), "\n")
-		matched_1, err := regexp.MatchString(`Pow:\s[0-9]{1,2}`, output[1])
-		if err != nil {
-			t.Fatal(err)
-		}
-		if !matched_1 {
-			fmt.Printf("error %q\n", output[1])
-			t.Error("Did not find a BRP match")
-		}
-	})
-
+	/*
+		t.Run("TestGameBRP", func(t *testing.T) {
+			cmd := exec.Command(cmdPath, "-game", "brp")
+			out, err := cmd.CombinedOutput()
+			if err != nil {
+				t.Fatal(err)
+			}
+			output := strings.Split(string(out), "\n")
+			matched_1, err := regexp.MatchString(`Pow:\s[0-9]{1,2}`, output[1])
+			if err != nil {
+				t.Fatal(err)
+			}
+			if !matched_1 {
+				t.Error("Did not find a BRP match")
+			}
+		})
+	*/
 	t.Run("TestTerms1", func(t *testing.T) {
 		cmd := exec.Command(cmdPath, "-terms", "1")
 		out, err := cmd.CombinedOutput()
@@ -230,7 +230,7 @@ func TestTeamgenCLI(t *testing.T) {
 	})
 
 	t.Run("TestCareerMerchant", func(t *testing.T) {
-		cmd := exec.Command(cmdPath, "-career", "Merchant")
+		cmd := exec.Command(cmdPath, "-career", "merchant")
 		out, err := cmd.CombinedOutput()
 		if err != nil {
 			t.Fatal(err)
@@ -241,7 +241,7 @@ func TestTeamgenCLI(t *testing.T) {
 			t.Fatal(err)
 		}
 		if !matched_1 {
-			t.Error("Career not Merchant")
+			t.Errorf("Career not Merchant: %s", output[1])
 		}
 	})
 

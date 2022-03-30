@@ -15,22 +15,6 @@ import (
 	"github.com/makhidkarun/crewgen/pkg/person"
 )
 
-// const supp4 is a semi-standard NPC output format.
-const supp4 = `{{ .Name }} [{{ .Gender }}] {{ .UPPs }} Age: {{ .Age }} {{ .Species }}
-{{ .Terms }} terms {{ title .Career }}
-{{ .SkillString }}
-Temperament: {{ .Temperament }}   Mental Traits: {{ .Mental }}
-Plot: {{ .Plot }}
-`
-
-// const brp is a start on Basic Roleplaying based games like Runequest and CoC.
-const brp = `{{ .Name }} [{{ .Gender }}] Age: {{ .Age }} {{ .Species }} {{ .Terms }} terms {{ title .Career }}
-{{ .UPPs }}
-{{ .SkillString }}
-Temperament: {{ .Temperament }}   Mental Traits: {{ .Mental }}
-Plot: {{ .Plot }}
-`
-
 // var funcMap changes the title
 var funcMap = template.FuncMap{
 	"title": strings.Title,
@@ -40,7 +24,7 @@ var funcMap = template.FuncMap{
 var outstring bytes.Buffer
 
 // func outstringer takes a person and a template, and returns a string.
-func outstringer(p person.Person) string {
+func outstringer(p *person.Person, options map[string]string) string {
 	/*
 		t := template.New("t")
 		t, err := t.Funcs(funcMap).Parse(tmpl)
@@ -55,8 +39,8 @@ func outstringer(p person.Person) string {
 		return result
 	*/
 	var b bytes.Buffer
-	templateDir := "templates"
-	personTFile := path.Join(templateDir, "supp4.tmpl")
+	//templateDir := "templates"
+	personTFile := path.Join(options["templatedir"], "supp4.tmpl")
 	_, err := os.Stat(personTFile)
 	if err != nil {
 		fmt.Printf("Error:  %q", err)
@@ -65,6 +49,9 @@ func outstringer(p person.Person) string {
 	if err != nil {
 		fmt.Println(err)
 	}
+	// Fix upper case before output
+	// better to go back to the funcmap?
+	p.Career = strings.Title(p.Career)
 	err = t.ExecuteTemplate(&b, "person", p)
 	result := b.String()
 	return result
@@ -85,6 +72,7 @@ func main() {
 	whine(err)
 	exedir := path.Dir(exe)
 	datadir := path.Join(exedir, "data")
+	templatedir := path.Join(exedir, "templates")
 
 	career := flag.String("career", "", "Career or Branch")
 	game := flag.String("game", "2d6", "Game version")
@@ -109,15 +97,10 @@ func main() {
 	options["career"] = *career
 	options["job"] = *job
 	options["lastName"] = *lastName
-	//options["db_name"] = path.Join(datadir, "names.db")
 	options["game"] = *game
+	options["templatedir"] = templatedir
 	p := person.MakePerson(options)
 
-	result := ""
-	if *game == "brp" {
-		result = outstringer(p)
-	} else {
-		result = outstringer(p)
-	}
+	result := outstringer(&p, options)
 	fmt.Println(result)
 }
