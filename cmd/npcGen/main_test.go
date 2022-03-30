@@ -116,23 +116,22 @@ func TestTeamgenCLI(t *testing.T) {
 		}
 	})
 
-	/*
-		t.Run("TestGameBRP", func(t *testing.T) {
-			cmd := exec.Command(cmdPath, "-game", "brp")
-			out, err := cmd.CombinedOutput()
-			if err != nil {
-				t.Fatal(err)
-			}
-			output := strings.Split(string(out), "\n")
-			matched_1, err := regexp.MatchString(`Pow:\s[0-9]{1,2}`, output[1])
-			if err != nil {
-				t.Fatal(err)
-			}
-			if !matched_1 {
-				t.Error("Did not find a BRP match")
-			}
-		})
-	*/
+	t.Run("TestGameBRP", func(t *testing.T) {
+		cmd := exec.Command(cmdPath, "-game", "brp")
+		out, err := cmd.CombinedOutput()
+		if err != nil {
+			t.Fatal(err)
+		}
+		output := strings.Split(string(out), "\n")
+		matched, err := regexp.MatchString(`Pow:\s[0-9]{1,2}`, output[0])
+		if err != nil {
+			t.Fatal(err)
+		}
+		if !matched {
+			t.Error("Did not find a BRP match")
+		}
+	})
+
 	t.Run("TestTerms1", func(t *testing.T) {
 		cmd := exec.Command(cmdPath, "-terms", "1")
 		out, err := cmd.CombinedOutput()
