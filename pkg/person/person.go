@@ -277,6 +277,7 @@ func MakePerson(options map[string]string) Person {
 	mentalTraitFiles := []string{"positive_traits.txt", "negative_traits.txt"}
 
 	character.Gender = setGender(options)
+	options["gender"] = character.Gender
 	character.UPP = rollUPP(options)
 	character.Name = datamine.GetName(options)
 	character.UPPs = formatUPP(options, character)

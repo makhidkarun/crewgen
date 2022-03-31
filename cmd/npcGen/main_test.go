@@ -245,18 +245,18 @@ func TestTeamgenCLI(t *testing.T) {
 	})
 
 	t.Run("TestCareerMarines", func(t *testing.T) {
-		cmd := exec.Command(cmdPath, "-career", "Marines")
+		cmd := exec.Command(cmdPath, "-career", "Marine")
 		out, err := cmd.CombinedOutput()
 		if err != nil {
 			t.Fatal(err)
 		}
 		output := strings.Split(string(out), "\n")
-		matched_1, err := regexp.MatchString(`Marines`, output[1])
+		matched_1, err := regexp.MatchString(`Marine`, output[1])
 		if err != nil {
 			t.Fatal(err)
 		}
 		if !matched_1 {
-			t.Error("Career not Marines")
+			t.Error("Career not Marine")
 		}
 	})
 

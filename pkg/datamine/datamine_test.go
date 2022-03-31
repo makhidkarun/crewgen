@@ -151,7 +151,7 @@ func TestHeadersFromList(t *testing.T) {
 			t.Error("TestHeadersFromList let a comment in")
 		}
 	}
-	expectedList := []string{"navy", "army", "merchant", "marines", "scout", "other", "mercenary"}
+	expectedList := []string{"navy", "army", "merchant", "marine", "scout", "other", "mercenary"}
 	if len(headers) < len(expectedList) {
 		t.Error("TestHeadersFromList has the wrong list count")
 	}
@@ -173,7 +173,7 @@ func TestCareerList(t *testing.T) {
 			t.Error("TestCareerList let a comment in")
 		}
 	}
-	expectedList := []string{"navy", "army", "merchant", "marines", "scout", "other", "mercenary"}
+	expectedList := []string{"navy", "army", "merchant", "marine", "scout", "other", "mercenary"}
 	if len(careers) < len(expectedList) {
 		t.Error("TestCareerList has the wrong list count")
 	}

@@ -74,6 +74,26 @@ func TestMakePersonName(t *testing.T) {
 	}
 }
 
+func TestMakePersonNameF(t *testing.T) {
+	options["gender"] = "F"
+	names := []string{"Abbie", "Abbey"}
+	testP := person.MakePerson(options)
+	fName := strings.Split(testP.Name, " ")[0]
+	if !hasElement(names, fName) {
+		t.Errorf("MakePerson failed Female first name: %s\n", fName)
+	}
+}
+
+func TestMakePersonNameM(t *testing.T) {
+	options["gender"] = "M"
+	names := []string{"Aaron", "Abdul"}
+	testP := person.MakePerson(options)
+	fName := strings.Split(testP.Name, " ")[0]
+	if !hasElement(names, fName) {
+		t.Errorf("MakePerson failed Male first name: %s\n", fName)
+	}
+}
+
 func TestMakePersonNameTwoWordString(t *testing.T) {
 	testP := person.MakePerson(options)
 	nameS := strings.Split(testP.Name, " ")
