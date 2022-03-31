@@ -4,7 +4,6 @@ TODO
 feature:  allow stat increases as a skill
 feature:  include zero level skills
 
-refactor: set gender earlier, so the names and genders match
 refactor: outstringer return err if fail; pass up err vice panic
 refactor: be more error aware, and float errors up
 refactor: allow person data to be passed in
@@ -21,6 +20,7 @@ datamine: move physical to datamine
 
 DONE
 ====
+refactor: set gender earlier, so the names and genders match
 refactor: use templates for output, vice outstringer
 refactor: templates use exedir as root
 feature:  add physical description
