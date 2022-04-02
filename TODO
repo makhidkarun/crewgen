@@ -3,6 +3,7 @@ TODO
  
 feature:  allow stat increases as a skill
 feature:  include zero level skills
+feature:  use group templates
 
 refactor: outstringer return err if fail; pass up err vice panic
 refactor: be more error aware, and float errors up
