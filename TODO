@@ -21,6 +21,7 @@ datamine: move physical to datamine
 
 DONE
 ====
+feature:  add to CircleCI
 refactor: set gender earlier, so the names and genders match
 refactor: use templates for output, vice outstringer
 refactor: templates use exedir as root

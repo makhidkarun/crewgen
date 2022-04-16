@@ -1,3 +1,5 @@
+[![<Makhidkarun>](https://circleci.com/gh/makhidkarun/crewgen.svg?style=shield)](https://app.circleci.com/pipelines/github/makhidkarun/crewgen?branch=master&filter=all)
+
 # crewgen
 
 Generic 2d6 OGL NPC generators
@@ -6,23 +8,27 @@ Generic 2d6 OGL NPC generators
 
 Copy npcGen.zip file into a new directory, and unzip it. Read the README.txt file.
 
+<br/>
+
+<br/>
 
 
+## For developers
 
-## Building the npcGen binary
+### Building the npcGen binary
 
 ```
 cd cmd/npcGen
 go build -o npcGen main.go
 ```
 
-## Cross-compiling 
+### Cross-compiling 
 
 ```
 make build
 ```
 
-## Contributing
+### Contributing
 
 The datafiles can always use new material. Check out 
 cmd/npcGen/data/careers.txt and cmd/npcGen/data/jobs.txt for places to start.
@@ -31,11 +37,11 @@ You can also customize those for your own campaign.
 If you want to do some coding, Go is pretty simple, and there's a TODO list 
 here for things that need to be worked on. 
 
-## Using crewgen with Docker
+### Using crewgen with Docker
 
 Create a directory for the Docker build, and create the sub-directory "app".
 
-### Dockerfile
+#### Dockerfile
 
 ```
 FROM voidlinux/voidlinux:latest
